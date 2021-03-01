@@ -1,0 +1,33 @@
+version: '3'
+
+services:
+  web:
+    build: .
+    command: bash -c "python manage.py runserver 0.0.0.0:8000"
+    container_name: daksha
+    restart: always
+    volumes:
+      - .:/daksha
+      - /var/log/kaarya/:/var/log/kaarya/
+      - /daksha/test-data:/daksha/test-data
+    ports:
+      - "8083:8000"
+    environment:
+      STORAGE_PATH: "/daksha/test-data"
+      APACHE_URL: ""
+      POSTMARK_TOKEN: ""
+      GIT_USER: ""
+      GIT_PASS: ""
+      REPO_NAME: ""
+      BRANCH_NAME: ""
+      REPO_ORG: ""
+      REPO_USER: ""
+
+  engine-apache:
+    image: httpd:2.4-alpine
+    container_name: engine-apache
+    restart: always
+    volumes:
+      - /daksha/test-data:/usr/local/apache2/htdocs/
+    ports:
+      - "8485:80"
