@@ -42,7 +42,6 @@ SECRET_KEY = 'gj%7t91&c$*q&+fkx-wuug^i$0b@@lk26vd4txdq=)%_319hyy'
 DEBUG = True
 
 ALLOWED_HOSTS = [
-  '192.168.21.185',
   '127.0.0.1',
   '.mykaarma.dev',
   '.mykaarma.com'

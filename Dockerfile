@@ -4,13 +4,13 @@ ENV PYTHONUNBUFFERED 1
 
 EXPOSE 8000
 
-RUN mkdir /ui_automation_engine
+RUN mkdir /daksha
 
 # Set the working directory to /ui_automation_engine
-WORKDIR /ui_automation_engine
+WORKDIR /daksha
 
 # Copy the current directory contents into the container at /ui_automation_engine
-ADD . /ui_automation_engine/
+ADD . /daksha/
 
 # Install any needed packages specified in requirements.txt
 RUN pip install -r ./requirements.txt
