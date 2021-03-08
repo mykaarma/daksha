@@ -7,7 +7,6 @@ services:
     container_name: daksha
     restart: always
     volumes:
-      - .:/daksha
       - /var/log/kaarya/:/var/log/kaarya/
       - /daksha/test-data:/daksha/test-data
     ports:
