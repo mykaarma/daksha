@@ -14,6 +14,7 @@ services:
     environment:
       STORAGE_PATH: "/daksha/test-data"
       APACHE_URL: ""
+      EMAIL_HOST_USER: ""
       POSTMARK_TOKEN: ""
       GIT_USER: ""
       GIT_PASS: ""
