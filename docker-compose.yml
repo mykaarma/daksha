@@ -21,6 +21,7 @@ services:
       BRANCH_NAME: ""
       REPO_ORG: ""
       REPO_USER: ""
+      DJANGO_SECRET_KEY: ""
 
   engine-apache:
     image: httpd:2.4-alpine
