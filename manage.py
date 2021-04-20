@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 """
 Daksha
-Copyright (C) 2020 myKaarma.
+Copyright (C) 2021 myKaarma.
 opensource@mykaarma.com
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU Affero General Public License as published by
