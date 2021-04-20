@@ -3,11 +3,10 @@ version: '3'
 services:
   web:
     build: .
-    command: bash -c "python manage.py runserver 0.0.0.0:8000"
+    command: bash -c "gunicorn --bind 0.0.0.0:8000"
     container_name: daksha
     restart: always
     volumes:
-      - /var/log/kaarya/:/var/log/kaarya/
       - /daksha/test-data:/daksha/test-data
     ports:
       - "8083:8000"
