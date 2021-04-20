@@ -16,7 +16,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
 from .method_mapper import *
-from .selenium_code import *
+from .selenium_helper import *
 from .testreport_generator import *
 from .email_generator import *
 

@@ -15,7 +15,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 """
 
-from .selenium_code import *
+from .selenium_helper import *
 
 # this mapper maps the action allowed in the yml file to corresponding method that implemented it
 
