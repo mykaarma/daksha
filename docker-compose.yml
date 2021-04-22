@@ -3,7 +3,6 @@ version: '3'
 services:
   web:
     build: .
-    command: bash -c "gunicorn --bind 0.0.0.0:8000"
     container_name: daksha
     restart: always
     volumes:

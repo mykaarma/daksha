@@ -14,3 +14,6 @@ ADD . /daksha/
 
 # Install any needed packages specified in requirements.txt
 RUN pip install -r ./requirements.txt
+
+# start server
+CMD ["gunicorn --bind 0.0.0.0:8000 daksha.wsgi"]
