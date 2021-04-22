@@ -22,6 +22,7 @@ services:
       REPO_ORG: ""
       REPO_USER: ""
       DJANGO_SECRET_KEY: ""
+      ALLOWED_HOSTS: ""
 
   engine-apache:
     image: httpd:2.4-alpine
