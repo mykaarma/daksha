@@ -139,7 +139,7 @@ EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', '')
 POSTMARK_TOKEN = os.environ.get('POSTMARK_TOKEN', '')
 
 # Logs/reports configurations
-LOG_FILE = os.environ.get('LOG_FILE', '/var/log/kaarya/uiengine.log')
+LOG_FILE = os.environ.get('LOG_FILE', 'logs/uiengine.log')
 STORAGE_PATH = os.environ.get('STORAGE_PATH', 'reports')
 APACHE_URL = os.environ.get('APACHE_URL', '')
 
