@@ -11,17 +11,7 @@ services:
       - "8083:8000"
     environment:
       STORAGE_PATH: "/daksha/test-data"
-      APACHE_URL: ""
-      EMAIL_HOST_USER: ""
-      POSTMARK_TOKEN: ""
-      GIT_USER: ""
-      GIT_PASS: ""
-      REPO_NAME: ""
-      BRANCH_NAME: ""
-      REPO_ORG: ""
-      REPO_USER: ""
-      DJANGO_SECRET_KEY: ""
-      ALLOWED_HOSTS: ""
+      APACHE_URL: "http://127.0.0.1:8485/"
 
   engine-apache:
     image: httpd:2.4-alpine

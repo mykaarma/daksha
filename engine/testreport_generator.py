@@ -39,7 +39,8 @@ def generate_result(test_id, response, name, step, error_stack):
     """
     try:
         logger.info('Creating test report')
-        report_file = open(f"{STORAGE_PATH}/{test_id}/report.html", "w")
+        report_file_path = f"{STORAGE_PATH}/{test_id}/report.html"
+        report_file = open(report_file_path, "w")
         if response:
             result = 'Passed'
             report_template = open("templates/testReport.html", "r").read()
@@ -51,7 +52,7 @@ def generate_result(test_id, response, name, step, error_stack):
             test_report = report_template.format(test_ID=test_id, test_name=name, test_result=result, test_step=step,
                                                  error=error_stack)
         report_file.write(test_report)
-        logger.info('report created')
+        logger.info('Report created at ' + report_file_path)
         report_file.close()
     except Exception as e:
         logger.error("Error in testreport generation:", exc_info=True)

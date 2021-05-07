@@ -15,17 +15,18 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 """
 import logging
+import os
 
 from daksha.settings import LOG_FILE
 
-log_file = LOG_FILE
+os.makedirs(os.path.dirname(LOG_FILE), exist_ok=True)
 
-#Logging configs
+# Logging configs
 logFormatter = logging.Formatter('%(asctime)s [%(levelname)-7.7s]  %(message)s')
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
-fileHandler = logging.FileHandler(log_file)
+fileHandler = logging.FileHandler(LOG_FILE)
 fileHandler.setFormatter(logFormatter)
 logger.addHandler(fileHandler)
 

@@ -40,6 +40,7 @@ def send_report_email(test_id, report_url, recipient_email):
         folder_url = APACHE_URL + test_id + '/'
         message = "Please open this url to get your test Report : " + report_url + "\nTest folder url: " + folder_url
     # message.attach_file('/templates/testPage.html')
+    logger.info(message)
     if len(POSTMARK_TOKEN) == 0:
         logger.info('Report not emailed, Postman token not set')
     else:
