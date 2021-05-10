@@ -10,7 +10,7 @@ Daksha is a django framework based dynamic test case execution API.You can write
 
 ### Using docker
 
-  - Take a look at [docker-compose.yml](docker-compose.yml) file and create all the necessary environment variables(#environment-variables).
+  - Take a look at [docker-compose.yml](docker-compose.yml) file and create all the necessary [environment variables](#environment-variables).
 
   - Run the command `docker-compose up -d` to initiate the build and deploy the project.
   
