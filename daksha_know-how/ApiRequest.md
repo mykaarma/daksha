@@ -7,7 +7,7 @@ The API request body consists of the following fields-
   Example-
      
 ```		
-    curl --location --request POST 'http://192.168.21.185:8083/engine/singletest' \
+    curl --location --request POST 'http://127.0.0.1:8083/engine/singletest' \
     --header 'Content-Type: text/plain' \
     --data-raw '{
        "email": "your_email@mykaarma.com",
