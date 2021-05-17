@@ -1,0 +1,23 @@
+version: '3'
+
+services:
+  web:
+    build: .
+    container_name: daksha
+    restart: always
+    volumes:
+      - /daksha/test-data:/daksha/test-data
+    ports:
+      - "8083:8000"
+    environment:
+      STORAGE_PATH: "/daksha/test-data"
+      APACHE_URL: "http://127.0.0.1:8485/"
+
+  engine-apache:
+    image: httpd:2.4-alpine
+    container_name: engine-apache
+    restart: always
+    volumes:
+      - /daksha/test-data:/usr/local/apache2/htdocs/
+    ports:
+      - "8485:80"

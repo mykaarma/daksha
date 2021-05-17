@@ -1,0 +1,12 @@
+asgiref==3.2.10
+Django==3.0.9
+djangorestframework==3.11.1
+gunicorn==20.0.4
+pytz==2020.1
+PyYAML==5.3.1
+selenium==3.141.0
+sqlparse==0.3.1
+urllib3==1.25.10
+PyGithub==1.53
+pyyaml==5.3.1
+postmarker==0.14.1
