@@ -95,7 +95,7 @@ def execute_step(step, test_id):
             execution_success, error_stack = method_map[step](test_id, web_driver)
         elif isinstance(step, dict):
             logger.info("Gonna render the variables")
-            template = jinja2.Template(str(step)) #passed the dictionary step as string to render the variables
+            template = jinja2.Template(str(step),undefined=jinja2.StrictUndefined) #passed the dictionary step as string to render the variables; raise error if a variable present in yml file is not present in variable dictionary
             step_render = template.render(variable_dictionary) #rendered the variables from the variable dictionary
             step = ast.literal_eval(step_render)  #converting the final string with rendered variables to dictionary step
             logger.info("Gonna call this method with args")
