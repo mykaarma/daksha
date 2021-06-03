@@ -24,7 +24,7 @@ from .testreport_generator import *
 import json
 from daksha.settings import REPO_NAME, BRANCH_NAME
 import os
-
+from .variable_dictionary import *
 
 # Create your views here.
 def executor(request):
@@ -39,6 +39,9 @@ def executor(request):
             logger.info('Directory created at: ' + f"{STORAGE_PATH}/{test_id}")
             received_json_data = json.loads(request.body.decode())
             data_file_location = received_json_data['fileLocation']
+            variable_data = received_json_data['variables']  
+            for key,value in variable_data.items():
+                variable_dictionary[key] = value
             if "git" in data_file_location.lower():
 
                 repo_name = REPO_NAME

@@ -21,7 +21,9 @@ from .testreport_generator import *
 from .email_generator import *
 
 from daksha.settings import APACHE_URL
-
+from .variable_dictionary import *
+import jinja2
+import ast
 web_driver = None  # Assume a global webdriver which'll be used by all selenium methods
 
 
@@ -92,6 +94,10 @@ def execute_step(step, test_id):
             logger.info("Gonna process the method directly")
             execution_success, error_stack = method_map[step](test_id, web_driver)
         elif isinstance(step, dict):
+            logger.info("Gonna render the variables")
+            template = jinja2.Template(str(step)) #passed the dictionary step as string to render the variables
+            step_render = template.render(variable_dictionary) #rendered the variables from the variable dictionary
+            step = ast.literal_eval(step_render)  #converting the final string with rendered variables to dictionary step
             logger.info("Gonna call this method with args")
             for k, v in step.items():
                 logger.info(str(type(v)) + "\t. " + str(v))
