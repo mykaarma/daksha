@@ -106,6 +106,8 @@ def process_response(web_driver, test_id, r, **kwargs):
      :returns; Status of Execution and error stack
 
     """
+    if(kwargs['response']==None):
+        return True,None
     if('status' not in kwargs['response']):
         # use raiser_for_status() if the status code is not present
         # 2xx/3xx - pass; 4xx/5xx - raises error
