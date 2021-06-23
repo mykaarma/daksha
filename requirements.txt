@@ -10,3 +10,5 @@ urllib3==1.25.10
 PyGithub==1.53
 pyyaml==5.3.1
 postmarker==0.14.1
+Jinja2==2.11.3
+jmespath==0.10.0

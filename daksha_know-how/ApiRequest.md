@@ -4,6 +4,7 @@ The API request body consists of the following fields-
   * **email**-This is the email Id to which the execution status report would be send.
   * **fileLocation**- You can either load your test case file from local device or from github repository.Depending on your choice it may have either of the 2 values: local or git.
   * **file**-This is the location of your test case file(yml format).
+  * **variables**-This is the dictionary containing the variables to be rendered in the yml file.
   Example-
      
 ```		
@@ -12,7 +13,11 @@ The API request body consists of the following fields-
     --data-raw '{
        "email": "your_email@mykaarma.com",
        "fileLocation": "git",
-       "file": "folder/mytest.yml"
+       "file": "folder/mytest.yml",
+       "variables" : {
+           "username" : 'ab@mykaarma',
+           "password" : '@NoSoupForYou'
+                    }
                 }' 
 ```
         

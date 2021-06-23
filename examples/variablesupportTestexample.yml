@@ -1,0 +1,21 @@
+config:
+  env: local
+  browser: chrome
+  driverAddress: D:\Recover\chromedriver_win32\chromedriver.exe
+#   driverAddress: http://192.168.21.185:4444/wd/hub
+name: VariableSupportTestExample
+task:
+  - launch_browser
+  - open_url:
+      url: http://the-internet.herokuapp.com/
+  - click_button:
+      xpath: //a[normalize-space()='Inputs']
+  - validate_ui_element:
+      mode: equals
+      xpath: //h3[normalize-space()='Inputs']
+      value: '{{ check }}'
+  - fill_data:
+      xpath: //input[@type='number']
+      value: '{{ number }}'
+
+  - quit_browser

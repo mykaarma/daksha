@@ -60,7 +60,7 @@ def quit_browser(test_id, web_driver):
      :rtype: tuple
     """
     logger.info("I'll quit the browser")
-    web_driver.close()
+    web_driver.quit()
     return True, None
 
 
@@ -375,7 +375,7 @@ def switch_to_tab(web_driver, test_id, **kwargs):
     is_tab_switched = False
     if "title" in kwargs.keys():
         value = kwargs["title"]
-        for handle in web_driver.getWindowHandles():
+        for handle in web_driver.window_handles:
             web_driver.switch_to_window(handle)
             if value in web_driver.title:
                 is_tab_switched = True

@@ -20,12 +20,12 @@ task:
       url: https://app.mykaarma.com
   - fill_data:
       xpath: //*[@id='firstPhaseInputs']//input[@placeholder='Username'] 
-      value: ab@mykaarma
+      value: '{{ username }}'
   - click_button:
       xpath: //*[@id='bSignIn']
   - fill_data:
       xpath: //*[@id='password']
-      value: @NoSoupForYou
+      value: '{{ password }}'
   - click_button:
       xpath: //*[@id='bchromedriverSignIn']
   - validate_ui_element:
@@ -48,6 +48,7 @@ task:
    * ***launch_browser***: This will launch the browser in the environment and location provided in the config field.You should always include this step in the start of your test case steps.
    * ***open_url***: Provide the url of the site that you want to perform tests on.
    * ***fill_data***: This has two sub-fields,namely *locator* and *value* . **Locator** can be *xpath, id, css, name, tagname, classname, linktext and partiallinktext*. In **locator** you should provide the type of locator you are providing followed by the  webelement where you want to fill the data and in the *value* field provide the data that you want to enter.
+   * ***'{{ variablename }}'***: This is placeholder variable, you should provide their values through ApiRequest.
    * ***click_button***: You need to provide the locator of the webelement that you want to click.
    * ***validate_ui_element***: This has 3 field: *mode, locator, value*.In *mode* you can select 3 types of validation method namely **equals,contains and not contains**.In *locator* give the locator of your webelement and in *value* give the text with which you want to validate.
    * **refresh_page**: This can be added to refresh the webpage.
