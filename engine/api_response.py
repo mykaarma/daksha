@@ -106,15 +106,17 @@ def process_response(web_driver, test_id, r, **kwargs):
      :returns; Status of Execution and error stack
 
     """
-    if(kwargs['response']==None):
+    response_dict = get_arguments_info('response',**kwargs)
+    if(response_dict==None):
+        r.raise_for_status()
         return True,None
-    if('status' not in kwargs['response']):
+    if('status' not in response_dict.keys()):
         # use raiser_for_status() if the status code is not present
         # 2xx/3xx - pass; 4xx/5xx - raises error
         r.raise_for_status()
     else:
         # check if status_code matches the status provided 
-        if(r.status_code!=kwargs['response']['status']):
+        if(r.status_code!=response_dict['status']):
             logger.info(str(r.status_code) + " Status Not Matched :(")
             try:
                 logger.info(r.json())
@@ -124,9 +126,7 @@ def process_response(web_driver, test_id, r, **kwargs):
     logger.info( str(r.status_code) + " OK! Proceeding further")
     try:
         logger.info(r.json())
-        response_dict = get_arguments_info('response',**kwargs)
         if('save' in response_dict):
-            #check if the user wants to save any response parameter received
             for l in response_dict['save']:
                 b = l['save in']
                 #if key is not present in response, whole json will be saved to the 'save in' parameter
@@ -138,7 +138,6 @@ def process_response(web_driver, test_id, r, **kwargs):
     except JSONDecodeError:
         logger.info(r.text)
         # save the text response in the variable_dict
-        response_dict = get_arguments_info('response',**kwargs)
         if('save' in response_dict):
             for l in response_dict['save']:
                 b = l['save in']
