@@ -17,10 +17,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import requests
 import jmespath
-from .variable_dictionary import *
-from requests.auth import *
-from .logs import *
-from json import *
+from .variable_dictionary import variable_dictionary
+from requests.auth import HTTPBasicAuth,HTTPDigestAuth,HTTPProxyAuth
+from .logs import logger
+from json import JSONDecodeError
+from django.http import HttpResponse
+from rest_framework import status
 
 def get_arguments_info(param,**kwargs):
     """
@@ -90,7 +92,9 @@ def make_http_request(web_driver, test_id, **kwargs):
                             ,proxies=get_arguments_info('proxy',**kwargs),timeout=get_arguments_info('timeout',**kwargs))
         return process_response(web_driver,test_id, r, **kwargs)
     else:
-        raise Exception("Http request not supported")
+        logger.error("Reuest method not supported :(")
+        return HttpResponse("Reuest method not supported :(",
+                            status=status.HTTP_400_BAD_REQUEST)
 
 def process_response(web_driver, test_id, r, **kwargs):
     """

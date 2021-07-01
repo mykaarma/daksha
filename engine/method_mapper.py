@@ -16,7 +16,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
 from .selenium_helper import *
-from .api_response import *
+from .api_response import make_http_request
 
 # this mapper maps the action allowed in the yml file to corresponding method that implemented it
 

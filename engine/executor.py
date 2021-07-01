@@ -21,7 +21,7 @@ from .testreport_generator import *
 from .email_generator import *
 
 from daksha.settings import APACHE_URL
-from .variable_dictionary import *
+from .variable_dictionary import variable_dictionary
 import jinja2
 import ast
 web_driver = None  # Assume a global webdriver which'll be used by all selenium methods
@@ -56,7 +56,7 @@ def execute_test(task, test_id, name, email):
         report_url = APACHE_URL + test_id + '/report.html'
         send_report_email(test_id, report_url, email)
 
-    except Exception as e:
+    except Exception:
         logger.error("Error encountered in executor: ", exc_info=True)
 
 
@@ -110,6 +110,6 @@ def execute_step(step, test_id):
             return False, error_stack
         else:
             return True, error_stack
-    except Exception as e:
+    except Exception:
         logger.error("Error encountered: ", exc_info=True)
         return False, traceback.format_exc()
