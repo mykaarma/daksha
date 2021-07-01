@@ -93,7 +93,7 @@ def make_http_request(web_driver, test_id, **kwargs):
         return process_response(web_driver,test_id, r, **kwargs)
     else:
         logger.error("Reuest method not supported :(")
-        return HttpResponse("Reuest method not supported :(",
+        return False, HttpResponse("Reuest method not supported :(",
                             status=status.HTTP_400_BAD_REQUEST)
 
 def process_response(web_driver, test_id, r, **kwargs):
