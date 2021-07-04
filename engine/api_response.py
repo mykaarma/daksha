@@ -122,12 +122,20 @@ def process_response(web_driver, test_id, r, **kwargs):
         # check if status_code matches the status provided 
         if(r.status_code!=response_dict['status']):
             logger.info(str(r.status_code) + " Status Not Matched :(")
-            try:
-                logger.info(r.json())
-            except JSONDecodeError:
-                logger.info(r.text)
+            logger.info(r.text)
             return False,None
     logger.info( str(r.status_code) + " OK! Proceeding further")
+    return save_response(r,response_dict)
+
+def save_response(r,response_dict):
+    """
+    processes the http request to that mentioned in YAML
+     :type r: request
+     :param response_dict: response dict fetched from YAML
+     :type response_dict: dict
+     :returns; Status of Execution and error stack
+
+    """
     try:
         logger.info(r.json())
         if('save' in response_dict):
