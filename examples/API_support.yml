@@ -1,0 +1,88 @@
+config:
+  env: local
+  browser: chrome
+  driverAddress: D:\Recover\chromedriver_win32\chromedriver.exe
+#   driverAddress: http://192.168.21.185:4444/wd/hub
+name: APISupportTestExample
+task:
+  - make_HTTP_request:
+      request: 'POST'
+      url : 'https://fakerestapi.azurewebsites.net/api/v1/Activities'
+      headers : 
+        accept: text/plain; v=1.0
+        Content-Type: application/json; v=1.0
+      data: '
+        {
+          "id": 0,
+          "title": "string",
+          "dueDate": "2021-06-23T18:03:18.689Z",
+          "completed": true
+        }'
+      response:
+        'status' : 200  #first check the response and then we will move ahead
+        save:          #user need to pass this save key and the values must be passed as lists
+          - 'key' : "title"
+            'save in' : title
+  - make_HTTP_request:
+      request : 'GET'
+      url : 'https://httpbin.org/basic-auth/{{username}}/{{passwd}}'
+      headers: 
+        accept : 'application/json'
+      auth: 
+        type : "Basic" #can be Basic, Digest and Proxy
+        username : "{{ username}}"
+        password : "{{ passwd }}"
+      Cookies:
+        custom_cookie : 
+          'cookie_name': 'cookie_value'
+      timeout: 12  #it can be integer or tuple
+      response: 
+        'status' : 200  #after making the http request, first check the response and then we will move ahead
+        save:          #user need to pass this save key and the values must be passed as lists
+          - 'save in' : response_get_body
+  - make_HTTP_request:
+      request: 'PUT'
+      url : 'https://fakerestapi.azurewebsites.net/api/v1/Activities/{{id}}'
+      headers : 
+        accept: text/plain; v=1.0
+        Content-Type: application/json; v=1.0
+      payload: '{
+        "id": 1,
+        "title": "string",
+        "dueDate": "2021-06-14T03:56:36.635Z",
+        "completed": true
+      }'
+      # response:
+        # 'status' : 200 #no status code provided
+  - make_HTTP_request:
+      request: 'POST'
+      url : 'https://httpbin.org/post'
+      headers : 
+        'accept' : 'application/json'
+      raw-data: >
+        {
+        "form": {
+            "comments": "fast", 
+            "custemail": "rg@gmail.com", 
+            "custname": "Rg", 
+            "custtel": "783849", 
+            "delivery": "18:30", 
+            "size": "medium", 
+            "topping": [
+              "cheese", 
+              "onion", 
+              "mushroom"
+            ]
+          }
+        }
+      response:
+        'status' : 200  #after making the http request, first check the response and then we will move ahead
+  - make_HTTP_request:
+      request: 'DELETE'
+      url : 'https://httpbin.org/delete'
+      headers : 
+        'accept' : 'application/json'
+      response:
+        'status' : 201 #status mismatch
+        save:          #user need to pass this save key and the values must be passed as lists
+          - 'save in' : response_delete_body

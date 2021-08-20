@@ -24,7 +24,7 @@ from .testreport_generator import *
 import json
 from daksha.settings import REPO_NAME, BRANCH_NAME
 import os
-from .variable_dictionary import *
+from .variable_dictionary import variable_dictionary
 
 # Create your views here.
 def executor(request):
