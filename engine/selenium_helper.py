@@ -438,7 +438,7 @@ def wait_for( web_driver, **kwargs):
     try:
         mode = kwargs['mode']
     except KeyError:
-        return False, "Ill formatted arguments, 'mode' and 'value' must be present in the list of args"
+        return False, "Ill formatted arguments, 'mode' must be present in the list of args"
     wait_result = False
     if mode != "hardwait":
         locator, locator_value = get_locator_info(**kwargs)
@@ -463,7 +463,10 @@ def wait_for( web_driver, **kwargs):
                except Exception as e:
                    logger.error("Attempt " + str(i) + " for waiting for "+ mode +" of "+ locator +" failed \n", exc_info=True)
     else :
-        value = kwargs['value']
+        try:
+            value = kwargs['value']
+        except KeyError:
+            return False, "Ill formatted arguments, 'mode' must be present in the list of args"
         logger.info("I'll wait "+ str(value) + " seconds")
         time.sleep(value)
         return True , None
