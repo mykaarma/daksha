@@ -2,7 +2,7 @@
 
 *version*: `0.2.1`
 
-## v 0.2.0
+## v 0.2.1
 1. Added wait method
 
 ## v 0.2.0
