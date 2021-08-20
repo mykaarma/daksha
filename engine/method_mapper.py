@@ -40,4 +40,5 @@ method_map = {
     "open_new_tab": open_new_tab,
     "switch_to_tab": switch_to_tab,
     "make_HTTP_request": make_http_request,
+    "wait_for": wait_for,
 }

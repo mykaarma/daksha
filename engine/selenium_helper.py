@@ -16,6 +16,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
 import traceback
+import time
 from selenium import webdriver
 from selenium.webdriver import DesiredCapabilities
 from selenium.webdriver.common.by import By
@@ -423,3 +424,49 @@ def get_locator_info(**kwargs):
         return By.NAME, kwargs['name']
     else:
         raise Exception("Invalid locator passed")
+
+def wait_for(test_id, web_driver, **kwargs):
+    """
+    Validates an UI element
+     :param test_id: The ID of the Test
+     :type test_id: str
+     :param web_driver: Webdriver
+     :type web_driver: object
+     :param kwargs: WebElement Description Fetched From YAML
+     :returns: Status of execution and Failure String
+     :rtype: tuple
+    """
+    try:
+        mode = kwargs['mode']
+        value = kwargs['value']
+    except KeyError:
+        return False, "Ill formatted arguments, 'mode' and 'value' must be present in the list of args"
+    wait_result = False
+    if mode != "hardwait":
+        locator, locator_value = get_locator_info(**kwargs)
+        logger.info("I'll wait for an UI element!")
+        # try for 2 times
+
+        for i in range(2):
+               try:
+                   if mode == "visibility":
+                      WebDriverWait(web_driver, 10).until(
+                       EC.visibility_of_element_located((locator, locator_value))
+                   )
+                      wait_result = True
+                      break
+
+                   elif mode == "invisibility" :
+                      WebDriverWait(web_driver, 10).until(
+                           EC.invisibility_of_element_located((locator, locator_value))
+                   )
+                      wait_result = True
+                      break
+               except Exception as e:
+                   logger.error("Attempt " + str(i) + " for waiting for "+ mode +" of "+ locator +" failed \n", exc_info=True)
+    else :
+        logger.info("I'll wait "+ str(value) + " seconds")
+        time.sleep(value)
+        return True , None
+    return wait_result , None
+
