@@ -425,14 +425,13 @@ def get_locator_info(**kwargs):
     else:
         raise Exception("Invalid locator passed")
 
-def wait_for(test_id, web_driver, **kwargs):
+def wait_for( web_driver, **kwargs):
     """
-    Validates an UI element
+    Waits for an UI element or specified time
      :param test_id: The ID of the Test
-     :type test_id: str
      :param web_driver: Webdriver
      :type web_driver: object
-     :param kwargs: WebElement Description Fetched From YAML
+     :param kwargs: WebElement Description/wait-time Fetched From YAML
      :returns: Status of execution and Failure String
      :rtype: tuple
     """
