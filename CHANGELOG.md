@@ -1,6 +1,9 @@
 # `DAKSHA` Change Log
 
-*version*: `0.2.0`
+*version*: `0.2.1`
+
+## v 0.2.0
+1. Added wait method
 
 ## v 0.2.0
 1. Added API call functionality
