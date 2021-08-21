@@ -428,7 +428,6 @@ def get_locator_info(**kwargs):
 def wait_for( web_driver, **kwargs):
     """
     Waits for an UI element or specified time
-     :param test_id: The ID of the Test
      :param web_driver: Webdriver
      :type web_driver: object
      :param kwargs: WebElement Description/wait-time Fetched From YAML
