@@ -465,7 +465,7 @@ def wait_for( web_driver, **kwargs):
         try:
             value = kwargs['value']
         except KeyError:
-            return False, "Ill formatted arguments, 'mode' must be present in the list of args"
+            return False, "Ill formatted arguments, 'value' must be present in the list of args for mode : hardwait"
         logger.info("I'll wait "+ str(value) + " seconds")
         time.sleep(value)
         return True , None
