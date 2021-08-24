@@ -40,6 +40,9 @@ task:
       value: 20
   - click_button:
       xpath: //*[text()='Sign Out']
+  - wait_for:
+      mode: invisibility
+      xpath: //div[@class='headertoprightDealerName']
 
   - quit_browser 
   ```
