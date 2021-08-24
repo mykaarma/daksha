@@ -444,10 +444,10 @@ def wait_for( web_driver, **kwargs):
         logger.info("I'll wait for an UI element!")
         # try for 2 times
 
-        for i in range(2):
+        for i in range(5):
                try:
                    if mode == "visibility":
-                      WebDriverWait(web_driver, 10).until(
+                      WebDriverWait(web_driver, 15).until(
                        EC.visibility_of_element_located((locator, locator_value))
                    )
                       wait_result = True
