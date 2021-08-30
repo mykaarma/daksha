@@ -18,6 +18,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 import traceback
 import time
 from selenium import webdriver
+from selenium.common.exceptions import ElementNotVisibleException, ElementNotSelectableException
 from selenium.webdriver import DesiredCapabilities
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait, Select
@@ -443,18 +444,19 @@ def wait_for( web_driver, **kwargs):
         locator, locator_value = get_locator_info(**kwargs)
         logger.info("I'll wait for an UI element!")
         # try for 2 times
-
+        wait = WebDriverWait(web_driver, 10, poll_frequency=1,
+                             ignored_exceptions=[ElementNotVisibleException, ElementNotSelectableException])
         for i in range(5):
                try:
                    if mode == "visibility":
-                      WebDriverWait(web_driver, 15).until(
+                      wait.until(
                        EC.visibility_of_element_located((locator, locator_value))
                    )
                       wait_result = True
                       break
 
                    elif mode == "invisibility" :
-                      WebDriverWait(web_driver, 10).until(
+                      wait.until(
                            EC.invisibility_of_element_located((locator, locator_value))
                    )
                       wait_result = True

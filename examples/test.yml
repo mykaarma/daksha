@@ -1,0 +1,28 @@
+config:
+  env: remote
+  browser: chrome
+  #driverAddress: /Users/IdeaProjects/qa-automation/ui_automation_engine/drivers/chromedriver
+  driverAddress: http://192.168.21.185:4444/wd/hub
+name: TestQA
+task:
+  - launch_browser
+  - open_url:
+      url: https://qa.mykaarma.com
+  - fill_data:
+      xpath: //*[@id='firstPhaseInputs']//input[@placeholder='Username']
+      value: new-user
+  - click_button:
+      id: bSignIn
+  - wait_for:
+      mode: invisibility
+      xpath: //div[@class='headertoprightDealerName']
+  - wait_for:
+      mode: hardwait
+      value: 20
+  - click_button:
+      xpath: //*[text()='Sign Out']
+  - wait_for:
+      mode: invisibility
+      xpath: //div[@class='headertoprightDealerName']
+
+  - quit_browser
