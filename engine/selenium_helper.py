@@ -444,7 +444,7 @@ def wait_for(web_driver, **kwargs):
     if mode in ["visibility", "invisibility"]:
         locator, locator_value = get_locator_info(**kwargs)
         logger.info("I'll wait for an UI element!")
-        # try for 2 times
+        error= None
         wait = WebDriverWait(web_driver, 10, poll_frequency=1,
                              ignored_exceptions=[ElementNotVisibleException, ElementNotSelectableException])
         for i in range(5):
@@ -465,6 +465,9 @@ def wait_for(web_driver, **kwargs):
             except Exception as e:
                 logger.error("Attempt " + str(i) + " for waiting for " + mode + " of " + locator + " failed \n",
                              exc_info=True)
+        if not wait_result:
+            error = "Waiting for " + mode + " of " + locator + + " "+locator_value+" failed"
+        return wait_result, error
     elif mode == "hardwait":
         try:
             value = kwargs['value']
@@ -474,8 +477,8 @@ def wait_for(web_driver, **kwargs):
         time.sleep(value)
         return True, None
     else:
-        logger.error("Mode not supported.Please enter in [hardwait,visibility,invisibiltiy]")
-        error = "Ill formatted argument, supported modes : [hardwait,visibility,invisibiltiy]"
+        logger.error("Mode not supported.Please enter in [hardwait, visibility, invisibiltiy]")
+        error = "Ill formatted argument, supported modes : [hardwait, visibility, invisibiltiy]"
         return False, error
 
     return wait_result, None
