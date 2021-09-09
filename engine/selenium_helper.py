@@ -254,7 +254,6 @@ def validate_ui_element(test_id, web_driver, **kwargs):
                 EC.visibility_of_element_located((locator, locator_value))
             )
             take_screenshot(test_id, web_driver)
-            logger.info(element.text)
             if mode == 'equals':
                 validation_result = (value == element.text)
             elif mode == 'contains':
@@ -265,6 +264,9 @@ def validate_ui_element(test_id, web_driver, **kwargs):
                 validation_result = False
             if validation_result is True:
                 break
+            else:
+                logger.info("Value found " + element.text + " did not match value given: " + value + ", mode=" + mode)
+
         except Exception as e:
             logger.error("Attempt " + str(i) + " for validation failed \n", exc_info=True)
 
@@ -454,14 +456,12 @@ def wait_for(web_driver, **kwargs):
                         EC.visibility_of_element_located((locator, locator_value))
                     )
                     wait_result = True
-                    break
-
                 elif mode == "invisibility":
                     wait.until(
                         EC.invisibility_of_element_located((locator, locator_value))
                     )
                     wait_result = True
-                    break
+                break
             except Exception as e:
                 logger.error("Attempt " + str(i) + " for waiting for " + mode + " of " + locator + " failed \n",
                              exc_info=True)
