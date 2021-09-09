@@ -16,7 +16,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
 import traceback
+import time
 from selenium import webdriver
+from selenium.common.exceptions import ElementNotVisibleException, ElementNotSelectableException
 from selenium.webdriver import DesiredCapabilities
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait, Select
@@ -252,7 +254,6 @@ def validate_ui_element(test_id, web_driver, **kwargs):
                 EC.visibility_of_element_located((locator, locator_value))
             )
             take_screenshot(test_id, web_driver)
-            logger.info(element.text)
             if mode == 'equals':
                 validation_result = (value == element.text)
             elif mode == 'contains':
@@ -263,6 +264,9 @@ def validate_ui_element(test_id, web_driver, **kwargs):
                 validation_result = False
             if validation_result is True:
                 break
+            else:
+                logger.info("Value found " + element.text + " did not match value given: " + value + ", mode=" + mode)
+
         except Exception as e:
             logger.error("Attempt " + str(i) + " for validation failed \n", exc_info=True)
 
@@ -287,7 +291,7 @@ def switch_iframe(web_driver, test_id, **kwargs):
             EC.visibility_of_element_located((locator, locator_value))
         )
         web_driver.switch_to.frame(element)
-        logger.info("switched successful to frame " + element)
+        logger.info("switched successful to frame. " + locator + " = " + locator_value)
         take_screenshot(test_id, web_driver)
         return True, None
     except Exception as e:
@@ -423,3 +427,58 @@ def get_locator_info(**kwargs):
         return By.NAME, kwargs['name']
     else:
         raise Exception("Invalid locator passed")
+
+
+def wait_for(web_driver, **kwargs):
+    """
+    Waits for an UI element or specified time
+     :param web_driver: Webdriver
+     :type web_driver: object
+     :param kwargs: WebElement Description/wait-time Fetched From YAML
+     :returns: Status of execution and Failure String
+     :rtype: tuple
+    """
+    try:
+        mode = kwargs['mode']
+    except KeyError:
+        return False, "Ill formatted arguments, 'mode' must be present in the list of args"
+    wait_result = False
+    if mode in ["visibility", "invisibility"]:
+        locator, locator_value = get_locator_info(**kwargs)
+        logger.info("I'll wait for an UI element!")
+        error= None
+        wait = WebDriverWait(web_driver, 10, poll_frequency=1,
+                             ignored_exceptions=[ElementNotVisibleException, ElementNotSelectableException])
+        for i in range(5):
+            try:
+                if mode == "visibility":
+                    wait.until(
+                        EC.visibility_of_element_located((locator, locator_value))
+                    )
+                    wait_result = True
+                elif mode == "invisibility":
+                    wait.until(
+                        EC.invisibility_of_element_located((locator, locator_value))
+                    )
+                    wait_result = True
+                break
+            except Exception as e:
+                logger.error("Attempt " + str(i) + " for waiting for " + mode + " of " + locator + " failed \n",
+                             exc_info=True)
+        if not wait_result:
+            error = "Waiting for " + mode + " of " + locator + + " "+locator_value+" failed"
+        return wait_result, error
+    elif mode == "hardwait":
+        try:
+            value = kwargs['value']
+        except KeyError:
+            return False, "Ill formatted arguments, 'value' must be present in the list of args for mode : hardwait"
+        logger.info("I'll wait " + str(value) + " seconds")
+        time.sleep(value)
+        return True, None
+    else:
+        logger.error("Mode not supported.Please enter in [hardwait, visibility, invisibiltiy]")
+        error = "Ill formatted argument, supported modes : [hardwait, visibility, invisibiltiy]"
+        return False, error
+
+    return wait_result, None
