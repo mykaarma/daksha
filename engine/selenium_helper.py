@@ -426,7 +426,8 @@ def get_locator_info(**kwargs):
     else:
         raise Exception("Invalid locator passed")
 
-def wait_for( web_driver, **kwargs):
+
+def wait_for(web_driver, **kwargs):
     """
     Waits for an UI element or specified time
      :param web_driver: Webdriver
@@ -447,29 +448,29 @@ def wait_for( web_driver, **kwargs):
         wait = WebDriverWait(web_driver, 10, poll_frequency=1,
                              ignored_exceptions=[ElementNotVisibleException, ElementNotSelectableException])
         for i in range(5):
-               try:
-                   if mode == "visibility":
-                      wait.until(
-                       EC.visibility_of_element_located((locator, locator_value))
-                   )
-                      wait_result = True
-                      break
+            try:
+                if mode == "visibility":
+                    wait.until(
+                        EC.visibility_of_element_located((locator, locator_value))
+                    )
+                    wait_result = True
+                    break
 
-                   elif mode == "invisibility" :
-                      wait.until(
-                           EC.invisibility_of_element_located((locator, locator_value))
-                   )
-                      wait_result = True
-                      break
-               except Exception as e:
-                   logger.error("Attempt " + str(i) + " for waiting for "+ mode +" of "+ locator +" failed \n", exc_info=True)
-    else :
+                elif mode == "invisibility":
+                    wait.until(
+                        EC.invisibility_of_element_located((locator, locator_value))
+                    )
+                    wait_result = True
+                    break
+            except Exception as e:
+                logger.error("Attempt " + str(i) + " for waiting for " + mode + " of " + locator + " failed \n",
+                             exc_info=True)
+    else:
         try:
             value = kwargs['value']
         except KeyError:
             return False, "Ill formatted arguments, 'value' must be present in the list of args for mode : hardwait"
-        logger.info("I'll wait "+ str(value) + " seconds")
+        logger.info("I'll wait " + str(value) + " seconds")
         time.sleep(value)
-        return True , None
-    return wait_result , None
-
+        return True, None
+    return wait_result, None
