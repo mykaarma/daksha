@@ -1,7 +1,6 @@
 config:
   env: local
   browser: chrome
-  #driverAddress: /Users/IdeaProjects/qa-automation/ui_automation_engine/drivers/chromedriver
   driverAddress: /Users/user/Downloads/chromedriver
 name: Wait_test
 task:
