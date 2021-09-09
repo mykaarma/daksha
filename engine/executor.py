@@ -93,7 +93,7 @@ def execute_step(step, test_id):
         error_stack = None
         if isinstance(step, str):
             logger.info("Gonna process the method directly")
-            execution_success, error_stack = method_map[step](test_id, web_driver)
+            execution_success, error_stack = method_map[step](test_id=test_id, web_driver=web_driver)
         elif isinstance(step, dict):
             logger.info("Gonna render the variables")
             #raise error if a variable present in yml file but not present in variable dictionary

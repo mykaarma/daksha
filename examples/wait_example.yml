@@ -1,0 +1,26 @@
+config:
+  env: local
+  browser: chrome
+  #driverAddress: /Users/IdeaProjects/qa-automation/ui_automation_engine/drivers/chromedriver
+  driverAddress: /Users/User/Downloads/chromedriver
+name: Wait_test
+task:
+  - launch_browser
+  - open_url:
+      url: https://www.google.co.in/
+  - fill_data:
+      xpath: //input[@title ="Search"]
+      value: Cars
+  - wait_for:
+      mode: hardwait
+      value: 10
+  - click_button:
+      xpath: //div[@role="option"]/div/span[text() ="CARS24"]
+  - wait_for:
+      mode: invisibility
+      xpath: //input[@title ="Search"]
+  - wait_for:
+      mode: visibility
+      xpath: //div[@class='headertoprightDealerName']
+
+  - quit_browser

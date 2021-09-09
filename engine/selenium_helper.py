@@ -289,7 +289,7 @@ def switch_iframe(web_driver, test_id, **kwargs):
             EC.visibility_of_element_located((locator, locator_value))
         )
         web_driver.switch_to.frame(element)
-        logger.info("switched successful to frame " + element)
+        logger.info("switched successful to frame. " + locator + " = " + locator_value)
         take_screenshot(test_id, web_driver)
         return True, None
     except Exception as e:
