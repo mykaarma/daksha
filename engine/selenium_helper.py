@@ -465,7 +465,7 @@ def wait_for(web_driver, **kwargs):
             except Exception as e:
                 logger.error("Attempt " + str(i) + " for waiting for " + mode + " of " + locator + " failed \n",
                              exc_info=True)
-    else:
+    elif mode== "hardwait":
         try:
             value = kwargs['value']
         except KeyError:
@@ -473,4 +473,6 @@ def wait_for(web_driver, **kwargs):
         logger.info("I'll wait " + str(value) + " seconds")
         time.sleep(value)
         return True, None
+
+    logger.error("Mode not supported.Please enter in [hardwait,visibility,invisibiltiy]")
     return wait_result, None
