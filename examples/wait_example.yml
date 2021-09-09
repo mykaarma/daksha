@@ -16,6 +16,8 @@ task:
     - wait_for:
         mode: hardwait
         value: 10
+    - execute_bash_file:
+        name: bash_example.sh
     - click_button:
         xpath: //div[@role="option"]/div/span[text() ="CARS24"]
     - wait_for:

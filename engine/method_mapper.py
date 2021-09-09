@@ -14,9 +14,10 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 """
-
+from engine.utils.utils import *
 from .selenium_helper import *
 from .api_response import make_http_request
+
 
 # this mapper maps the action allowed in the yml file to corresponding method that implemented it
 
@@ -41,4 +42,5 @@ method_map = {
     "switch_to_tab": switch_to_tab,
     "make_HTTP_request": make_http_request,
     "wait_for": wait_for,
+    "execute_bash_file": execute_bash_file,
 }

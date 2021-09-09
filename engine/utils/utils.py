@@ -20,6 +20,10 @@ import yaml
 import base64
 from daksha.settings import STORAGE_PATH, GIT_USER, GIT_PASS, REPO_ORG, REPO_USER
 from engine.logs import *
+import subprocess
+from daksha.settings import SCRIPT_DIR
+import os
+import traceback
 
 
 def git_login():
@@ -92,3 +96,22 @@ def get_org_instance(github, repo_user, repo_org):
         logger.info("REPO_USER is present in config, accessing via : get_user")
         org = github.get_user(repo_user)
     return org
+
+
+def execute_bash_file(**kwargs):
+    """
+    execute shell script
+    """
+    try:
+        file_name = kwargs['name']
+        subprocess.call(['sh', os.path.join(SCRIPT_DIR, file_name)])
+        logger.info(file_name + " Bash File executed successfully")
+    except Exception as e:
+        error_stack = traceback.format_exc()
+        logger.error("Unable to executed Bash File : "+error_stack)
+
+
+
+
+
+
