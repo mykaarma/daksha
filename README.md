@@ -71,6 +71,9 @@ You can configure the application in a lot of ways by setting the following envi
 
 * **ALLOWED_HOSTS**
   * Provide a comma separated list of hosts which you'd like to be added to ALLOWED_HOSTS.
+  
+* **SCRIPT_DIR**
+  * If you want to run bash/zsh script, put your folder path here where your scripts are located
 
 ## Get in Touch
 

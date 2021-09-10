@@ -1,7 +1,7 @@
 config:
   env: local
   browser: chrome
-  driverAddress: /Users/user/Downloads/chromedriver
+  driverAddress: /Users/rahul/Desktop/SPA-Automation/src/test/resources/drivers/chromedriver
 name: Wait_test
 task:
     - launch_browser
@@ -16,11 +16,13 @@ task:
     - wait_for:
         mode: hardwait
         value: 10
-    - execute_bash_file:
-        name: bash_example.sh
     - click_button:
         xpath: //div[@role="option"]/div/span[text() ="CARS24"]
     - wait_for:
         mode: invisibility
         xpath: //input[@title ="Search"]
+    - execute_bash_file:
+        name: bash_example.sh
+    - execute_bash_script:
+        script: ['ls', '-l']
     - quit_browser

@@ -24,6 +24,8 @@ import subprocess
 from daksha.settings import SCRIPT_DIR
 import os
 import traceback
+from subprocess import Popen, PIPE
+
 
 
 def git_login():
@@ -100,17 +102,38 @@ def get_org_instance(github, repo_user, repo_org):
 
 def execute_bash_file(**kwargs):
     """
-    execute shell script
+    execute shell script file
+    should run with sh
     """
     try:
         file_name = kwargs['name']
         subprocess.call(['sh', os.path.join(SCRIPT_DIR, file_name)])
         logger.info(file_name + " Bash File executed successfully")
+        return True, None
+    except KeyError:
+        raise Exception("argument 'name' must be present in the list of args")
     except Exception as e:
         error_stack = traceback.format_exc()
         logger.error("Unable to executed Bash File : "+error_stack)
+        return False, error_stack
 
 
+def execute_bash_script(**kwargs):
+    """
+    execute shell script
+    """
+    try:
+        script = kwargs['script']
+        p = Popen(script, stdin=PIPE, stdout=PIPE, stderr=PIPE)
+        output, err = p.communicate()
+        logger.info("Successfully executed the script ".join(script))
+        return True, output
+    except KeyError:
+        raise Exception("argument 'script' must be present in the list of args")
+    except Exception as e:
+        error_stack = traceback.format_exc()
+        logger.error("Unable to executed Bash File : "+error_stack)
+    return False, error_stack
 
 
 

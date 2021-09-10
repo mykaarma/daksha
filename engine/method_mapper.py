@@ -43,4 +43,5 @@ method_map = {
     "make_HTTP_request": make_http_request,
     "wait_for": wait_for,
     "execute_bash_file": execute_bash_file,
+    "execute_bash_script": execute_bash_script,
 }

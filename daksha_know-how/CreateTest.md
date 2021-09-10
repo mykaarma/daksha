@@ -66,6 +66,8 @@ task:
    * **navigate_back**: This can be used to go back to previous page.
    * **switch_iframe**:  Here you need to provide the **locator** as a subfield and it will switch to that iframe.
    * **switch_to_default_iframe**: This will take you to the default frame.
+   * **execute_bash_file**: This will run your bash file present in the folder (provided in SCRIPT_DIR in django settings). You need to provide file name with extension.
+   * **execute_bash_script**: This will run your bash scripts which you provide in script tag. Use standard way to input script as it will support params e.g. ['ls', '-l'] or ['ping', '-c 4', 'python.org']
    * **wait-for**: This has 2 fields- mode, value/locator.This has 3 mode : *visibility,invisibility,hardwait*.For *visibility/invisibility* please provide the locator of the webelement that you want to wait for. In case of mode *hardwait*, please provide the value as number of seconds you want to wait for.
    * **quit_browser**: You are recommended to add this step at the end of your test case steps to quit the remote or local browser.
    
