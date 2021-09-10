@@ -1,7 +1,7 @@
 config:
   env: local
   browser: chrome
-  driverAddress: /Users/rahul/Desktop/SPA-Automation/src/test/resources/drivers/chromedriver
+  driverAddress: /Users/user/Downloads/chromedriver
 name: Wait_test
 task:
     - launch_browser
