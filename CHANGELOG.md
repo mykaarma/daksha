@@ -1,6 +1,9 @@
 # `DAKSHA` Change Log
 
-*version*: `0.2.1`
+*version*: `0.2.2`
+
+## v 0.2.2
+1. Fixed open_new_tab method
 
 ## v 0.2.1
 1. Added wait method
