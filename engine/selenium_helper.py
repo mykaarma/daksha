@@ -354,7 +354,7 @@ def open_new_tab(web_driver, test_id):
       :rtype: object
      """
     web_driver.execute_script("window.open()")
-    web_driver.switch_to_window(web_driver.window_handles[len(web_driver.window_handles - 1)])
+    web_driver.switch_to_window(web_driver.window_handles[len(web_driver.window_handles)- 1])
     take_screenshot(test_id, web_driver)
     logger.info("Switched to new Tab successfully")
     return True, None
