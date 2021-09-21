@@ -18,7 +18,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 import string
 import random
 
-from .logs import *
+from .logs import logger
 
 from daksha.settings import STORAGE_PATH
 
@@ -54,7 +54,7 @@ def generate_result(test_id, response, name, step, error_stack):
         report_file.write(test_report)
         logger.info('Report created at ' + report_file_path)
         report_file.close()
-    except Exception as e:
+    except Exception:
         logger.error("Error in testreport generation:", exc_info=True)
 
 
