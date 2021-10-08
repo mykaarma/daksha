@@ -25,6 +25,7 @@ from selenium.webdriver.support.ui import WebDriverWait, Select
 from selenium.webdriver.support import expected_conditions as EC
 from .logs import logger
 from .utils.screenshot_utils import take_screenshot
+from .variable_dictionary import variable_dictionary
 
 
 def get_webdriver():
@@ -402,33 +403,6 @@ def switch_to_tab(web_driver, test_id, **kwargs):
     return is_tab_switched, None
 
 
-def get_locator_info(**kwargs):
-    """
-    Gets the locator type and locator info
-     :param kwargs: WebElement Description Fetched From YAML
-     :type kwargs: dict
-     :raises: exception
-     :returns : Locator type and Locator
-     :rtype: tuple
-    """
-    if 'id' in kwargs.keys():
-        return By.ID, kwargs['id']
-    elif 'css' in kwargs.keys():
-        return By.CSS_SELECTOR, kwargs['css']
-    elif 'classname' in kwargs.keys():
-        return By.CLASS_NAME, kwargs['classname']
-    elif 'xpath' in kwargs.keys():
-        return By.XPATH, kwargs['xpath']
-    elif 'linktext' in kwargs.keys():
-        return By.LINK_TEXT, kwargs['linktext']
-    elif 'partiallinktext' in kwargs.keys():
-        return By.PARTIAL_LINK_TEXT, kwargs['partiallinktext']
-    elif 'name' in kwargs.keys():
-        return By.NAME, kwargs['name']
-    else:
-        raise Exception("Invalid locator passed")
-
-
 def wait_for(web_driver, **kwargs):
     """
     Waits for an UI element or specified time
@@ -482,3 +456,42 @@ def wait_for(web_driver, **kwargs):
         return False, error
 
     return wait_result, None
+
+
+def capture_ui_element(test_id, web_driver, **kwargs):
+    locator, locator_value = get_locator_info(**kwargs)
+    try:
+        save_in = kwargs['save_in']
+    except KeyError:
+        return False, "Ill formatted arguments, 'save_in' must be present in the list of args"
+    element = web_driver.find_element(locator, locator_value)
+    variable_dictionary[save_in] = element.text
+    logger.info("saved text from UI element. variable: {}, value: {}".format(save_in, element.text))
+    return True, None
+
+
+def get_locator_info(**kwargs):
+    """
+    Gets the locator type and locator info
+     :param kwargs: WebElement Description Fetched From YAML
+     :type kwargs: dict
+     :raises: exception
+     :returns : Locator type and Locator
+     :rtype: tuple
+    """
+    if 'id' in kwargs.keys():
+        return By.ID, kwargs['id']
+    elif 'css' in kwargs.keys():
+        return By.CSS_SELECTOR, kwargs['css']
+    elif 'classname' in kwargs.keys():
+        return By.CLASS_NAME, kwargs['classname']
+    elif 'xpath' in kwargs.keys():
+        return By.XPATH, kwargs['xpath']
+    elif 'linktext' in kwargs.keys():
+        return By.LINK_TEXT, kwargs['linktext']
+    elif 'partiallinktext' in kwargs.keys():
+        return By.PARTIAL_LINK_TEXT, kwargs['partiallinktext']
+    elif 'name' in kwargs.keys():
+        return By.NAME, kwargs['name']
+    else:
+        raise Exception("Invalid locator passed")
