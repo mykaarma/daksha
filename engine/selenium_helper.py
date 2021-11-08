@@ -152,6 +152,7 @@ def fill_data(test_id, web_driver, **kwargs):
             element = WebDriverWait(web_driver, 10).until(
                 EC.visibility_of_element_located((locator, locator_value))
             )
+            element.clear()
             element.send_keys(value)
             logger.info("Data filled successfully")
             take_screenshot(test_id, web_driver)
