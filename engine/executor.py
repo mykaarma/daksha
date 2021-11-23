@@ -14,7 +14,7 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 """
-
+from .alert_sender import *
 from .method_mapper import *
 from .selenium_helper import *
 from .testreport_generator import *
@@ -27,7 +27,7 @@ import ast
 web_driver = None  # Assume a global webdriver which'll be used by all selenium methods
 
 
-def execute_test(task, test_id, name, email):
+def execute_test(task, test_id, name, email, alert_channel_type):
     """
     Calls method to execute the steps mentioned in YAML and calls methods for report generation and sending test report email
      :param task: Test steps mentioned in YAML
@@ -50,6 +50,7 @@ def execute_test(task, test_id, name, email):
             logger.info("Test successful")
         else:
             logger.info("Test failed for test ID: " + test_id)
+            send_alert(test_id,name,step,error_stack,alert_channel_type)
 
         logger.info("Test finished, sending report now")
         generate_result(test_id, execution_result, name, step, error_stack)
