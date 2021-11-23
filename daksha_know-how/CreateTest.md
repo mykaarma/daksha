@@ -28,12 +28,21 @@ task:
       value: '{{ password }}'
   - click_button:
       xpath: //*[@id='bchromedriverSignIn']
+  - wait_for:
+      mode: visibility
+      xpath: //div[@class='headertoprightDealerName']
   - validate_ui_element:
       mode: equals
       xpath: //div[@class='headertoprightDealerName']
       value: myKaarma
+  - wait_for:
+      mode: hardwait
+      value: 20
   - click_button:
       xpath: //*[text()='Sign Out']
+  - wait_for:
+      mode: invisibility
+      xpath: //div[@class='headertoprightDealerName']
 
   - quit_browser 
   ```
@@ -57,6 +66,7 @@ task:
    * **navigate_back**: This can be used to go back to previous page.
    * **switch_iframe**:  Here you need to provide the **locator** as a subfield and it will switch to that iframe.
    * **switch_to_default_iframe**: This will take you to the default frame.
+   * **wait-for**: This has 2 fields- mode, value/locator.This has 3 mode : *visibility,invisibility,hardwait*.For *visibility/invisibility* please provide the locator of the webelement that you want to wait for. In case of mode *hardwait*, please provide the value as number of seconds you want to wait for.
    * **quit_browser**: You are recommended to add this step at the end of your test case steps to quit the remote or local browser.
    
 
