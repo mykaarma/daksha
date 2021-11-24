@@ -39,7 +39,7 @@ def executor(request):
             logger.info('Directory created at: ' + f"{STORAGE_PATH}/{test_id}")
             received_json_data = json.loads(request.body.decode())
             data_file_location = received_json_data['fileLocation']
-            alert_channel_type = None
+            alert_type = None
             if ("variables" in received_json_data):
                 variable_data = received_json_data['variables']
                 for key,value in variable_data.items():
@@ -57,10 +57,14 @@ def executor(request):
                 return HttpResponse("fileLocation is not supported, please use git or local",
                                     status=status.HTTP_400_BAD_REQUEST)
             execute_config(test_yml_content['config'])
-            alert_channel_type  = test_yml_content['alert_channel_type']
+            if "alert_type" in test_yml_content:
+                alert_type = test_yml_content['alert_type']
+                logger.info("Users has opted for alerts via "+alert_type)
+            else:
+                logger.info("User has not opted for alerts")
             pool_executor = ThreadPoolExecutor(max_workers=1)
             pool_executor.submit(execute_test, test_yml_content['task'], test_id, test_yml_content['name'],
-                                 received_json_data['email'], alert_channel_type)
+                                 received_json_data['email'], alert_type)
             response_message = "Your test ID is: " + test_id + ". We'll send you an email with report shortly"
             return HttpResponse(response_message, status=status.HTTP_200_OK)
         except Exception as e:
