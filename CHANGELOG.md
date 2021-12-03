@@ -1,8 +1,8 @@
 # `DAKSHA` Change Log
 
-*version*: `0.3.2`
+*version*: `0.3.0`
 
-## v 0.3.2
+## v 0.3.0
 1. Added Alert Sending feature on test failure
 
 ## v 0.2.2
