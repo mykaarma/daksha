@@ -34,8 +34,6 @@ def gchat_alert(test_id, name, step, error_stack):
 def slack_alert(test_id, name, step, error_stack):
     alert_body = "Test Case: " + name + " failed for test id : " + test_id + "\n _ERROR_  :  ```" + error_stack.replace(
         '"', "") + "```" + "\n in _step_ ```" + step.replace('"', "") + "```"
-    logger.info(alert_body)
-    logger.info(ALERT_URL)
     headers = {'content-type': 'application/json'}
     if len(ALERT_URL) == 0:
         logger.info('Alert not sent, ALERT_URL  not set')
