@@ -55,7 +55,7 @@ def execute_test(task, test_id, name, email, alert_type):
             logger.info("Test successful")
         else:
             logger.info("Test failed for test ID: " + test_id)
-            send_alert(test_id, name, str(step), error_stack, report_url, alert_type)
+            send_alert(test_id, name, str(step), error_stack, alert_type)
         send_report_email(test_id, report_url, email)
 
     except Exception:

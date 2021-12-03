@@ -7,17 +7,7 @@
           "widgets": [
             {
               "buttons": [
-                {
-                  "textButton": {
-                    "text": "Report",
-                    "onClick": {
-                      "openLink": {
-                        "url": "${reportlink}"
-                      }
-                    },
-                  }
 
-                },
                 {
                   "textButton": {
                     "text": "daksha Wiki",

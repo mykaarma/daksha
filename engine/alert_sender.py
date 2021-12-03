@@ -20,25 +20,38 @@ import requests
 from string import Template
 
 
-def gchat_alert(test_id, name, step, report_url, error_stack):
+def gchat_alert(test_id, name, step, error_stack):
     alert_body = "Test Case: " + name + " failed for test id : " + test_id + "\n _ERROR_  :  ```" + error_stack.replace(
         '"', "") + "```" + "\n in _step_ ```" + step.replace('"', "") + "```"
-    logger.info(alert_body)
     if len(ALERT_URL) == 0:
         logger.info('Alert not sent, ALERT_URL  not set')
         return
     else:
         alert_template = Template(open("templates/gchat_alert.json", "r").read())
-        return requests.post(ALERT_URL, data=alert_template.substitute(body=alert_body,
-                                                                       reportlink=report_url))
+        return requests.post(ALERT_URL, data=alert_template.substitute(body=alert_body))
+
+
+def slack_alert(test_id, name, step, error_stack):
+    alert_body = "Test Case: " + name + " failed for test id : " + test_id + "\n _ERROR_  :  ```" + error_stack.replace(
+        '"', "") + "```" + "\n in _step_ ```" + step.replace('"', "") + "```"
+    logger.info(alert_body)
+    logger.info(ALERT_URL)
+    headers = {'content-type': 'application/json'}
+    if len(ALERT_URL) == 0:
+        logger.info('Alert not sent, ALERT_URL  not set')
+        return
+    else:
+        alert_template = Template(open("templates/slack_alert.json", "r").read())
+        return requests.post(ALERT_URL, data=alert_template.substitute(body=alert_body), headers=headers)
 
 
 switcher = {
-    "gchat": gchat_alert
+    "gchat": gchat_alert,
+    "slack": slack_alert
 }
 
 
-def send_alert(test_id, name, step, error_stack, report_url, alert_type):
+def send_alert(test_id, name, step, error_stack, alert_type):
     # Get the function from switcher dictionary
     func = switcher.get(alert_type, "no_alert")
     # Execute the function
@@ -46,6 +59,6 @@ def send_alert(test_id, name, step, error_stack, report_url, alert_type):
     if (alert_type == None) or (len(alert_type) == 0):
         return
     elif func == "no_alert":
-        logger.warn("Supported alert type not found,alert types suppoorted: " + str(switcher.keys()))
+        logger.warn("Supported alert type not found,alert types supported: " + str(list(switcher.keys())))
     else:
-        return func(test_id, name, step, report_url, error_stack)
+        return func(test_id, name, step, error_stack)
