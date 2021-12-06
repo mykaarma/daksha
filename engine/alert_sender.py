@@ -50,10 +50,8 @@ switcher = {
 
 
 def send_alert(test_id, name, step, error_stack, alert_type):
-    # Get the function from switcher dictionary
+    
     func = switcher.get(alert_type, "no_alert")
-    # Execute the function
-
     if (alert_type == None) or (len(alert_type) == 0):
         return
     elif func == "no_alert":
