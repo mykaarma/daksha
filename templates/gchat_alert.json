@@ -1,0 +1,28 @@
+{
+  "text": "${body}",
+  "cards": [
+    {
+      "sections": [
+        {
+          "widgets": [
+            {
+              "buttons": [
+
+                {
+                  "textButton": {
+                    "text": "daksha Wiki",
+                    "onClick": {
+                      "openLink": {
+                        "url": "https://github.com/mykaarma/daksha/wiki"
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

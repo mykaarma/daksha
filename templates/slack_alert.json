@@ -1,0 +1,29 @@
+{
+	"blocks": [
+		{
+			"type": "section",
+			"text": {
+				"type": "mrkdwn",
+				"text": "${body}"
+			}
+		},
+		{
+			"type": "section",
+			"text": {
+				"type": "mrkdwn",
+				"text": "*You can refer to the Daksha Wiki here*"
+			},
+			"accessory": {
+				"type": "button",
+				"text": {
+					"type": "plain_text",
+					"text": "Daksha Wiki",
+					"emoji": true
+				},
+				"value": "click_me_123",
+				"url": "https://github.com/mykaarma/daksha/wiki",
+				"action_id": "button-action"
+			}
+		}
+	]
+}
