@@ -1,6 +1,9 @@
 # `DAKSHA` Change Log
 
-*version*: `0.3.0`
+*version*: `0.3.1`
+
+## v 0.3.1
+1. Fixed dependabot alerts
 
 ## v 0.3.0
 1. Added Alert Sending feature on test failure
