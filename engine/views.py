@@ -20,7 +20,6 @@ from django.http import HttpResponse
 from rest_framework import status
 
 from .models import TestExecutor
-from .selenium_helper import browser_config
 from .executor import execute_test
 from .utils.utils import read_yaml, read_local_yaml
 from .testreport_generator import *
@@ -59,15 +58,13 @@ def executor(request):
                 logger.error("fileLocation is not supported, please use git or local")
                 return HttpResponse("fileLocation is not supported, please use git or local",
                                     status=status.HTTP_400_BAD_REQUEST)
-            web_driver = browser_config(test_yml_content['config'])
-            test_executor = TestExecutor(1, test_id, initial_variable_dictionary, web_driver)
+            test_executor = TestExecutor(1, test_id, initial_variable_dictionary, None)
             pool_executor = ThreadPoolExecutor(max_workers=1)
             try:
-                pool_executor.submit(execute_test, test_executor, test_yml_content['task'], test_yml_content['name'],
-                                     received_json_data['email'])
+                pool_executor.submit(execute_test, test_executor, test_yml_content, received_json_data['email'])
                 logger.info("task submitted")
             except Exception as e:
-                logger.error("Excepption occured", e)
+                logger.error("Exception occurred", e)
             response_message = "Your test ID is: " + test_id + ". We'll send you an email with report shortly"
             return HttpResponse(response_message, status=status.HTTP_200_OK)
         except Exception as e:

@@ -38,6 +38,6 @@ from rest_framework import status
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('engine/', include('engine.urls')),
-    path('health', lambda r: HttpResponse('{"status":"up"}', status.HTTP_200_OK))
+    path('health', lambda r: HttpResponse('{"status":"up"}', status.HTTP_200_OK)),
+    path('daksha/', include('engine.urls')),
 ]

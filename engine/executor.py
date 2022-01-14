@@ -27,21 +27,24 @@ import jinja2
 import ast
 
 
-def execute_test(test_executor: TestExecutor, task, name, email):
+def execute_test(test_executor: TestExecutor, test_yml, email):
     """
     Calls method to execute the steps mentioned in YAML and calls methods for report generation and sending test report email
+     :param test_yml: The test yaml containing test config, name and task
+     :type test_yml: dict
      :param test_executor: The TestExecutor object to give context for execution
      :type test_executor: TestExecutor
-     :param task: Test steps mentioned in YAML
-     :type task: dict
-     :param name: Name of the Test Fetched From YAML
-     :type name: str
      :param email: The email where the report will be sent
      :type email: str
     """
     try:
         execution_result, error_stack = True, None
         step = {}
+        config = test_yml["config"]
+        task = test_yml["task"]
+        name = test_yml["name"]
+        web_driver = browser_config(config)
+        test_executor.web_driver = web_driver
         for step in task:
             execution_result, error_stack = execute_step(test_executor, step)
             if execution_result is False:
