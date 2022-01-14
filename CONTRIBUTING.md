@@ -11,7 +11,7 @@ Thank you for taking the time to contribute! Please follow the following guideli
 
 
 ## Python Code Quality Standards:
-  - All code should compile and run for **Python 3.7**.
+  - All code should compile and run for **Python 3.9**.
   - Maximum line length is 120 characters.
   - Indentation should be made with 4 spaces, not tabs.
   - For any non-trivial code, include comments.
