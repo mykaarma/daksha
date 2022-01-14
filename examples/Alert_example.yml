@@ -1,0 +1,25 @@
+config:
+  env: local
+  browser: chrome
+  driverAddress: /Users/hriddhi/Downloads/chromedriver 2
+name: Wait_test
+alert_type: slack
+task:
+    - launch_browser
+    - open_url:
+        url: https://www.google.co.in/
+    - wait_for:
+        mode: visibility
+        xpath: //input[@title ="Search"]
+    - fill_data:
+        xpath: //input[@title ="Searchn"]
+        value: Cars
+    - wait_for:
+        mode: hardwait
+        value: 10
+    - click_button:
+        xpath: //div[@role="option"]/div/span[text() ="CARS24"]
+    - wait_for:
+        mode: invisibility
+        xpath: //input[@title ="Search"]
+    - quit_browser

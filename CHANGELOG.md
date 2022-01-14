@@ -1,6 +1,12 @@
 # `DAKSHA` Change Log
 
-*version*: `0.2.2`
+*version*: `0.3.1`
+
+## v 0.3.1
+1. Fixed dependabot alerts
+
+## v 0.3.0
+1. Added Alert Sending feature on test failure
 
 ## v 0.2.2
 1. Fixed open_new_tab method

@@ -143,6 +143,8 @@ LOG_FILE = os.environ.get('LOG_FILE', 'logs/uiengine.log')
 STORAGE_PATH = os.environ.get('STORAGE_PATH', 'reports')
 APACHE_URL = os.environ.get('APACHE_URL', '')
 
+#Alert configurations
+ALERT_URL = os.environ.get('ALERT_URL', '')
 # Github Configurations (if you choose to store test ymls in github)
 
 """

@@ -16,6 +16,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 from jinja2 import UndefinedError
 
+from .alert_sender import *
 from .method_mapper import *
 from .models import TestExecutor
 from .selenium_helper import *
@@ -43,20 +44,26 @@ def execute_test(test_executor: TestExecutor, test_yml, email):
         config = test_yml["config"]
         task = test_yml["task"]
         name = test_yml["name"]
+        alert_type = None
+        if "alert_type" in test_yml:
+            alert_type = test_yml['alert_type']
+            logger.info("Users has opted for alerts via " + alert_type)
+        else:
+            logger.info("User has not opted for alerts")
         web_driver = browser_config(config)
         test_executor.web_driver = web_driver
         for step in task:
             execution_result, error_stack = execute_step(test_executor, step)
             if execution_result is False:
                 break
+        logger.info("Test finished, sending report now")
+        generate_result(test_executor.test_id, execution_result, name, step, error_stack)
+        report_url = APACHE_URL + test_executor.test_id + '/report.html'
         if execution_result:
             logger.info("Test successful")
         else:
             logger.info("Test failed for test ID: " + test_executor.test_id)
-
-        logger.info("Test finished, sending report now")
-        generate_result(test_executor.test_id, execution_result, name, step, error_stack)
-        report_url = APACHE_URL + test_executor.test_id + '/report.html'
+            send_alert(test_executor.test_id, name, str(step), error_stack, alert_type)
         send_report_email(test_executor.test_id, report_url, email)
 
     except Exception:
@@ -89,7 +96,7 @@ def execute_step(test_executor: TestExecutor, step):
             template = jinja2.Template(str(step), undefined=jinja2.StrictUndefined)
             # rendered the variables from the variable dictionary
             step_render = template.render(test_executor.variable_dictionary)
-            # converting the final string with rendered variables to dictionary step
+            # converting the final string with rendered variables to dictionary 'step'
             step = ast.literal_eval(step_render)
             logger.info("Gonna call this method with args")
             for k, v in step.items():

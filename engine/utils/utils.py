@@ -64,7 +64,7 @@ def read_yaml(repo, branch, file_path, test_id):
         download_file_content(file_content, test_id)
         file_name = f"{STORAGE_PATH}/{test_id}/{file_content.name}"
         with open(file_name, 'r') as stream:
-            yaml_content = yaml.load(stream)
+            yaml_content = yaml.full_load(stream)
             logger.info("Find your text file at location %s" % file_name)
             return yaml_content
     except Exception:
@@ -74,7 +74,7 @@ def read_yaml(repo, branch, file_path, test_id):
 
 def read_local_yaml(file_path):
     with open(file_path, 'r') as stream:
-        yaml_content = yaml.load(stream)
+        yaml_content = yaml.full_load(stream)
         return yaml_content
 
 

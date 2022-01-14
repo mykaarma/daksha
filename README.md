@@ -50,7 +50,11 @@ You can configure the application in a lot of ways by setting the following envi
 * **POSTMARK_TOKEN**
   * This is the postmark token which will be used to send reports by email.
   * If not set, we'll skip sending the email.
-
+  
+* **ALERT_URL**
+  * This is the alert webhook url which will be used to send alerts in gchat/slack.
+  * If not set, we'll skip sending the alert.
+  
 * **EMAIL_HOST_USER**
   * This is the email ID from which reports should be sent.
 
