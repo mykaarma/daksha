@@ -10,18 +10,28 @@ Daksha is a django framework based dynamic test case execution API.You can write
 
 ### Using docker
 
+  - Setup a local or remote chromedriver for your tests
   - Take a look at [docker-compose.yml](docker-compose.yml) file and create all the necessary [environment variables](#environment-variables).
-
   - Run the command `docker-compose up -d` to initiate the build and deploy the project.
   
   - NOTE: If you're running the application through docker and intend to run scripts saved locally, make sure to mount the location of test yamls to the container so that test yamls could be accessed from inside of container.
 
 ### Local deployment (without docker)
 
-  - Create a virtual environment using python 3.7
-  - Install all requirements using pip install -r requirements.txt
-  - Create any env variables needed
+  - Download [python 3.7+](https://docs.python.org/3/tutorial/venv.html) and setup a [virutal environment](https://www.python.org/downloads/)
+  - Install all requirements using `pip install -r requirements.txt`
+  - (Optional) Create any env variables needed.
+  - Download Chromedriver (https://chromedriver.chromium.org/downloads)
   - Run `python manage.py runserver` to start the project
+
+## Setting up webdriver
+We only support chromedriver at this point.
+
+### Local Webdriver
+Download Chromedriver according to your chrome version from https://chromedriver.chromium.org/downloads. You can later refer this path from your test yml.
+
+### Remote Webdriver
+Setup selenium grid using https://www.selenium.dev/downloads/. Or if you want to use the dockerized version you can download and run selenium grid images from dockerhub: https://hub.docker.com/u/selenium.
 
 ## #Environment Variables
 You can configure the application in a lot of ways by setting the following environment variables:

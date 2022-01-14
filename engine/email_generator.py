@@ -42,7 +42,7 @@ def send_report_email(test_id, report_url, recipient_email):
     # message.attach_file('/templates/testPage.html')
     logger.info(message)
     if len(POSTMARK_TOKEN) == 0:
-        logger.info('Report not emailed, Postman token not set')
+        logger.info('Report not emailed, Postmark token not set')
     else:
         send_email_postmark(subject, message, recipient_email)
         logger.info('Email sent to ' + recipient_email)

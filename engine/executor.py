@@ -14,26 +14,26 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 """
+from jinja2 import UndefinedError
 
 from .method_mapper import *
+from .models import TestExecutor
 from .selenium_helper import *
 from .testreport_generator import *
 from .email_generator import *
 
 from daksha.settings import APACHE_URL
-from .variable_dictionary import variable_dictionary
 import jinja2
 import ast
-web_driver = None  # Assume a global webdriver which'll be used by all selenium methods
 
 
-def execute_test(task, test_id, name, email):
+def execute_test(test_executor: TestExecutor, task, name, email):
     """
     Calls method to execute the steps mentioned in YAML and calls methods for report generation and sending test report email
+     :param test_executor: The TestExecutor object to give context for execution
+     :type test_executor: TestExecutor
      :param task: Test steps mentioned in YAML
      :type task: dict
-     :param test_id: ID of the Test
-     :type test_id: str
      :param name: Name of the Test Fetched From YAML
      :type name: str
      :param email: The email where the report will be sent
@@ -43,44 +43,30 @@ def execute_test(task, test_id, name, email):
         execution_result, error_stack = True, None
         step = {}
         for step in task:
-            execution_result, error_stack = execute_step(step, test_id)
+            execution_result, error_stack = execute_step(test_executor, step)
             if execution_result is False:
                 break
         if execution_result:
             logger.info("Test successful")
         else:
-            logger.info("Test failed for test ID: " + test_id)
+            logger.info("Test failed for test ID: " + test_executor.test_id)
 
         logger.info("Test finished, sending report now")
-        generate_result(test_id, execution_result, name, step, error_stack)
-        report_url = APACHE_URL + test_id + '/report.html'
-        send_report_email(test_id, report_url, email)
+        generate_result(test_executor.test_id, execution_result, name, step, error_stack)
+        report_url = APACHE_URL + test_executor.test_id + '/report.html'
+        send_report_email(test_executor.test_id, report_url, email)
 
     except Exception:
         logger.error("Error encountered in executor: ", exc_info=True)
 
 
-def execute_config(config):
-    # Executor must maintain the webdriver variable, i.e., all selenium methods should ask for webdriver in method
-    # params Setting webdriver configurations
-    """
-    Calls method for configuring the browser in accordance with specifications mentioned in YAML
-     :param config: Configurations mentioned in YAML
-     :type config: dict
-    """
-    global web_driver
-    web_driver = browser_config(config)
-    web_driver.maximize_window()
-    web_driver.implicitly_wait(30)
-
-
-def execute_step(step, test_id):
+def execute_step(test_executor: TestExecutor, step):
     """
     Executes steps mentioned in YAML
+     :param test_executor: The TestExecutor object to give context for execution
+     :type test_executor: TestExecutor
      :param step: Test steps mentioned in YAML
      :type step: dict
-     :param test_id: ID of the Test
-     :type test_id: str
      :raises : KeyError
      :returns: Status of Execution and error stack
      :rtype: tuple
@@ -93,23 +79,28 @@ def execute_step(step, test_id):
         error_stack = None
         if isinstance(step, str):
             logger.info("Gonna process the method directly")
-            execution_success, error_stack = method_map[step](test_id=test_id, web_driver=web_driver)
+            execution_success, error_stack = method_map[step](test_executor=test_executor)
         elif isinstance(step, dict):
             logger.info("Gonna render the variables")
-            #raise error if a variable present in yml file but not present in variable dictionary
-            template = jinja2.Template(str(step),undefined=jinja2.StrictUndefined)
-            step_render = template.render(variable_dictionary) #rendered the variables from the variable dictionary
-            step = ast.literal_eval(step_render)  #converting the final string with rendered variables to dictionary step
+            # raise error if a variable present in yml file but not present in variable dictionary
+            template = jinja2.Template(str(step), undefined=jinja2.StrictUndefined)
+            # rendered the variables from the variable dictionary
+            step_render = template.render(test_executor.variable_dictionary)
+            # converting the final string with rendered variables to dictionary step
+            step = ast.literal_eval(step_render)
             logger.info("Gonna call this method with args")
             for k, v in step.items():
                 logger.info(str(type(v)) + "\t. " + str(v))
-                execution_success, error_stack = method_map[k](test_id=test_id, web_driver=web_driver, **v)
+                execution_success, error_stack = method_map[k](test_executor=test_executor, **v)
                 break
             logger.info("fin")
         if execution_success is False:
             return False, error_stack
         else:
             return True, error_stack
+    except UndefinedError as e:
+        logger.error("Error in rendering variable: ", exc_info=True)
+        return False, "Error in rendering variable: " + str(e)
     except Exception:
         logger.error("Error encountered: ", exc_info=True)
         return False, traceback.format_exc()

@@ -17,4 +17,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from django.db import models
 
+
 # Create your models here.
+class TestExecutor:
+    def __init__(self, index, test_id, variable_dict, web_driver):
+        self.index = index
+        self.test_id = test_id
+        self.variable_dictionary = variable_dict  # make a deep copy of dict
+        self.web_driver = web_driver

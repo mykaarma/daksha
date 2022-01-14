@@ -20,5 +20,3 @@ The API request body consists of the following fields-
                     }
                 }' 
 ```
-        
-	
