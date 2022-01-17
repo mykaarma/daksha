@@ -18,7 +18,7 @@ Daksha is a django framework based dynamic test case execution API.You can write
 
 ### Local deployment (without docker)
 
-  - Download [python 3.7+](https://docs.python.org/3/tutorial/venv.html) and setup a [virutal environment](https://www.python.org/downloads/)
+  - Download [python 3.8+](https://docs.python.org/3/tutorial/venv.html) and setup a [virutal environment](https://www.python.org/downloads/)
   - Install all requirements using `pip install -r requirements.txt`
   - (Optional) Create any env variables needed.
   - Download Chromedriver (https://chromedriver.chromium.org/downloads)
