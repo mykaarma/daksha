@@ -92,3 +92,17 @@ def get_org_instance(github, repo_user, repo_org):
         logger.info("REPO_USER is present in config, accessing via : get_user")
         org = github.get_user(repo_user)
     return org
+
+
+def get_yml_files_in_folder_local(folder_path):
+    files = []
+    for file in os.listdir(folder_path):
+        if file.endswith(".yml"):
+            file_path = os.path.join(folder_path, file)
+            files.append(file_path)
+    return files
+
+
+def get_yml_files_in_folder_git(repo, branch, folder_path):
+    # TODO implement this
+    return []
