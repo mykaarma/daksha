@@ -103,6 +103,13 @@ def get_yml_files_in_folder_local(folder_path):
     return files
 
 
-def get_yml_files_in_folder_git(repo, branch, folder_path):
-    # TODO implement this
-    return []
+def get_yml_files_in_folder_git(repo_name: str, branch_name: str, folder_path: str):
+    org = git_login()
+    logger.info("Fetching yml files from %s of %s branch %s ", folder_path, repo_name, branch_name)
+    repo = org.get_repo(repo_name)
+    contents = repo.get_contents(folder_path, branch_name)
+    files = []
+    for content in contents:
+        if content.path.endswith(".yml"):
+            files.append(content.path)
+    return files
