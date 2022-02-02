@@ -15,18 +15,18 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 """
 
+import json
+import os
 from concurrent.futures.thread import ThreadPoolExecutor
+
 from django.http import HttpResponse
 from rest_framework import status
 
-from .errors import UnsupportedFileSourceError, BadArgumentsError
-from .models import TestExecutor
-from .executor import execute_test
-from .utils.utils import read_yaml, read_local_yaml, get_yml_files_in_folder_local, get_yml_files_in_folder_git
-from .testreport_generator import *
-import json
 from daksha.settings import REPO_NAME, BRANCH_NAME
-import os
+from .errors import UnsupportedFileSourceError, BadArgumentsError
+from .testreport_generator import *
+from .thread_executor import thread_executor
+from .utils.utils import read_yaml, read_local_yaml, get_yml_files_in_folder_local, get_yml_files_in_folder_git
 
 
 # Create your views here.
@@ -45,15 +45,14 @@ def executor(request):
                 test_ymls, initial_variable_dictionary = __extract_test_data(test_id, received_json_data['test'])
             except BadArgumentsError as e:
                 return HttpResponse(str(e), status=status.HTTP_400_BAD_REQUEST)
-            pool_executor = ThreadPoolExecutor(max_workers=5)
-            for test_yml in test_ymls:
-                try:
-                    test_executor = TestExecutor(1, test_id, initial_variable_dictionary, None)
-                    pool_executor.submit(execute_test, test_executor, test_yml, received_json_data['email'])
-                    logger.info("task submitted")
-                except Exception as e:
-                    logger.error("Exception occurred", e)
-                pass
+            pool_executor = ThreadPoolExecutor(max_workers=1)
+            try:
+                pool_executor.submit(thread_executor, test_ymls, initial_variable_dictionary, test_id,
+                                     received_json_data['email'])
+                logger.info("task submitted to thread pool executor")
+            except Exception as e:
+                logger.error("Exception occurred", e)
+            pass
             response_message = "Your test ID is: " + test_id + ". We'll send you an email with report shortly"
             return HttpResponse(response_message, status=status.HTTP_200_OK)
         except Exception as e:
@@ -68,7 +67,6 @@ def __extract_test_data(test_id, test):
     initial_variable_dictionary = {}
     if "variables" in test:
         initial_variable_dictionary = test['variables']
-
     test_ymls = []
     source_location = test['source']
     location_type = test['type']

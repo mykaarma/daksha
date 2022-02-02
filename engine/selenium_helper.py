@@ -114,7 +114,7 @@ def open_url(test_executor: TestExecutor, **kwargs):
     logger.info("I'll open it's url")
     logger.info(url)
     test_executor.web_driver.get(url)
-    take_screenshot(test_executor.test_id, test_executor.web_driver)
+    take_screenshot(test_executor.test_id, test_executor.test_yml["name"], test_executor.web_driver)
     return True, None
 
 
@@ -144,7 +144,7 @@ def fill_data(test_executor: TestExecutor, **kwargs):
             element.clear()
             element.send_keys(value)
             logger.info("Data filled successfully")
-            take_screenshot(test_executor.test_id, test_executor.web_driver)
+            take_screenshot(test_executor.test_id, test_executor.test_yml["name"], test_executor.web_driver)
             return True, None
         except Exception as e:
             error_stack = traceback.format_exc()
@@ -177,7 +177,7 @@ def select_in_dropdown(test_executor: TestExecutor, **kwargs):
             select = Select(element)
             select.select_by_visible_text(value)
             logger.info("Dropdown selected successfully")
-            take_screenshot(test_executor.test_id, test_executor.web_driver)
+            take_screenshot(test_executor.test_id, test_executor.test_yml["name"], test_executor.web_driver)
             return True, None
         except Exception as e:
             error_stack = traceback.format_exc()
@@ -207,7 +207,7 @@ def click_button(test_executor: TestExecutor, **kwargs):
             )
             element.click()
             logger.info("Click successful")
-            take_screenshot(test_executor.test_id, test_executor.web_driver)
+            take_screenshot(test_executor.test_id, test_executor.test_yml["name"], test_executor.web_driver)
             return True, None
         except Exception as e:
             error_stack = traceback.format_exc()
@@ -238,7 +238,7 @@ def validate_ui_element(test_executor: TestExecutor, **kwargs):
             element = WebDriverWait(test_executor.web_driver, 10).until(
                 EC.visibility_of_element_located((locator, locator_value))
             )
-            take_screenshot(test_executor.test_id, test_executor.web_driver)
+            take_screenshot(test_executor.test_id, test_executor.test_yml["name"], test_executor.web_driver)
             if mode == 'equals':
                 validation_result = (value == element.text)
             elif mode == 'contains':
@@ -275,7 +275,7 @@ def switch_iframe(test_executor: TestExecutor, **kwargs):
         )
         test_executor.web_driver.switch_to.frame(element)
         logger.info("switched successful to frame. " + locator + " = " + locator_value)
-        take_screenshot(test_executor.test_id, test_executor.web_driver)
+        take_screenshot(test_executor.test_id, test_executor.test_yml["name"], test_executor.web_driver)
         return True, None
     except Exception as e:
         logger.error("switch to frame failed \n", exc_info=True)
@@ -291,7 +291,7 @@ def switch_to_default_iframe(test_executor: TestExecutor):
      :rtype: tuple
     """
     test_executor.web_driver.switch_to.default_content()
-    take_screenshot(test_executor.test_id, test_executor.web_driver)
+    take_screenshot(test_executor.test_id, test_executor.test_yml["name"], test_executor.web_driver)
     logger.info("switched successful to default window")
     return True, None
 
@@ -305,7 +305,7 @@ def refresh_page(test_executor: TestExecutor):
      :rtype: tuple
     """
     test_executor.web_driver.refresh()
-    take_screenshot(test_executor.test_id, test_executor.web_driver)
+    take_screenshot(test_executor.test_id, test_executor.test_yml["name"], test_executor.web_driver)
     logger.info("Page refreshed successfully")
     return True, None
 
@@ -319,7 +319,7 @@ def navigate_back(test_executor: TestExecutor):
      :rtype: tuple
     """
     test_executor.web_driver.back()
-    take_screenshot(test_executor.test_id, test_executor.web_driver)
+    take_screenshot(test_executor.test_id, test_executor.test_yml["name"], test_executor.web_driver)
     logger.info("User navigated Back successfully")
     return True, None
 
@@ -334,7 +334,7 @@ def open_new_tab(test_executor: TestExecutor):
      """
     test_executor.web_driver.execute_script("window.open()")
     test_executor.web_driver.switch_to_window(test_executor.web_driver.window_handles[len(test_executor.web_driver.window_handles) - 1])
-    take_screenshot(test_executor.test_id, test_executor.web_driver)
+    take_screenshot(test_executor.test_id, test_executor.test_yml["name"], test_executor.web_driver)
     logger.info("Switched to new Tab successfully")
     return True, None
 
@@ -370,7 +370,7 @@ def switch_to_tab(test_executor: TestExecutor, **kwargs):
             return False, error_stack
     else:
         return False, "Ill formatted arguments, either 'title' or 'index' must be present in the list of args"
-    take_screenshot(test_executor.test_id, test_executor.web_driver)
+    take_screenshot(test_executor.test_id, test_executor.test_yml["name"], test_executor.web_driver)
 
     return is_tab_switched, None
 

@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<style>
+body {
+  font-family: "Lato", sans-serif;
+}
+
+.sidenav {
+  height: 100%;
+  width: 40%;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: #f1f1f1;
+  overflow-x: hidden;
+  padding-top: 20px;
+
+}
+
+.sidenav a {
+  padding: 6px 8px 6px 16px;
+  text-decoration: none;
+  font-size: 25px;
+  color: #32CD32;
+  display: block;
+     text-align: center;
+
+}
+.sidenav c {
+  padding: 6px 16px 6px 16px;
+  text-decoration: none;
+  font-size: 40px;
+  color: #000;
+  display: block;
+    text-align: center;
+
+}
+.sidenav b {
+  padding: 6px 8px 6px 16px;
+  text-decoration: none;
+  font-size: 25px;
+  color: #FF4500;
+  display: block;
+    text-align: center;
+}
+
+.sidenav a:hover {
+  color: #0000FF;
+}
+.sidenav b:hover {
+  color: #0000FF;
+}
+.sidenav c:hover {
+  color: #0000FF;
+}
+.main {
+    padding-left: 42%;
+    padding-right: 20%;
+    width: 70%;
+    position: fixed;
+    height: 650px;
+    margin: 0;
+    padding-bottom: 20%;
+    overflow-x: hidden;
+
+    align-content: flex-start;
+
+
+}
+
+@media screen and (height: 450px) {
+  .sidenav {padding-top: 15px;}
+  .sidenav a {font-size: 18px;}
+  .sidenav b  {font-size: 18px;}
+  .sidenav c  {font-size: 18px;}
+
+
+
+
+}
+.chart_div {
+    height: 100%;
+    width: 100%;
+
+}
+.main {
+    padding-left: 40%;
+    padding-right: 20%;
+    width: 70%;
+    position: fixed;
+    height: 600px;
+    margin: 0;
+    padding-bottom: 20%;
+    overflow-x: hidden;
+    overflow-y: scroll;
+
+
+
+
+}
+
+
+.detail {
+    color: black;
+    background-color: #D0D0D0;
+  width: 100%;
+overflow-x: scroll;
+text-align: left;
+
+}
+.failcard {
+
+    background-color: #B0B0B0;
+    color: #CC5500;
+  width: 100%;
+    height: 20px;
+    font-weight: bold;
+
+overflow-x: scroll;
+       text-align: center;
+
+
+
+}
+
+
+.container {
+  padding: 24px 36px;
+    margin: fill;
+   color: #98FB98;
+}
+</style>
+
+</head>
+<body onload="generateTable()">
+
+
+<div id="abc"></div>
+
+
+
+<div class="main">
+     <h2  style="font-style: oblique" data-inline-type="block">Test Report for test : ${test_id}</h2>
+<div id="testdetails"></div>
+
+<script type="text/javascript"  src="https://www.gstatic.com/charts/loader.js"> </script>
+    <script>
+
+         function generateTable() {
+             try {
+                 var testdetails = document.createElement("div");
+                 testdetails.classList.add("chart_div");
+                 testdetails.setAttribute("id", "piechart");
+                 var dvTable = document.getElementById("testdetails");
+                 dvTable.parentNode.replaceChild(testdetails, dvTable);
+
+                 drawChart();
+
+                 var table = document.createElement("Nav");
+                 table.classList.add("sidenav");
+                 var testdata = ${test_result};
+
+
+                 //Get the count of columns.
+
+                 var count = testdata.length;
+                 var element = document.createElement("c");
+                 element.innerHTML = "Test Details Overview";
+                 element.onclick = function () {
+                     loadpiechart(testdata);
+                 };
+                 table.appendChild(element);
+                 for (var i = 0; i < count; i++) {
+                     if (testdata[i].test_status == "Passed") {
+                         var element = document.createElement("a");
+
+                         element.innerHTML = testdata[i].test_name;
+                         element.onclick = function () {
+                             loadpiechart(testdata);
+                         };
+
+
+                     } else {
+                         var element = document.createElement("b");
+                         element.innerHTML = testdata[i].test_name;
+                         element.onclick = function () {
+                             loadTestDetails(testdata);
+                         };
+
+
+                     }
+
+
+                     table.appendChild(element);
+                 }
+
+                 var dvTable = document.getElementById("abc");
+                 dvTable.innerHTML = "";
+                 dvTable.appendChild(table);
+             }
+             catch (e) {
+
+             }
+    }
+
+    function loadTestDetails(testdata) {
+        try {
+            var testdetails = document.createElement("testdetails");
+            testdetails.setAttribute("id", "testdetails");
+            var count = testdata.length;
+
+            for (var i = 0; i < count; i++) {
+
+                if (testdata[i].test_status != "Passed") {
+
+                    var element = document.createElement("div");
+                    element.classList.add("failcard");
+                    element.innerHTML = testdata[i].test_name + "----Test Failed";
+                    testdetails.appendChild(element);
+                    element = document.createElement("div");
+                    testdetails.appendChild(element);
+                    element = document.createElement("div");
+                    element.innerHTML = "Failed Step: " + testdata[i].failed_step;
+                    element.classList.add("detail");
+                    testdetails.appendChild(element);
+
+                    var element = document.createElement("div");
+                    element.classList.add("detail");
+                    element.innerHTML = testdata[i].failure_cause;
+
+                    testdetails.appendChild(element);
+                    for (j = 0; j < 2; j++) {
+                        element = document.createElement("br");
+                        testdetails.appendChild(element);
+                    }
+
+
+                }
+
+
+            }
+            var dvTable = document.getElementById("piechart");
+            dvTable.parentNode.replaceChild(testdetails, dvTable);
+        }
+        catch (e)
+        {
+
+        }
+
+    }
+        function loadpiechart(data)
+        {
+            try {
+                var testdetails = document.createElement("div");
+
+                testdetails.setAttribute("id", "piechart");
+                testdetails.classList.add("chart_div");
+                var dvTable = document.getElementById("testdetails");
+                dvTable.parentNode.replaceChild(testdetails, dvTable);
+
+                drawChart();
+            } catch (e)
+            {
+
+            }
+        }
+         google.charts.load('current', {'packages':['corechart']});
+         google.charts.setOnLoadCallback(drawChart);
+function drawChart() {
+    try {
+
+        var data = google.visualization.arrayToDataTable([
+            ['Test Result ', 'Number of tests'],
+
+            ['Failed', ${failed_count}], ['Passed', ${passed_count}]
+        ]);
+
+        // Optional; add a title and set the width and height of the chart
+        var options = {
+            'title': 'Test Result', 'width': "100%", 'height': "100%", pieHole: 0.4, colors: ["#CC5500", "#32CD32"]
+
+        };
+
+        // Display the chart inside the <div> element with id="piechart"
+        var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+        chart.draw(data, options);
+    }catch (e) {
+
+    }
+
+
+}
+	</script>
+
+    </div>
+
+
+</body>
+
+</html>

@@ -20,9 +20,9 @@ from datetime import datetime
 from daksha.settings import STORAGE_PATH
 
 
-def take_screenshot(test_id, web_driver):
+def take_screenshot(test_id, test_name,  web_driver):
     current_time = datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%S.%f')[:-3]
-    screenshot_dir = f"{STORAGE_PATH}/{test_id}/Screenshots"
+    screenshot_dir = f"{STORAGE_PATH}/{test_id}/Screenshots/{test_name}"
     if not os.path.isdir(screenshot_dir):
         os.makedirs(screenshot_dir)
     screenshot_file = f"{screenshot_dir}/{current_time}.png"

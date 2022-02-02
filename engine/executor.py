@@ -28,7 +28,7 @@ import jinja2
 import ast
 
 
-def execute_test(test_executor: TestExecutor, test_yml, email):
+def execute_test(test_executor: TestExecutor, email):
     """
     Calls method to execute the steps mentioned in YAML and calls methods for report generation and sending test report email
      :param test_yml: The test yaml containing test config, name and task
@@ -41,9 +41,10 @@ def execute_test(test_executor: TestExecutor, test_yml, email):
     try:
         execution_result, error_stack = True, None
         step = {}
+        test_yml = test_executor.test_yml
         config = test_yml["config"]
         task = test_yml["task"]
-        name = test_yml["name"]
+        name = test_yml["name"]  # TODO: Alert user if no/null config/task/name is provided
         alert_type = None
         if "alert_type" in test_yml:
             alert_type = test_yml['alert_type']
@@ -58,14 +59,11 @@ def execute_test(test_executor: TestExecutor, test_yml, email):
                 break
         logger.info("Test finished, sending report now")
         generate_result(test_executor.test_id, execution_result, name, step, error_stack)
-        report_url = APACHE_URL + test_executor.test_id + '/report.html'
         if execution_result:
             logger.info("Test successful")
         else:
             logger.info("Test failed for test ID: " + test_executor.test_id)
             send_alert(test_executor.test_id, name, str(step), error_stack, alert_type)
-        send_report_email(test_executor.test_id, report_url, email)
-
     except Exception:
         logger.error("Error encountered in executor: ", exc_info=True)
 
