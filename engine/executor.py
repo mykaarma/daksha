@@ -57,12 +57,12 @@ def execute_test(test_executor: TestExecutor, email):
             execution_result, error_stack = execute_step(test_executor, step)
             if execution_result is False:
                 break
-        logger.info("Test finished, sending report now")
+        logger.info("Test " + name + " finished, generating  result ")
         generate_result(test_executor.test_id, execution_result, name, step, error_stack)
         if execution_result:
-            logger.info("Test successful")
+            logger.info("Test " + name + " successful")
         else:
-            logger.info("Test failed for test ID: " + test_executor.test_id)
+            logger.info("Test " + name + " failed for test ID: " + test_executor.test_id)
             send_alert(test_executor.test_id, name, str(step), error_stack, alert_type)
     except Exception:
         logger.error("Error encountered in executor: ", exc_info=True)

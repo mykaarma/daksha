@@ -63,7 +63,7 @@ def generate_result(test_id, response, name, step, error_stack):
             json.dump(test_result.__dict__, f)
         f.close()
     except Exception:
-        logger.error("Error in testreport generation:", exc_info=True)
+        logger.error("Error in test result generation:", exc_info=True)
 
 
 def generate_test_id():
@@ -84,29 +84,33 @@ def generate_report(test_id):
      :param test_id: ID of the Test
      :type test_id: str
     """
-    logger.info('Creating test report')
-    report_file_path = f"{STORAGE_PATH}/{test_id}/report.html"
-    report_file = open(report_file_path, "w")
-    result_folder_path = f"{STORAGE_PATH}/{test_id}/result"
-    passed_count, failed_count = 0, 0
-    test_result = []
-    for file in os.listdir(result_folder_path):
-        result_file_path = os.path.join(result_folder_path, file)
-        with open(result_file_path) as f:
-            for line in f:
-                test_result.append(json.loads(line.strip()))
-                logger.info(line.strip())
-                if json.loads(line)["test_status"] == "Passed":
-                    passed_count += 1
-                else:
-                    failed_count += 1
+    try:
+        logger.info('Creating test report')
+        report_file_path = f"{STORAGE_PATH}/{test_id}/report.html"
+        report_file = open(report_file_path, "w")
+        result_folder_path = f"{STORAGE_PATH}/{test_id}/result"
+        passed_count, failed_count = 0, 0
+        test_result = []
+        for file in os.listdir(result_folder_path):
+            result_file_path = os.path.join(result_folder_path, file)
+            with open(result_file_path) as f:
+                for line in f:
+                    test_result.append(json.loads(line.strip()))
+                    logger.info(line.strip())
+                    if json.loads(line)["test_status"] == "Passed":
+                        passed_count += 1
+                    else:
+                        failed_count += 1
 
-    test_result = json.dumps(test_result)
-    report_template = open("templates/test_report_template.html", "r").read()
-    replacement = {"${test_id}": test_id, "${test_result}": test_result, "${passed_count}": passed_count.__str__(),
-                   "${failed_count}": failed_count.__str__()}
-    for key, value in replacement.items():
-        report_template = report_template.replace(key, value)
-        logger.info(key)
-    report_file.write(report_template)
-    report_file.close()
+        test_result = json.dumps(test_result)
+        report_template = open("templates/test_report_template.html", "r").read()
+        replacement = {"${test_id}": test_id, "${test_result}": test_result, "${passed_count}": passed_count.__str__(),
+                       "${failed_count}": failed_count.__str__()}
+        for key, value in replacement.items():
+            report_template = report_template.replace(key, value)
+        report_file.write(report_template)
+        report_file.close()
+        logger.info("Test Report generated")
+    except Exception:
+        logger.error("Error in test report generation:", exc_info=True)
+
