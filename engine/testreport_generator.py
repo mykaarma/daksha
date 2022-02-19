@@ -96,7 +96,6 @@ def generate_report(test_id):
             with open(result_file_path) as f:
                 for line in f:
                     test_result.append(json.loads(line.strip()))
-                    logger.info(line.strip())
                     if json.loads(line)["test_status"] == "Passed":
                         passed_count += 1
                     else:
