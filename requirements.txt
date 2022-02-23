@@ -12,5 +12,5 @@ pyyaml==6.0
 postmarker==0.14.1
 Jinja2==2.11.3
 jmespath==0.10.0
-# Temporary patch for markupsafe issue
+# Temporary patch for markupsafe issue https://github.com/pallets/markupsafe/issues/284
 markupsafe>=1.1.1,<2.1.0
