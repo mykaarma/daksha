@@ -52,7 +52,8 @@ def generate_result(test_id, response, name, step, error_stack):
 
         else:
             test_status = "Failed"
-        test_result = TestResult(name, test_status, step.__str__(), error_stack.replace('"', '\\"'))
+            error_stack = error_stack.replace('<', '&lt;').replace('>', '&gt;')
+        test_result = TestResult(name, test_status, step.__str__(), error_stack)
         
         with open(result_file_path, 'w') as f:
             json.dump(test_result.__dict__, f)
