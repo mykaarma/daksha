@@ -45,7 +45,6 @@ def generate_result(test_id, response, name, step, error_stack):
         time_now = datetime.now()
         result_file_path = f"{STORAGE_PATH}/{test_id}/result/{name}_{time_now}"
         os.makedirs(os.path.dirname(result_file_path), exist_ok=True)
-        # result_file = open(result_file_path, "a")
         if response:
             test_status = "Passed"
             step = ""
@@ -53,12 +52,8 @@ def generate_result(test_id, response, name, step, error_stack):
 
         else:
             test_status = "Failed"
-            # error_stack=error_stack.replace("\n", " ")
         test_result = TestResult(name, test_status, step.__str__(), error_stack)
-        # json.loads(result_file).update(test_report)
-        logger.info(test_result.__dict__)
-        # result_file.write(test_report)
-        # logger.info('Report created at ' + report_file_path)
+        
         with open(result_file_path, 'w') as f:
             json.dump(test_result.__dict__, f)
         f.close()
