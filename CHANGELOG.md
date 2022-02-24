@@ -1,6 +1,9 @@
 # `DAKSHA` Change Log
 
-*version*: `0.3.2`
+*version*: `1.0.0`
+
+## v 1.0.0
+1. Adressed issues #11 , #15 , #19 , #29
 
 ## v 0.3.2
 1. Changed python version to 3.10 in Dockerfile
