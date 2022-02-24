@@ -1,134 +1,4 @@
-<!DOCTYPE html>
-<html>
-<head>
-
-<style>
-body {
-  font-family: "Lato", sans-serif;
-}
-
-.sidenav {
-    height: 100%;
-    width: 35%;
-    position: fixed;
-    z-index: 1;
-    top: 0;
-    left: 0;
-    background-color: #f1f1f1;
-    overflow-x: hidden;
-    padding-top: 20px;
-
-}
-
-.sidenav a {
-    padding: 6px 8px 6px 16px;
-    text-decoration: none;
-    font-size: 25px;
-    color: #32CD32;
-    text-align: center;
-    display: block;
-
-}
-.sidenav c {
-    padding: 6px 16px 6px 16px;
-    text-decoration: none;
-    font-size: 40px;
-    color: #000;
-    display: block;
-    text-align: center;
-
-}
-.sidenav b {
-    padding: 6px 8px 6px 16px;
-    text-decoration: none;
-    font-size: 25px;
-    color: #FF4500;
-    display: block;
-    text-align: center;
-}
-
-.sidenav a:hover {
-  color: #0000FF;
-}
-.sidenav b:hover {
-  color: #0000FF;
-}
-.sidenav c:hover {
-  color: #0000FF;
-}
-
-@media screen and (height: 450px) {
-  .sidenav {padding-top: 15px;}
-  .sidenav a {font-size: 18px;}
-  .sidenav b  {font-size: 18px;}
-  .sidenav c  {font-size: 18px;}
-}
-.chart_div {
-    height: 100%;
-    width: 100%;
-}
-.main {
-    padding-left: 35%;
-    padding-right: 0%;
-    width: 79%;
-    position: fixed;
-    height: 600px;
-    margin: 0;
-    padding-bottom: 20%;
-    overflow-x: hidden;
-    overflow-y: scroll;
-    align-content: flex-start;
-}
-
-
-.detail {
-    color: black;
-    background-color: #D0D0D0;
-    width: 81%;
-    text-align: left;
-    overflow: visible;
-
-}
-.failcard {
-
-    background-color: #B0B0B0;
-    color: #CC5500;
-    width: 81%;
-    font-size: large;
-    font-weight: bold;
-    overflow: visible;
-    text-align: center;
-
-
-
-
-
-}
-
-
-.container {
-  padding: 24px 36px;
-    margin: fill;
-   color: #98FB98;
-}
-</style>
-
-</head>
-<body onload="generateTable()">
-
-
-<div id="abc"></div>
-
-
-
-<div class="main">
-     <h2  style="font-style: oblique" data-inline-type="block">Test Report for test : ${test_id}</h2>
-<div id="testdetails"></div>
-
-<script type="text/javascript"  src="https://www.gstatic.com/charts/loader.js"> </script>
-    <script>
-
-         function generateTable() {
+ function generateTable() {
              try {
                  var testdetails = document.createElement("div");
                  testdetails.classList.add("chart_div");
@@ -176,7 +46,7 @@ body {
                      table.appendChild(element);
                  }
 
-                 var dvTable = document.getElementById("abc");
+                 var dvTable = document.getElementById("report");
                  dvTable.innerHTML = "";
                  dvTable.appendChild(table);
              }
@@ -272,11 +142,3 @@ function drawChart() {
 
 
 }
-	</script>
-
-    </div>
-
-
-</body>
-
-</html>

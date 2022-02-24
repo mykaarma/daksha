@@ -16,6 +16,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 import json
 import os
+import shutil
 import string
 import random
 
@@ -82,11 +83,9 @@ def generate_report(test_id):
     """
     try:
         logger.info('Creating test report')
-        report_file_path = f"{STORAGE_PATH}/{test_id}/report.html"
-        report_file = open(report_file_path, "w")
-        result_folder_path = f"{STORAGE_PATH}/{test_id}/result"
         passed_count, failed_count = 0, 0
         test_result = []
+        result_folder_path = f"{STORAGE_PATH}/{test_id}/result"
         for file in os.listdir(result_folder_path):
             result_file_path = os.path.join(result_folder_path, file)
             with open(result_file_path) as f:
@@ -96,15 +95,24 @@ def generate_report(test_id):
                         passed_count += 1
                     else:
                         failed_count += 1
-
         test_result = json.dumps(test_result)
-        report_template = open("templates/test_report_template.html", "r").read()
-        replacement = {"${test_id}": test_id, "${test_result}": test_result, "${passed_count}": passed_count.__str__(),
-                       "${failed_count}": failed_count.__str__()}
-        for key, value in replacement.items():
-            report_template = report_template.replace(key, value)
-        report_file.write(report_template)
-        report_file.close()
+        replacement = {"test_id": test_id, "test_result": test_result, "passed_count": passed_count.__str__(),
+                       "failed_count": failed_count.__str__()}
+
+        report_file_dir = f"{STORAGE_PATH}/{test_id}/"
+        shutil.copy("templates/report.html", report_file_dir)
+        shutil.copy("templates/report.js", report_file_dir)
+        shutil.copy("templates/report.css", report_file_dir)
+        with open(f"{report_file_dir}/report.html", "r+") as file:
+            content = string.Template(file.read()).substitute(**replacement)
+            file.seek(0)
+            file.write(content)
+            file.truncate()
+        with open(f"{report_file_dir}/report.js", "r+") as file:
+            content = string.Template(file.read()).substitute(**replacement)
+            file.seek(0)
+            file.write(content)
+            file.truncate()
         logger.info("Test Report generated")
     except Exception:
         logger.error("Error in test report generation:", exc_info=True)
