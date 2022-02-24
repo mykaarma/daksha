@@ -52,7 +52,6 @@ def executor(request):
                 logger.info("task submitted to thread pool executor")
             except Exception as e:
                 logger.error("Exception occurred", e)
-            pass
             response_message = "Your test ID is: " + test_id + ". We'll send you an email with report shortly"
             return HttpResponse(response_message, status=status.HTTP_200_OK)
         except Exception as e:
