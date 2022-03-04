@@ -28,6 +28,13 @@ import jinja2
 import ast
 
 
+def __cleanup(web_driver: WebDriver):
+    try:
+        web_driver.close()
+    except Exception:
+        pass
+
+
 def execute_test(test_executor: TestExecutor, email):
     """
     Calls method to execute the steps mentioned in YAML and calls methods for report generation and sending test report email
@@ -64,6 +71,7 @@ def execute_test(test_executor: TestExecutor, email):
         else:
             logger.info("Test " + name + " failed for test ID: " + test_executor.test_id)
             send_alert(test_executor.test_id, name, str(step), error_stack, alert_type)
+        __cleanup(web_driver)
     except Exception:
         logger.error("Error encountered in executor: ", exc_info=True)
 
