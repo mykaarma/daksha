@@ -23,7 +23,6 @@ from .selenium_helper import *
 from .testreport_generator import *
 from .email_generator import *
 
-from daksha.settings import APACHE_URL
 import jinja2
 import ast
 
