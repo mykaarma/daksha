@@ -30,7 +30,7 @@ import ast
 
 def __cleanup(web_driver: WebDriver):
     try:
-        web_driver.close()
+        web_driver.quit()
     except Exception:
         pass
 
