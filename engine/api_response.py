@@ -131,7 +131,7 @@ def process_response(test_executor: TestExecutor, r, **kwargs):
         if r.status_code != response_dict['status']:
             logger.info(str(r.status_code) + " Status Not Matched :(")
             logger.info(r.text)
-            return False, None
+            return False, "Status Not Matched : " + r.text
     logger.info(str(r.status_code) + " OK! Proceeding further")
     return save_response(test_executor, r, response_dict)
 
