@@ -20,5 +20,5 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('singletest', views.executor, name='singletest'),
+    path('runner', views.executor, name='singletest'),
 ]

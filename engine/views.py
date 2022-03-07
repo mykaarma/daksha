@@ -15,16 +15,19 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 """
 
+import json
+import os
 from concurrent.futures.thread import ThreadPoolExecutor
+
 from django.http import HttpResponse
 from rest_framework import status
-from .utils.utils import read_yaml, read_local_yaml
-from .executor import *
-from .testreport_generator import *
-import json
+
 from daksha.settings import REPO_NAME, BRANCH_NAME
-import os
-from .variable_dictionary import variable_dictionary
+from .errors import UnsupportedFileSourceError, BadArgumentsError
+from .testreport_generator import *
+from .thread_executor import thread_executor
+from .utils.utils import read_yaml, read_local_yaml, get_yml_files_in_folder_local, get_yml_files_in_folder_git
+
 
 # Create your views here.
 def executor(request):
@@ -38,33 +41,17 @@ def executor(request):
             os.makedirs(f"{STORAGE_PATH}/{test_id}")
             logger.info('Directory created at: ' + f"{STORAGE_PATH}/{test_id}")
             received_json_data = json.loads(request.body.decode())
-            data_file_location = received_json_data['fileLocation']
-            alert_type = None
-            if ("variables" in received_json_data):
-                variable_data = received_json_data['variables']
-                for key,value in variable_data.items():
-                    variable_dictionary[key] = value
-            if "git" in data_file_location.lower():
-
-                repo_name = REPO_NAME
-                branch_name = BRANCH_NAME
-                test_yml_content = read_yaml(repo_name, branch_name, received_json_data['file'], test_id)
-
-            elif "local" in data_file_location.lower():
-                test_yml_content = read_local_yaml(received_json_data['file'])
-            else:
-                logger.error("fileLocation is not supported, please use git or local")
-                return HttpResponse("fileLocation is not supported, please use git or local",
-                                    status=status.HTTP_400_BAD_REQUEST)
-            execute_config(test_yml_content['config'])
-            if "alert_type" in test_yml_content:
-                alert_type = test_yml_content['alert_type']
-                logger.info("Users has opted for alerts via "+alert_type)
-            else:
-                logger.info("User has not opted for alerts")
+            try:
+                test_ymls, initial_variable_dictionary = __extract_test_data(test_id, received_json_data['test'])
+            except BadArgumentsError as e:
+                return HttpResponse(str(e), status=status.HTTP_400_BAD_REQUEST)
             pool_executor = ThreadPoolExecutor(max_workers=1)
-            pool_executor.submit(execute_test, test_yml_content['task'], test_id, test_yml_content['name'],
-                                 received_json_data['email'], alert_type)
+            try:
+                pool_executor.submit(thread_executor, test_ymls, initial_variable_dictionary, test_id,
+                                     received_json_data['email'])
+                logger.info("task submitted to thread pool executor")
+            except Exception as e:
+                logger.error("Exception occurred", e)
             response_message = "Your test ID is: " + test_id + ". We'll send you an email with report shortly"
             return HttpResponse(response_message, status=status.HTTP_200_OK)
         except Exception as e:
@@ -73,3 +60,37 @@ def executor(request):
 
     else:
         return HttpResponse(status=status.HTTP_405_METHOD_NOT_ALLOWED)
+
+
+def __extract_test_data(test_id, test):
+    initial_variable_dictionary = {}
+    if "variables" in test:
+        initial_variable_dictionary = test['variables']
+    test_ymls = []
+    source_location = test['source']
+    location_type = test['type']
+    path = test['path']
+    if "git" in source_location.lower():
+        if "file" == location_type:
+            files = [path]
+        else:
+            files = get_yml_files_in_folder_git(REPO_NAME, BRANCH_NAME, path)
+        for file_path in files:
+            test_yml = read_yaml(REPO_NAME, BRANCH_NAME, file_path, test_id)
+            test_ymls.append(test_yml)
+
+    elif "local" in source_location.lower():
+        if "file" == location_type:
+            files = [path]
+        else:
+            files = get_yml_files_in_folder_local(path)
+        for file_path in files:
+            test_yml = read_local_yaml(file_path)
+            test_ymls.append(test_yml)
+
+    else:
+        error_message = "source_location = %s is not supported, please use git or local" % source_location
+        logger.error(error_message)
+        raise UnsupportedFileSourceError(error_message)
+
+    return test_ymls, initial_variable_dictionary
