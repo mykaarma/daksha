@@ -1,17 +1,18 @@
 config:
   env: local
   browser: chrome
-  driverAddress: /Users/rahul/Downloads/chromedriver
+  driverAddress: /Users/user/Downloads/chromedriver
 name: Wait_test
 task:
     - launch_browser
     - open_url:
-        url: https://stackoverflow.com/questions/41744368/scrolling-to-element-using-webdriver
+        url: https://www.google.co.in/
     - wait_for:
-        mode: hardwait
-        value: 5
-    - scroll_to:
-        css: .flex--item.s-btn.s-btn__primary.s-btn__icon
+        mode: visibility
+        xpath: //input[@title ="Search"]
+    - fill_data:
+        xpath: //input[@title ="Search"]
+        value: Cars
     - wait_for:
         mode: hardwait
         value: 10
