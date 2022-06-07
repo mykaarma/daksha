@@ -21,4 +21,6 @@ task:
     - wait_for:
         mode: invisibility
         xpath: //input[@title ="Search"]
+    - scroll_to:
+        xpath: //span[contains(.,"Next")]
     - quit_browser
