@@ -65,7 +65,7 @@ def browser_config(config) -> WebDriver:
         logger.error("Browser or env not supported at this time")
         raise Exception("Browser or env not supported at this time")
 
-#    web_driver.maximize_window()
+    web_driver.maximize_window()
     web_driver.implicitly_wait(30)
     logger.info(brow + ' browser launched on ' + env)
     return web_driver
