@@ -42,4 +42,5 @@ method_map = {
     "make_HTTP_request": make_http_request,
     "wait_for": wait_for,
     "capture_ui_element": capture_ui_element,
+    "scroll_to": scroll_to,
 }

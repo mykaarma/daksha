@@ -473,3 +473,30 @@ def get_locator_info(**kwargs):
         return By.NAME, kwargs['name']
     else:
         raise Exception("Invalid locator passed")
+
+def scroll_to(test_executor: TestExecutor, **kwargs):
+    """
+    Scrolls down to a particular element's view
+     :param test_executor: The TestExecutor object to give context for execution
+     :type test_executor: TestExecutor
+     :param kwargs: WebElement Description Fetched From YAML
+     :type kwargs: dict
+     :returns: Status of execution and error stack
+     :rtype: tuple
+    """
+    locator, locator_value = get_locator_info(**kwargs)
+    logger.info("I'll scroll to element")
+    error_stack = None
+    for i in range(5):
+        try:
+            element = WebDriverWait(test_executor.web_driver, 10).until(
+                EC.visibility_of_element_located((locator, locator_value))
+            )
+            test_executor.web_driver.execute_script("arguments[0].scrollIntoView();", element)
+            logger.info("Scrolled to element successfully")
+            take_screenshot(test_executor.test_id, test_executor.test_yml["name"], test_executor.web_driver)
+            return True, None
+        except Exception as e:
+            error_stack = traceback.format_exc()
+            logger.error("Attempt " + str(i) + " to scroll to element failed")
+    return False, error_stack

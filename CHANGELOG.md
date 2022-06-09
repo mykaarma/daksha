@@ -1,6 +1,9 @@
 # `DAKSHA` Change Log
 
-*version*: `1.0.0`
+*version*: `1.0.1`
+
+## v 1.0.1
+1. Added scroll_to functionality in helper methods
 
 ## v 1.0.0
 1. Adressed issues #11 , #15 , #19 , #29

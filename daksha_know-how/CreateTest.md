@@ -68,6 +68,7 @@ task:
    * **navigate_back**: This can be used to go back to previous page.
    * **switch_iframe**:  Here you need to provide the **locator** as a subfield and it will switch to that iframe.
    * **switch_to_default_iframe**: This will take you to the default frame.
+   * **scroll_to**:  You need to provide the locator of the webelement that you want to scroll down/up to.**Locator** can be *xpath, id, css, name, tagname, classname, linktext and partiallinktext*
    * **wait-for**: This has 2 fields- mode, value/locator.This has 3 mode : *visibility,invisibility,hardwait*.For *visibility/invisibility* please provide the locator of the webelement that you want to wait for. In case of mode *hardwait*, please provide the value as number of seconds you want to wait for.
    * **quit_browser**: You are recommended to add this step at the end of your test case steps to quit the remote or local browser.
    
