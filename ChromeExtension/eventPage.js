@@ -1,12 +1,12 @@
 // Initialising Context Menus Which we want in our Chrome Extension.
 let copy_to_clipboard = {
     "id" : "copy_to_clipboard" , 
-    "title": "Copy_to_clipboard" , 
+    "title": "Stop And Copy to clipboard" , 
     "contexts":["all"]
 }
 let download = {
     "id" : "download" , 
-    "title": "Download" , 
+    "title": "Stop And Download" , 
     "contexts":["all"]
 }
 let pause = {
@@ -21,7 +21,7 @@ let start_again = {
 }
 let start = {
     "id" : "start" ,
-    "title" : "Start" , 
+    "title" : "Start Daksha Recorder" , 
     "contexts" : ["all"]
 }
 let resume = {
@@ -45,12 +45,16 @@ chrome.contextMenus.onClicked.addListener((info , tab) =>{
             "type" : "copy_to_clipboard"
         }
         chrome.tabs.sendMessage(tab.id , obj , ()=>{ return true ;}) ;
+        chrome.contextMenus.removeAll() ;
+        chrome.contextMenus.create(start) ;
     }
     else if(info.menuItemId === "download"){
         let obj = {
             "type" : "download"
         }
         chrome.tabs.sendMessage(tab.id , obj , ()=>{ return true ;}) ;
+        chrome.contextMenus.removeAll() ;
+        chrome.contextMenus.create(start) ;
 }
     else if(info.menuItemId === "pause"){
         let obj = {
@@ -59,16 +63,8 @@ chrome.contextMenus.onClicked.addListener((info , tab) =>{
         chrome.tabs.sendMessage(tab.id , obj , ()=>{ return true ;}) ;
         chrome.contextMenus.removeAll() ;
         chrome.contextMenus.create(resume) ;
-        chrome.contextMenus.create(Stop) ;
-        chrome.contextMenus.create(start_again) ;
-    }
-    else if(info.menuItemId === "start_again"){
-        let obj = {
-            "type" : "start_again"
-        }
-        chrome.tabs.sendMessage(tab.id , obj , ()=>{ return true ;}) ;
-        chrome.contextMenus.removeAll() ;
-        chrome.contextMenus.create(start) ;
+        chrome.contextMenus.create(copy_to_clipboard) ;
+        chrome.contextMenus.create(download) ;
     }
     else if(info.menuItemId === "start"){
         let url = "" ;
@@ -81,8 +77,8 @@ chrome.contextMenus.onClicked.addListener((info , tab) =>{
         chrome.tabs.sendMessage(tab.id , obj , ()=>{ return true ;}) ;
         chrome.contextMenus.removeAll() ;
         chrome.contextMenus.create(pause) ;
-        chrome.contextMenus.create(start_again) ;
-        chrome.contextMenus.create(Stop) ;
+        chrome.contextMenus.create(download) ; 
+        chrome.contextMenus.create(copy_to_clipboard) ; 
         });
     }
     else if(info.menuItemId === "resume"){
@@ -92,18 +88,7 @@ chrome.contextMenus.onClicked.addListener((info , tab) =>{
         chrome.tabs.sendMessage(tab.id , obj , ()=>{ return true ;}) ;
         chrome.contextMenus.removeAll() ;
         chrome.contextMenus.create(pause) ;
-        chrome.contextMenus.create(Stop) ;
-        chrome.contextMenus.create(start_again) ;
-    }
-    else if(info.menuItemId === "stop"){
-        let obj = {
-            "type" : "stop"
-        }
-        chrome.tabs.sendMessage(tab.id , obj , ()=>{ return true ;}) ;
-        chrome.contextMenus.removeAll() ;
         chrome.contextMenus.create(download) ;
         chrome.contextMenus.create(copy_to_clipboard) ;
-        chrome.contextMenus.create(start_again) ;
     }
-
 })

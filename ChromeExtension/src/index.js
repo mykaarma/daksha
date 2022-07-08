@@ -2,7 +2,7 @@ let prevXPath = "";
 let prevTarelement;
 let prevDefaultIframe = "";
 let defaultIframe = "";
-let pause = true;
+let pause ;
 let reg = />+-+\s*/g;
 let yaml = require("js-yaml");
 // Function to find XPath of a given Element in a given Document
@@ -42,14 +42,6 @@ function updateTask(task) {
         jsonObj["storagekey"] = array;
         chrome.storage.sync.set(jsonObj, () => {
         });
-    });
-}
-// Function tells us whether the chrome extension is paused and resumed.
-function updateStatus() {
-
-    chrome.storage.sync.get("updateKey", function (result) {
-        let key = result["updateKey"] ? result["updateKey"] : true;
-        pause = key;
     });
 }
 // Defined the tasks which will be added into the updateTask function!!
@@ -96,13 +88,6 @@ let open_url = (url) => {
 
     return json_obj;
 };
-let validate = (xpath) => {
-    let json_obj = {
-        "xpath": `${xpath}`
-    }
-
-    return json_obj;
-};
 function fillDataEvent(event) {
     // Adding objects to the task array to push them updateTask function 
     let task = [];
@@ -140,8 +125,8 @@ function eventHandlerInIframe(event) {
             }
 
         }
-        let tas = fillDataEvent(event);
-        task.push.apply(task, tas);
+        let list = fillDataEvent(event);
+        task.push.apply(task, list);
         updateTask(task);
     }
 }
@@ -156,8 +141,12 @@ function AddEventListenerToAllIframe(document) {
         }
     });
 }
-//Calling this function to fetch the state of the chrome Extension whether it is recording or not.
-updateStatus();
+// Fetching the information whether the chrome extension is paused or not 
+chrome.storage.sync.get("updateKey", function (result) {
+    if(result["updateKey"] !== null){
+        pause = result["updateKey"] ;
+    }
+})
 //Listening to the mutation to add listeners of iframes.
 let mutationObserver = new MutationObserver(function (mutations) {
     mutations.forEach(function (mutation) {
@@ -174,6 +163,7 @@ mutationObserver.observe(document, {
 });
 // Adding mousdown listener to window.
 window.addEventListener('mousedown', (event) => {
+    // create an enum for mouse
     if (event.button === 0) {
         if (pause === false) {
             let task = [];
@@ -182,8 +172,8 @@ window.addEventListener('mousedown', (event) => {
             if (prevDefaultIframe != defaultIframe) {
                 task.push(switch_to_default_iframe);
             }
-            let tas = fillDataEvent(event);
-            task.push.apply(task, tas);
+            let list = fillDataEvent(event);
+            task.push.apply(task, list);
             updateTask(task);
         }
     }
@@ -198,42 +188,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
             let data = yaml.dump(JSON.parse(JSON.stringify(task)));
             let dat = data.replace(reg, '');
             navigator.clipboard.writeText(dat);
-        })
-    }
-    else if (request.type === "download") {
-        chrome.storage.sync.get("storagekey", function (result) {
-            var array = result["storagekey"];
-            chrome.storage.sync.remove("storagekey", () => { });
-            var task = { 'task': array };
-            let data = yaml.dump(JSON.parse(JSON.stringify(task)));
-            let dat = data.replace(reg, '');
-            let blob = new Blob([dat], { type: 'application/yaml' });
-            let url = URL.createObjectURL(blob);
-            var a = document.createElement('a');
-            a.href = url;
-            a.download = "daksha.yaml";
-            a.style.display = 'none';
-            document.body.appendChild(a);
-            a.click();
-            delete a;
-        });
-    }
-    else if (request.type === "pause") {
-        var jsonObj = {};
-        jsonObj["updateKey"] = true;
-        chrome.storage.sync.set(jsonObj, () => {
-        });
-        pause = true;
-    }
-    else if (request.type === "start") {
-        var jsonObj = {};
-        jsonObj["updateKey"] = false;
-        chrome.storage.sync.set(jsonObj, () => {
-        });
-        pause = false;
-        updateTask([open_url(request.msg)]);
-    }
-    else if (request.type === "start_again") {
+        }) ;
         chrome.storage.sync.remove("storagekey", () => { });
         chrome.storage.sync.remove("updateKey", () => { });
         prevXPath = "";
@@ -245,7 +200,64 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         chrome.storage.sync.set(jsonObj, () => {
         });
         pause = true;
-        alert('All your data has been erased , You can now start again!');
+        alert('All your data has been Copied to clipboard , You can now start again!');
+    }
+    else if (request.type === "download") {
+        chrome.storage.sync.get("storagekey", function (result) {
+            var array = result["storagekey"];
+            var task = { "config" : {
+                "env": "" ,
+                "browser": "",
+                "driverAddress": ""
+            },
+            "name":"" ,
+            "alert_type" : "" ,'task': array };
+            let data = yaml.dump(JSON.parse(JSON.stringify(task)));
+            let dat = data.replace(reg, '');
+            let blob = new Blob([dat], { type: 'application/yaml' });
+            let url = URL.createObjectURL(blob);
+            let win = window.open("https://www.google.com");
+            var a = win.document.createElement('a');
+            a.href = url;
+            a.download = "daksha.yaml";
+            a.style.display = 'none';
+            win.document.body.appendChild(a);
+            a.click();
+            delete a;
+        });
+        chrome.storage.sync.remove("storagekey", () => { });
+        chrome.storage.sync.remove("updateKey", () => { });
+        prevXPath = "";
+        prevDefaultIframe = "";
+        defaultIframe = "";
+        prevTarelement = null;
+        var jsonObj = {};
+        jsonObj["updateKey"] = true;
+        chrome.storage.sync.set(jsonObj, () => {
+        });
+        pause = true;
+        alert('All your data has been Downloaded , You can now start again!');
+    }
+    else if (request.type === "pause") {
+        var jsonObj = {};
+        jsonObj["updateKey"] = true;
+        chrome.storage.sync.set(jsonObj, () => {
+        });
+        pause = true;
+    }
+    else if (request.type === "start") {
+        chrome.storage.sync.remove("storagekey", () => { });
+        chrome.storage.sync.remove("updateKey", () => { });
+        prevXPath = "";
+        prevDefaultIframe = "";
+        defaultIframe = "";
+        prevTarelement = null;
+        var jsonObj = {};
+        jsonObj["updateKey"] = false;
+        chrome.storage.sync.set(jsonObj, () => {
+        });
+        pause = false;
+        updateTask([open_url(request.msg)]);
     }
     else if (request.type === "resume") {
         var jsonObj = {};
@@ -253,13 +265,6 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         chrome.storage.sync.set(jsonObj, () => {
         });
         pause = false;
-    }
-    else if (request.type === "stop") {
-        var jsonObj = {};
-        jsonObj["updateKey"] = true;
-        chrome.storage.sync.set(jsonObj, () => {
-        });
-        pause = true;
     }
 
     sendResponse({ msg: "All good" });

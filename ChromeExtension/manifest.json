@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "ChromeExtension",
+  "name": "Daksha Recorder",
   "version": "1.0",
   "description": "Extension for Daksha",
   "action": {
@@ -15,12 +15,9 @@
     "*://*/*"
   ],
   "permissions": [
-      "scripting",
       "tabs",
       "contextMenus",
-      "downloads",
-      "storage" , 
-      "notifications"
+      "storage"
   ],
   "background" : {
       "service_worker" : "eventPage.js"
