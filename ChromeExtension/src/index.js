@@ -1,50 +1,55 @@
-let prevXPath = "";
-let prevTarelement;
-let prevDefaultIframe = "";
-let defaultIframe = "";
-let pause ;
-let reg = />+-+\s*/g;
+let previousSelectedElementXpath = "";
+let previousTargetElement;
+// For parent window previousIframe === "" ;
+let previousIframe = "";
+let currentIframe = "";
+let pauseVal = true;
+let leftClickPressed = 0 ;
+let dakshaYamlStorageKey = "generatedDakshaYaml";
+let pauseValueStorageKey = "updatePauseValue";
+let dakshaYamlFormatterRegex = />+-+\s*/g;
 let yaml = require("js-yaml");
 // Function to find XPath of a given Element in a given Document
-function getXPath(elm, doc) {
+function getXPath(selectedElement, selectedElementDocument) {
 
-    var allNodes = doc.getElementsByTagName('*');
-    for (var segs = []; elm.parentNode && elm.nodeType == 1; elm = elm.parentNode) {
-        if (elm.hasAttribute('id')) {
+    var allNodes = selectedElementDocument.getElementsByTagName('*');
+    for (var segs = []; selectedElement.parentNode && selectedElement.nodeType == 1; selectedElement = selectedElement.parentNode) {
+        if (selectedElement.hasAttribute('id')) {
             var uniqueIdCount = 0;
             for (var n = 0; n < allNodes.length; n++) {
-                if (allNodes[n].hasAttribute('id') && allNodes[n].id == elm.id) uniqueIdCount++;
+                if (allNodes[n].hasAttribute('id') && allNodes[n].id == selectedElement.id) uniqueIdCount++;
                 if (uniqueIdCount > 1) break;
             };
             if (uniqueIdCount == 1) {
-                segs.unshift('//' + elm.localName.toLowerCase() + '[@id="' + elm.getAttribute('id') + '"]');
+                segs.unshift('//' + selectedElement.localName.toLowerCase() + '[@id="' + selectedElement.getAttribute('id') + '"]');
                 return segs.join('/');
             } else {
-                segs.unshift(elm.localName.toLowerCase() + '[@id="' + elm.getAttribute('id') + '"]');
+                segs.unshift(selectedElement.localName.toLowerCase() + '[@id="' + selectedElement.getAttribute('id') + '"]');
             }
         }
         else {
-            for (i = 1, sib = elm.previousSibling; sib; sib = sib.previousSibling) {
-                if (sib.localName == elm.localName) i++;
+            for (i = 1, siblingsOfSelectedElement = selectedElement.previousSibling; siblingsOfSelectedElement; siblingsOfSelectedElement = siblingsOfSelectedElement.previousSibling) {
+                if (siblingsOfSelectedElement.localName == selectedElement.localName) i++;
             };
-            segs.unshift(elm.localName.toLowerCase() + '[' + i + ']');
+            segs.unshift(selectedElement.localName.toLowerCase() + '[' + i + ']');
         };
     };
     return segs.length ? '//' + segs.join('/') : null;
 };
-// This function is used to update the Daksha Yaml and Add new tasks.
-function updateTask(task) {
+// This function is used to update the Daksha Yaml and Add new dakshaYamlObjectss.
+function updateDakshaYamlFile(dakshaYamlObjects) {
 
-    chrome.storage.sync.get("storagekey", function (result) {
-        var array = result["storagekey"] ? result["storagekey"] : [];
-        array.push.apply(array, task);
-        var jsonObj = {};
-        jsonObj["storagekey"] = array;
-        chrome.storage.sync.set(jsonObj, () => {
+    chrome.storage.sync.get(dakshaYamlStorageKey, function (result) {
+        var array = result[dakshaYamlStorageKey] ? result[dakshaYamlStorageKey] : [];
+        array.push.apply(array, dakshaYamlObjects);
+        var dakshaYamlObject = {};
+        dakshaYamlObject[dakshaYamlStorageKey] = array;
+        console.log(array) ;
+        chrome.storage.sync.set(dakshaYamlObject, () => {
         });
     });
 }
-// Defined the tasks which will be added into the updateTask function!!
+// Defined the dakshaYamlObjectss which will be added into the updateDakshaYamlFile function!!
 let fill_data = (xpath, value) => {
     let json_obj = {
         "fill_data": {
@@ -88,46 +93,46 @@ let open_url = (url) => {
 
     return json_obj;
 };
-function fillDataEvent(event) {
-    // Adding objects to the task array to push them updateTask function 
-    let task = [];
-    if (prevXPath !== "") {
-        if (prevTarelement !== null && prevTarelement !== undefined) {
-            let prevTagName = prevTarelement.tagName.toLowerCase();
-            let prevVal = prevTarelement.value;
-            if ((prevTagName === "input" || prevTagName === "textarea")) {
-                task.push(fill_data(prevXPath, prevVal));
+function getDakshaEventsArray(event) {
+    // Adding objects to the dakshaYamlObjects array to push them updateDakshaYamlFile function 
+    let dakshaYamlObjects = [];
+    if (previousSelectedElementXpath !== "") {
+        if (previousTargetElement !== null && previousTargetElement !== undefined) {
+            let previousTargetElementTagName = previousTargetElement.tagName.toLowerCase();
+            let previousTargetElementValue = previousTargetElement.value;
+            if ((previousTargetElementTagName === "input" || previousTargetElementTagName === "textarea")) {
+                dakshaYamlObjects.push(fill_data(previousSelectedElementXpath, previousTargetElementValue));
             }
         }
     }
-    let tarelement = event.target;
-    prevTarelement = tarelement;
-    let doc = event.view.document;
-    let XPath = getXPath(tarelement, doc);
-    prevXPath = XPath;
-    task.push(click_button(XPath));
-    return task;
+    let targetElement = event.target;
+    previousTargetElement = targetElement;
+    let selectedElementDocument = event.view.document;
+    let XPath = getXPath(targetElement, selectedElementDocument);
+    previousSelectedElementXpath = XPath;
+    dakshaYamlObjects.push(click_button(XPath));
+    return dakshaYamlObjects;
 }
 function eventHandlerInIframe(event) {
     //Handling the events occurred inside the Iframes 
-    if (pause === false) {
-        let task = [];
-        let XiPath = getXPath(document.activeElement, document);
-        prevDefaultIframe = defaultIframe;
-        defaultIframe = `${XiPath}`;
-        if (prevDefaultIframe != defaultIframe) {
-            if (prevDefaultIframe === "") {
-                task.push(switch_iframe(XiPath));
+    if (pauseVal === false) {
+        let dakshaYamlObjects = [];
+        let selectedIframeXpath = getXPath(document.activeElement, document);
+        previousIframe = currentIframe;
+        currentIframe = `${selectedIframeXpath}`;
+        if (previousIframe != currentIframe) {
+            if (previousIframe === "") {
+                dakshaYamlObjects.push(switch_iframe(selectedIframeXpath));
             }
             else {
-                task.push(switch_to_default_iframe());
-                task.push(switch_iframe(XiPath));
+                dakshaYamlObjects.push(switch_to_default_iframe());
+                dakshaYamlObjects.push(switch_iframe(selectedIframeXpath));
             }
 
         }
-        let list = fillDataEvent(event);
-        task.push.apply(task, list);
-        updateTask(task);
+        let dakshaEventsArray = getDakshaEventsArray(event);
+        dakshaYamlObjects.push.apply(dakshaYamlObjects, dakshaEventsArray);
+        updateDakshaYamlFile(dakshaYamlObjects);
     }
 }
 function AddEventListenerToAllIframe(document) {
@@ -141,13 +146,42 @@ function AddEventListenerToAllIframe(document) {
         }
     });
 }
-// Fetching the information whether the chrome extension is paused or not 
-chrome.storage.sync.get("updateKey", function (result) {
-    if(result["updateKey"] !== null){
-        pause = result["updateKey"] ;
+function getYamlFileData(array) {
+    var dakshaYamlObjects = {
+        "config": {
+            "env": "",
+            "browser": "",
+            "driverAddress": ""
+        },
+        "name": "",
+        "alert_type": "", 'dakshaYamlObjects': array
+    };
+    let data = yaml.dump(JSON.parse(JSON.stringify(dakshaYamlObjects)));
+    let regexFormattedData = data.replace(dakshaYamlFormatterRegex, '');
+
+    return regexFormattedData;
+}
+function resetAndStartAgain() {
+    chrome.storage.sync.remove(dakshaYamlStorageKey, () => { });
+    chrome.storage.sync.remove(pauseValueStorageKey, () => { });
+    previousSelectedElementXpath = "";
+    previousIframe = "";
+    currentIframe = "";
+    previousTargetElement = null;
+    var dakshaYamlObject = {};
+    dakshaYamlObject[pauseValueStorageKey] = true;
+    chrome.storage.sync.set(dakshaYamlObject, () => {
+    });
+    pauseVal = true;
+
+}
+// Fetching the information whether the chrome extension is pauseVald or not 
+chrome.storage.sync.get(pauseValueStorageKey, function (result) {
+    if (result[pauseValueStorageKey] !== null) {
+        pauseVal = result[pauseValueStorageKey];
     }
 })
-//Listening to the mutation to add listeners of iframes.
+//Listening to the mutation to add dakshaEventsArrayeners of iframes.
 let mutationObserver = new MutationObserver(function (mutations) {
     mutations.forEach(function (mutation) {
         AddEventListenerToAllIframe(document);
@@ -161,20 +195,19 @@ mutationObserver.observe(document, {
     attributeOldValue: true,
     characterDataOldValue: true
 });
-// Adding mousdown listener to window.
+// Adding mousdown dakshaEventsArrayener to window.
 window.addEventListener('mousedown', (event) => {
-    // create an enum for mouse
-    if (event.button === 0) {
-        if (pause === false) {
-            let task = [];
-            prevDefaultIframe = defaultIframe;
-            defaultIframe = "";
-            if (prevDefaultIframe != defaultIframe) {
-                task.push(switch_to_default_iframe);
+    if (event.button === leftClickPressed) {
+        if (pauseVal === false) {
+            let dakshaYamlObjects = [];
+            previousIframe = currentIframe;
+            currentIframe = "";
+            if (previousIframe != currentIframe) {
+                dakshaYamlObjects.push(switch_to_default_iframe);
             }
-            let list = fillDataEvent(event);
-            task.push.apply(task, list);
-            updateTask(task);
+            let dakshaEventsArray = getDakshaEventsArray(event);
+            dakshaYamlObjects.push.apply(dakshaYamlObjects, dakshaEventsArray);
+            updateDakshaYamlFile(dakshaYamlObjects);
         }
     }
 })
@@ -182,89 +215,59 @@ window.addEventListener('mousedown', (event) => {
 // Listening to the Context Menu Clicks.
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     if (request.type === "copy_to_clipboard") {
-        chrome.storage.sync.get("storagekey", function (result) {
-            var array = result["storagekey"];
-            var task = { 'task': array };
-            let data = yaml.dump(JSON.parse(JSON.stringify(task)));
-            let dat = data.replace(reg, '');
-            navigator.clipboard.writeText(dat);
-        }) ;
-        chrome.storage.sync.remove("storagekey", () => { });
-        chrome.storage.sync.remove("updateKey", () => { });
-        prevXPath = "";
-        prevDefaultIframe = "";
-        defaultIframe = "";
-        prevTarelement = null;
-        var jsonObj = {};
-        jsonObj["updateKey"] = true;
-        chrome.storage.sync.set(jsonObj, () => {
+        chrome.storage.sync.get(dakshaYamlStorageKey, function (result) {
+            var array = result[dakshaYamlStorageKey];
+            let data = getYamlFileData(array);
+            navigator.clipboard.writeText(data);
         });
-        pause = true;
+        resetAndStartAgain();
         alert('All your data has been Copied to clipboard , You can now start again!');
     }
     else if (request.type === "download") {
-        chrome.storage.sync.get("storagekey", function (result) {
-            var array = result["storagekey"];
-            var task = { "config" : {
-                "env": "" ,
-                "browser": "",
-                "driverAddress": ""
-            },
-            "name":"" ,
-            "alert_type" : "" ,'task': array };
-            let data = yaml.dump(JSON.parse(JSON.stringify(task)));
-            let dat = data.replace(reg, '');
-            let blob = new Blob([dat], { type: 'application/yaml' });
+        chrome.storage.sync.get(dakshaYamlStorageKey, function (result) {
+            var array = result[dakshaYamlStorageKey];
+            let data = getYamlFileData(array);
+            let blob = new Blob([data], { type: 'application/yaml' });
             let url = URL.createObjectURL(blob);
-            let win = window.open("https://www.google.com");
-            var a = win.document.createElement('a');
+            let windowOfNewTab = window.open("https://www.google.com");
+            var a = windowOfNewTab.document.createElement('a');
             a.href = url;
             a.download = "daksha.yaml";
             a.style.display = 'none';
-            win.document.body.appendChild(a);
+            windowOfNewTab.document.body.appendChild(a);
             a.click();
             delete a;
         });
-        chrome.storage.sync.remove("storagekey", () => { });
-        chrome.storage.sync.remove("updateKey", () => { });
-        prevXPath = "";
-        prevDefaultIframe = "";
-        defaultIframe = "";
-        prevTarelement = null;
-        var jsonObj = {};
-        jsonObj["updateKey"] = true;
-        chrome.storage.sync.set(jsonObj, () => {
-        });
-        pause = true;
+        resetAndStartAgain();
         alert('All your data has been Downloaded , You can now start again!');
     }
-    else if (request.type === "pause") {
-        var jsonObj = {};
-        jsonObj["updateKey"] = true;
-        chrome.storage.sync.set(jsonObj, () => {
+    else if (request.type === "pauseVal") {
+        var dakshaYamlObject = {};
+        dakshaYamlObject[pauseValueStorageKey] = true;
+        chrome.storage.sync.set(dakshaYamlObject, () => {
         });
-        pause = true;
+        pauseVal = true;
     }
     else if (request.type === "start") {
-        chrome.storage.sync.remove("storagekey", () => { });
-        chrome.storage.sync.remove("updateKey", () => { });
-        prevXPath = "";
-        prevDefaultIframe = "";
-        defaultIframe = "";
-        prevTarelement = null;
-        var jsonObj = {};
-        jsonObj["updateKey"] = false;
-        chrome.storage.sync.set(jsonObj, () => {
+        chrome.storage.sync.remove(dakshaYamlStorageKey, () => { });
+        chrome.storage.sync.remove(pauseValueStorageKey, () => { });
+        previousSelectedElementXpath = "";
+        previousIframe = "";
+        currentIframe = "";
+        previousTargetElement = null;
+        var dakshaYamlObject = {};
+        dakshaYamlObject[pauseValueStorageKey] = false;
+        chrome.storage.sync.set(dakshaYamlObject, () => {
         });
-        pause = false;
-        updateTask([open_url(request.msg)]);
+        pauseVal = false;
+        updateDakshaYamlFile([open_url(request.msg)]);
     }
     else if (request.type === "resume") {
-        var jsonObj = {};
-        jsonObj["updateKey"] = false;
-        chrome.storage.sync.set(jsonObj, () => {
+        var dakshaYamlObject = {};
+        dakshaYamlObject[pauseValueStorageKey] = false;
+        chrome.storage.sync.set(dakshaYamlObject, () => {
         });
-        pause = false;
+        pauseVal = false;
     }
 
     sendResponse({ msg: "All good" });

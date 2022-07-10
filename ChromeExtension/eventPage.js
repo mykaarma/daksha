@@ -14,11 +14,6 @@ let pause = {
     "title": "Pause" , 
     "contexts" : ["all"]
 }
-let start_again = {
-    "id" : "start_again" ,
-    "title": "Start_again" , 
-    "contexts" : ["all"]
-}
 let start = {
     "id" : "start" ,
     "title" : "Start Daksha Recorder" , 
@@ -29,15 +24,12 @@ let resume = {
     "title" : "Resume" , 
     "contexts" : ["all"]
 }
-let Stop = {
-    "id" : "stop" ,
-    "title" : "Stop" , 
-    "contexts" : ["all"]
-}
+
 //Installing Context Menus at the beginning of chrome Extension Installed.
 chrome.runtime.onInstalled.addListener(() =>{
     chrome.contextMenus.create(start) ;
 })
+
 // Listening the Clicks on the Context menu and sending messages to index.js.
 chrome.contextMenus.onClicked.addListener((info , tab) =>{
     if(info.menuItemId === "copy_to_clipboard"){

@@ -4,12 +4,14 @@
   "version": "1.0",
   "description": "Extension for Daksha",
   "action": {
-    "default_icon": {             
-        "128": "download.png"
+    "default_icon": {            
+      "128": "128.png"
       }
   },
   "icons": {
-    "128": "download.png"
+    "16": "128.png",
+    "48": "128.png",            
+    "128": "128.png"
   },
   "host_permissions": [
     "*://*/*"
