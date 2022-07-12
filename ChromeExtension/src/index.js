@@ -115,6 +115,7 @@ function getDakshaEventsArray(event) {
 }
 function eventHandlerInIframe(event) {
     //Handling the events occurred inside the Iframes 
+    if(event.button === leftClickPressed){
     if (pauseVal === false) {
         let dakshaYamlObjects = [];
         let selectedIframeXpath = getXPath(document.activeElement, document);
@@ -135,6 +136,7 @@ function eventHandlerInIframe(event) {
         updateDakshaYamlFile(dakshaYamlObjects);
     }
 }
+}
 function AddEventListenerToAllIframe(document) {
     //Adding Event Listener to all iframes 
     let allIframe = document.getElementsByTagName("iframe");
@@ -142,7 +144,7 @@ function AddEventListenerToAllIframe(document) {
         let iwindow = iframe.contentWindow;
 
         iframe.onload = () => {
-            iwindow.addEventListener('click', eventHandlerInIframe);
+            iwindow.addEventListener('mousedown', eventHandlerInIframe);
         }
     });
 }
@@ -154,7 +156,7 @@ function getYamlFileData(array) {
             "driverAddress": ""
         },
         "name": "",
-        "alert_type": "", 'dakshaYamlObjects': array
+        "alert_type": "", 'task': array
     };
     let data = yaml.dump(JSON.parse(JSON.stringify(dakshaYamlObjects)));
     let regexFormattedData = data.replace(dakshaYamlFormatterRegex, '');
