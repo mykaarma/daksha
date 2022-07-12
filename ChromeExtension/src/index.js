@@ -272,6 +272,6 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         pauseVal = false;
     }
 
-    sendResponse({ msg: "All good" });
+    sendResponse({ msg: "Request Processed" });
     return true;
 })
