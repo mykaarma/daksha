@@ -193,6 +193,9 @@ function resetAndStartAgain() {
     pauseVal = true;
 
 }
+function did(){
+ console.log("True") ;
+}
 // Fetching the information whether the chrome extension is pauseVald or not 
 chrome.storage.sync.get(pauseValueStorageKey, function (result) {
     if (result[pauseValueStorageKey] !== null) {
@@ -236,10 +239,14 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         chrome.storage.sync.get(dakshaYamlStorageKey, function (result) {
             var array = result[dakshaYamlStorageKey];
             let data = getYamlFileData(array);
-            navigator.clipboard.writeText(data);
+            navigator.clipboard.writeText(data).then(()=>{
+                alert('All your data has been Copied to clipboard , You can now start again!');
+            })
+            .catch((e)=>{
+                console.log(e) ;
+            })
         });
         resetAndStartAgain();
-        alert('All your data has been Copied to clipboard , You can now start again!');
     }
     else if (request.type === "download") {
         chrome.storage.sync.get(dakshaYamlStorageKey, function (result) {
