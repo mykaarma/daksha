@@ -193,9 +193,6 @@ function resetAndStartAgain() {
     pauseVal = true;
 
 }
-function did(){
- console.log("True") ;
-}
 // Fetching the information whether the chrome extension is pauseVald or not 
 chrome.storage.sync.get(pauseValueStorageKey, function (result) {
     if (result[pauseValueStorageKey] !== null) {
