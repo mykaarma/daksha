@@ -3,10 +3,12 @@
   "name": "Daksha Recorder",
   "version": "1.0.1",
   "description": "Extension for Daksha",
-  "action": {
-    "default_icon": {            
-      "128": "128.png"
-      }
+  "action" : {
+    "default_icon":{
+      "16": "128.png",
+    "48": "128.png",            
+    "128": "128.png"
+    }
   },
   "icons": {
     "16": "128.png",

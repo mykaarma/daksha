@@ -17,12 +17,19 @@
 // Initialising Context Menus Which we want in our Chrome Extension.
 let copy_to_clipboard = {
     "id" : "copy_to_clipboard" , 
-    "title": "Stop And Copy to clipboard" , 
+    "parentId" : "stop" ,
+    "title": "Copy to clipboard" , 
     "contexts":["all"]
 }
 let download = {
     "id" : "download" , 
-    "title": "Stop And Download" , 
+    "parentId" : "stop" , 
+    "title" : "Download" , 
+    "contexts":["all"]
+}
+let hard_wait = {
+    "id" : "hard_wait" , 
+    "title": "Hard wait" , 
     "contexts":["all"]
 }
 let pause = {
@@ -41,6 +48,34 @@ let resume = {
     "contexts" : ["all"]
 }
 
+let tenSecondsWait = {
+    "id" : "tenSecondsWait" , 
+    "parentId" : "hard_wait" ,
+    "title" : "10 Seconds",
+    "contexts" : ["all"]
+}
+let customSecondsWait = {
+    "id" : "customSecondsWait" , 
+    "parentId" : "hard_wait" ,
+    "title" : "Custom Seconds",
+    "contexts" : ["all"]
+}
+let stopp = {
+    "id" : "stop" ,
+    "title" : "Stop" , 
+    "contexts" : ["all"]
+}
+
+let badgeForRecording = ()=>{
+    chrome.action.setBadgeBackgroundColor({color:'#F00'} , ()=>{
+        chrome.action.setBadgeText({text: 'REC'}) ;
+    })
+}
+let removeBadgeForRecording = ()=>{
+    chrome.action.setBadgeBackgroundColor({color:'#F00'} , ()=>{
+        chrome.action.setBadgeText({text: ''}) ;
+    })
+}
 //Installing Context Menus at the beginning of chrome Extension Installed.
 chrome.runtime.onInstalled.addListener(() =>{
     chrome.contextMenus.create(start) ;
@@ -55,6 +90,7 @@ chrome.contextMenus.onClicked.addListener((info , tab) =>{
         chrome.tabs.sendMessage(tab.id , obj , ()=>{ return true ;}) ;
         chrome.contextMenus.removeAll() ;
         chrome.contextMenus.create(start) ;
+        removeBadgeForRecording() ;
     }
     else if(info.menuItemId === "download"){
         let obj = {
@@ -63,6 +99,7 @@ chrome.contextMenus.onClicked.addListener((info , tab) =>{
         chrome.tabs.sendMessage(tab.id , obj , ()=>{ return true ;}) ;
         chrome.contextMenus.removeAll() ;
         chrome.contextMenus.create(start) ;
+        removeBadgeForRecording() ;
 }
     else if(info.menuItemId === "pause"){
         let obj = {
@@ -70,9 +107,11 @@ chrome.contextMenus.onClicked.addListener((info , tab) =>{
         }
         chrome.tabs.sendMessage(tab.id , obj , ()=>{ return true ;}) ;
         chrome.contextMenus.removeAll() ;
+        chrome.contextMenus.create(stopp) ;
         chrome.contextMenus.create(resume) ;
         chrome.contextMenus.create(copy_to_clipboard) ;
         chrome.contextMenus.create(download) ;
+        removeBadgeForRecording() ;
     }
     else if(info.menuItemId === "start"){
         let url = "" ;
@@ -85,8 +124,13 @@ chrome.contextMenus.onClicked.addListener((info , tab) =>{
         chrome.tabs.sendMessage(tab.id , obj , ()=>{ return true ;}) ;
         chrome.contextMenus.removeAll() ;
         chrome.contextMenus.create(pause) ;
+        chrome.contextMenus.create(stopp) ;
         chrome.contextMenus.create(download) ; 
         chrome.contextMenus.create(copy_to_clipboard) ; 
+        chrome.contextMenus.create(hard_wait) ;
+        chrome.contextMenus.create(customSecondsWait) ;
+        chrome.contextMenus.create(tenSecondsWait) ;
+        badgeForRecording() ;
         });
     }
     else if(info.menuItemId === "resume"){
@@ -96,7 +140,25 @@ chrome.contextMenus.onClicked.addListener((info , tab) =>{
         chrome.tabs.sendMessage(tab.id , obj , ()=>{ return true ;}) ;
         chrome.contextMenus.removeAll() ;
         chrome.contextMenus.create(pause) ;
+        chrome.contextMenus.create(stopp) ;
         chrome.contextMenus.create(download) ;
         chrome.contextMenus.create(copy_to_clipboard) ;
+        chrome.contextMenus.create(hard_wait) ;
+        chrome.contextMenus.create(customSecondsWait) ;
+        chrome.contextMenus.create(tenSecondsWait) ;
+        badgeForRecording() ;
     }
+    else if(info.menuItemId === "tenSecondsWait"){
+        let obj = {
+            "type" : "tenSecondsWait"
+        }
+        chrome.tabs.sendMessage(tab.id , obj , ()=>{ return true ;}) ;
+    }
+    else if(info.menuItemId === "customSecondsWait"){
+        let obj = {
+            "type" : "customSecondsWait"
+        }
+        chrome.tabs.sendMessage(tab.id , obj , ()=>{ return true ;}) ;
+    }
+    
 })
