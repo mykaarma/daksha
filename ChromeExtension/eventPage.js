@@ -60,7 +60,7 @@ let customSecondsWait = {
     "title" : "Custom Seconds",
     "contexts" : ["all"]
 }
-let stopp = {
+let stopRecording = {
     "id" : "stop" ,
     "title" : "Stop" , 
     "contexts" : ["all"]
@@ -107,7 +107,7 @@ chrome.contextMenus.onClicked.addListener((info , tab) =>{
         }
         chrome.tabs.sendMessage(tab.id , obj , ()=>{ return true ;}) ;
         chrome.contextMenus.removeAll() ;
-        chrome.contextMenus.create(stopp) ;
+        chrome.contextMenus.create(stopRecording) ;
         chrome.contextMenus.create(resume) ;
         chrome.contextMenus.create(copy_to_clipboard) ;
         chrome.contextMenus.create(download) ;
@@ -124,7 +124,7 @@ chrome.contextMenus.onClicked.addListener((info , tab) =>{
         chrome.tabs.sendMessage(tab.id , obj , ()=>{ return true ;}) ;
         chrome.contextMenus.removeAll() ;
         chrome.contextMenus.create(pause) ;
-        chrome.contextMenus.create(stopp) ;
+        chrome.contextMenus.create(stopRecording) ;
         chrome.contextMenus.create(download) ; 
         chrome.contextMenus.create(copy_to_clipboard) ; 
         chrome.contextMenus.create(hard_wait) ;
@@ -140,7 +140,7 @@ chrome.contextMenus.onClicked.addListener((info , tab) =>{
         chrome.tabs.sendMessage(tab.id , obj , ()=>{ return true ;}) ;
         chrome.contextMenus.removeAll() ;
         chrome.contextMenus.create(pause) ;
-        chrome.contextMenus.create(stopp) ;
+        chrome.contextMenus.create(stopRecording) ;
         chrome.contextMenus.create(download) ;
         chrome.contextMenus.create(copy_to_clipboard) ;
         chrome.contextMenus.create(hard_wait) ;

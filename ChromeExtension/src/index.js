@@ -304,7 +304,6 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         pauseVal = false;
     }
     else if (request.type === "customSecondsWait") {
-        console.log("Pressed!!") ;
         let secondsToWait = window.prompt("Please enter the seconds you want to wait");
         if ( /^[0-9.,]+$/.test(secondsToWait)) {
             alert(`${secondsToWait} seconds hard wait added!`);
