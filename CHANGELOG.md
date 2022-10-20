@@ -1,6 +1,9 @@
 # `DAKSHA` Change Log
 
-*version*: `1.0.1`
+*version*: `1.1.0`
+
+## v 1.1.0
+1. Added chrome extension for autogenerating Daksha Yaml
 
 ## v 1.0.1
 1. Added scroll_to functionality in helper methods
