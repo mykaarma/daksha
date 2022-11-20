@@ -1,0 +1,28 @@
+.popup3-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    height: 175px;
+    width: 215px;
+    font-size: medium;
+    user-select: none;
+}
+.popup3-second-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    height: 125px;
+}
+.popup3-second-div{
+    border-radius: 7px;
+    border-color: #0377B3;
+    border-style: solid;
+    text-align: center;
+    padding: 5px;
+    cursor: pointer;
+}
+
+#popup3-recording-button{
+    background-color: #0377B3;
+    color: white;
+}

@@ -1,0 +1,49 @@
+.popup2-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 150px;
+    width: 215px;
+    font-size: medium;
+    user-select: none;
+}
+
+.popup2-input-container{
+    display: flex ;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items:center;
+    height: 120px;
+}
+#popup2-custom-input{
+    width: 175px;
+    height: 25px;
+    border-radius: 7px;
+    border-color:  #0377B3;
+    border-style: solid;
+    border-width: thin;
+    
+}
+#popup2-custom-hardwait{
+    border-radius: 7px;
+    border-color:  #0377B3;
+    background-color:  #0377B3;
+    border-style: solid;
+    color: white;
+    text-align: center;
+    padding: 5px;
+    cursor: pointer;
+    width: 175px;
+    height: 20px;
+}
+
+.back-function{
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.popup2-custom-hard-wait{
+    height: 20px;
+}
