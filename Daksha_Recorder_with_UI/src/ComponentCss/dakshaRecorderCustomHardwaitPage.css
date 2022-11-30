@@ -1,4 +1,4 @@
-.popup2-container{
+.custom-hardwait-main-container{
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -8,14 +8,14 @@
     user-select: none;
 }
 
-.popup2-input-container{
+.custom-hardwait-input-container{
     display: flex ;
     flex-direction: column;
     justify-content: space-around;
     align-items:center;
     height: 120px;
 }
-#popup2-custom-input{
+#custom-hardwait-inputbox{
     width: 175px;
     height: 25px;
     border-radius: 7px;
@@ -24,7 +24,7 @@
     border-width: thin;
     
 }
-#popup2-custom-hardwait{
+#custom-hardwait-button{
     border-radius: 7px;
     border-color:  #0377B3;
     background-color:  #0377B3;
@@ -37,13 +37,13 @@
     height: 20px;
 }
 
-.back-function{
+.custom-hardwait-back-function{
     width: 20px;
     height: 20px;
     cursor: pointer;
     font-size: 14px;
 }
 
-.popup2-custom-hard-wait{
+.custom-hardwait-title-div{
     height: 20px;
 }

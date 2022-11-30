@@ -1,11 +1,10 @@
 /*global chrome*/
 import React from "react";
-import "../ComponentCss/popup1.css";
-import { useState, useEffect } from 'react';
-import PlayButton from '../Svg/PlayButton.png';
-import PauseButton from '../Svg/PauseButton.png';
-import StopButton from '../Svg/StopButton.png';
-import RightArrow from '../Svg/RightArrow.png';
+import "../ComponentCss/dakshaRecorderMainPage.css";
+import PlayButton from '../Icons/PlayButton.png';
+import PauseButton from '../Icons/PauseButton.png';
+import StopButton from '../Icons/StopButton.png';
+import RightArrow from '../Icons/RightArrow.png';
 import removeBadgeForRecording from "./removeBadgeForRecording";
 import badgeForRecording from "./badgeForRecording";
 
@@ -14,7 +13,7 @@ function PlayPause(props) {
 
     if (props.image === 1)
         return (
-            <img className="popup1-button" src={PauseButton} onClick={() => {
+            <img className="main-page-button" src={PauseButton} onClick={() => {
                 props.changeImage(2);
                 chrome.tabs.query({ active: true, lastFocusedWindow: true }, tabs => {
                     let obj = {
@@ -28,7 +27,7 @@ function PlayPause(props) {
         )
     else if (props.image === 2) {
         return (
-            <img className="popup1-button" src={PlayButton} onClick={() => {
+            <img className="main-page-button" src={PlayButton} onClick={() => {
                 props.changeImage(1);
                 chrome.tabs.query({ active: true, lastFocusedWindow: true }, tabs => {
                     let obj = {
@@ -41,16 +40,16 @@ function PlayPause(props) {
         )
     }
 }
-function Popup1(props) {
+function DakshaRecorderMainPage(props) {
     return (
         <>
-            <div className="main-container">
-                <div className="first-div">
+            <div className="main-page-container">
+                <div className="main-page-title-div">
                     Daksha Recorder
                 </div>
-                <div className="second-div">
+                <div className="main-page-playpause-div">
                     <PlayPause image={props.image} changeImage={props.changeImage} />
-                    <img className="popup1-button" src={StopButton} onClick={() => {
+                    <img className="main-page-button" src={StopButton} onClick={() => {
                         props.setState(4);
                         removeBadgeForRecording();
                         chrome.tabs.query({ active: true, lastFocusedWindow: true }, tabs => {
@@ -61,8 +60,8 @@ function Popup1(props) {
                         })
                     }} />
                 </div>
-                <div className="third-container">
-                    <div className="sub-third-container">
+                <div className="main-page-all-options-container">
+                    <div className="main-page-first-option-container">
                         <div id="hardwait" onClick={() => {
                             chrome.tabs.query({ active: true, lastFocusedWindow: true }, tabs => {
                                 let obj = {
@@ -74,10 +73,10 @@ function Popup1(props) {
                             HARD WAIT (10 SEC)
                         </div>
                         <div id="custom-hardwait" onClick={() => props.setState(3)}>
-                            <img id="popup1-right-arrow" src={RightArrow} />
+                            <img id="main-page-right-arrow" src={RightArrow} />
                         </div>
                     </div>
-                    <div className="fourth-container" onClick={() => {
+                    <div className="main-page-other-option-div" onClick={() => {
                         chrome.tabs.query({ active: true, lastFocusedWindow: true }, tabs => {
                             let obj = {
                                 "type": "viewYaml"
@@ -87,7 +86,7 @@ function Popup1(props) {
                     }}>
                         VIEW YAML
                     </div>
-                    <div className="fourth-container" onClick={() => {
+                    <div className="main-page-other-option-div" onClick={() => {
                         chrome.tabs.query({ active: true, lastFocusedWindow: true }, tabs => {
                             let obj = {
                                 "type": "undoLastStep"
@@ -103,4 +102,4 @@ function Popup1(props) {
     )
 }
 
-export default Popup1;
+export default DakshaRecorderMainPage;

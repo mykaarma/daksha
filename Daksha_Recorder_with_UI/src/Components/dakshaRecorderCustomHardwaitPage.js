@@ -1,8 +1,7 @@
 /*global chrome*/
 import React, { useState } from 'react';
-import '../ComponentCss/popup2.css';
-import BackButton from '../Svg/BackButton.png'
-function Popup2(props) {
+import '../ComponentCss/dakshaRecorderCustomHardwaitPage.css';
+function DakshaRecorderCustomHardwaitPage(props) {
     const [val, setval] = useState();
     const func = (value) => {
         if (value >= 0) {
@@ -11,21 +10,20 @@ function Popup2(props) {
     }
     return (
         <>
-            <div className='popup2-container'>
-                <div  className='back-function' onClick={() => props.setState(2)}>
-                    {/* <img className='back-function' src={BackButton}  /> */}
+            <div className='custom-hardwait-main-container'>
+                <div  className='custom-hardwait-back-function' onClick={() => props.setState(2)}>
                     Back
                 </div>
-                <div className='popup2-input-container'>
+                <div className='custom-hardwait-input-container'>
 
-                    <div className='popup2-custom-hard-wait'>
+                    <div className='custom-hardwait-title-div'>
                         CUSTOM HARD WAIT
                     </div>
 
                     <div>
-                        <input id='popup2-custom-input' placeholder=" Enter # of seconds" type='number' value={val} onChange={(e) => func(e.target.value)} />
+                        <input id='custom-hardwait-inputbox' placeholder=" Enter # of seconds" type='number' value={val} onChange={(e) => func(e.target.value)} />
                     </div>
-                    <div id='popup2-custom-hardwait' onClick={() => {
+                    <div id='custom-hardwait-button' onClick={() => {
                         props.setState(2);
                         chrome.tabs.query({ active: true, lastFocusedWindow: true }, tabs => {
                             let obj = {
@@ -43,4 +41,4 @@ function Popup2(props) {
     )
 }
 
-export default Popup2;
+export default DakshaRecorderCustomHardwaitPage;

@@ -1,4 +1,4 @@
-.popup3-container{
+.end-page-container{
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
@@ -7,13 +7,13 @@
     font-size: medium;
     user-select: none;
 }
-.popup3-second-container{
+.end-page-all-options-container{
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
     height: 125px;
 }
-.popup3-second-div{
+.end-page-each-option-div{
     border-radius: 7px;
     border-color: #0377B3;
     border-style: solid;
@@ -22,7 +22,7 @@
     cursor: pointer;
 }
 
-#popup3-recording-button{
+#end-page-recording-button{
     background-color: #0377B3;
     color: white;
 }

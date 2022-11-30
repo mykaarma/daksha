@@ -1,4 +1,4 @@
-.main-container{
+.main-page-container{
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -9,24 +9,25 @@
     font-family:Aktiv Grotesk,-apple-system,BlinkMacSystemFont,San Francisco,Segoe UI,Roboto,Helvetica Neue,sans-serif;
 }
 
-.second-div{
+
+.main-page-playpause-div{
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
     user-select: none;
 }
-.third-container{
+.main-page-all-options-container{
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     height: 120px;
 }
-.sub-third-container{
+.main-page-first-option-container{
     display: flex;
     flex-direction: row;
 
 }
-.fourth-container{
+.main-page-other-option-div{
     border-radius: 7px;
     border-color: #0377B3;
     border-width: thin;
@@ -65,13 +66,13 @@
 }
 
 
-.popup1-button{
+.main-page-button{
     width: 30px;
     height: 30px;
     cursor: pointer;
 }
 
-#popup1-right-arrow{
+#main-page-right-arrow{
     width: 12px;
     height: 12px;
 }

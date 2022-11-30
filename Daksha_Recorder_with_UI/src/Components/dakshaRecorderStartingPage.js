@@ -1,15 +1,16 @@
 /*global chrome*/
 import React from 'react'
-import '../ComponentCss/style.css' ;
+import '../ComponentCss/dakshaRecorderStartingPage.css' ;
 import badgeForRecording from './badgeForRecording';
-function Popup(props){
+function DakshaRecorderStartingPage(props){
+    
  return (
     <>
     <div className="mainDiv">
-    <div className="firstDiv">
+    <div className="title-div">
         Daksha Recorder
     </div>
-    <div className="secondDiv" id="record" onClick={()=>{
+    <div className="recording-button-div" id="record" onClick={()=>{
         props.setState(2) ;
         let url = "" ;
         chrome.tabs.query({active: true, lastFocusedWindow: true}, tabs => {
@@ -30,4 +31,4 @@ function Popup(props){
  )
 }
 
-export default Popup ;
+export default DakshaRecorderStartingPage ;

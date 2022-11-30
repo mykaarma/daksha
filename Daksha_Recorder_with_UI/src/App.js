@@ -1,10 +1,11 @@
 /*global chrome*/
 import * as React from 'react';
 import { useState, useEffect } from 'react';
-import Popup from './Components/popup';
-import Popup1 from './Components/popup1';
-import Popup2 from './Components/popup2';
-import Popup3 from './Components/popup3';
+import DakshaRecorderStartingPage from './Components/dakshaRecorderStartingPage';
+import DakshaRecorderMainPage from './Components/dakshaRecorderMainPage';
+import DakshaRecorderCustomHardwaitPage from './Components/dakshaRecorderCustomHardwaitPage';
+import DakshaRecorderEndPage from './Components/dakshaRecorderEndPage';
+
 let pageNumber;
 chrome.storage.sync.get("popupPageNumber", function (result) {
   pageNumber = result["popupPageNumber"] ;
@@ -41,20 +42,20 @@ const MainComponent = () => {
   
   if (state == 1)
     return (
-      <Popup setState={setState} />
+      <DakshaRecorderStartingPage setState={setState} />
 
     )
   else if (state == 2)
     return (
-      <Popup1 setState={setState} image={image} changeImage={changeImage}/>
+      <DakshaRecorderMainPage setState={setState} image={image} changeImage={changeImage}/>
     )
   else if (state == 3)
     return (
-      <Popup2 setState={setState} />
+      <DakshaRecorderCustomHardwaitPage setState={setState} />
     )
   else if (state == 4)
     return (
-      <Popup3 setState={setState} image={image} changeImage={changeImage}/>
+      <DakshaRecorderEndPage setState={setState} image={image} changeImage={changeImage}/>
     )
 };
 

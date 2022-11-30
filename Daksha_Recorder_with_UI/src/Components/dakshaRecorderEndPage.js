@@ -1,16 +1,17 @@
 /*global chrome*/
 import React from "react";
-import '../ComponentCss/popup3.css'
+import '../ComponentCss/dakshaRecorderEndPage.css';
 import badgeForRecording from "./badgeForRecording";
-function popup3(props) {
+
+function DakshaRecorderEndPage(props) {
     return (
         <>
-            <div className="popup3-container">
+            <div className="end-page-container">
                 <div>
                     Daksha Recorder
                 </div>
-                <div className="popup3-second-container">
-                    <div className="popup3-second-div" onClick={() => {
+                <div className="end-page-all-options-container">
+                    <div className="end-page-each-option-div" onClick={() => {
                         props.setState(1);
                         chrome.tabs.query({ active: true, lastFocusedWindow: true }, tabs => {
                             let obj = {
@@ -21,7 +22,7 @@ function popup3(props) {
                     }}>
                         DOWNLOAD
                     </div>
-                    <div className="popup3-second-div" onClick={() => {
+                    <div className="end-page-each-option-div" onClick={() => {
                         props.setState(1);
                         chrome.tabs.query({ active: true, lastFocusedWindow: true }, tabs => {
                             let obj = {
@@ -32,7 +33,7 @@ function popup3(props) {
                     }}>
                         COPY TO CLIPBOARD
                     </div>
-                    <div className="popup3-second-div" id="popup3-recording-button" onClick={() => {
+                    <div className="end-page-each-option-div" id="end-page-recording-button" onClick={() => {
                         props.changeImage(1);
                         props.setState(2);
                         let url = "" ;
@@ -56,4 +57,4 @@ function popup3(props) {
 
 
 
-export default popup3;
+export default DakshaRecorderEndPage;
