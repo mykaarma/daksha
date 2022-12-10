@@ -40,7 +40,6 @@ class WordCount extends HTMLElement {
         this.style.border = 'none';
         this.style.zIndex = '1000';
         this.style.position = 'absolute';
-        console.log("inside class") ;
         this.style.top = `${RecordingCoordinates[1]}px`;
         this.style.left = `${RecordingCoordinates[0]}px`;
         this.style.height = '50px';
@@ -151,9 +150,6 @@ chrome.storage.sync.get("RecordingCoordinates", function (result) {
     RecordingCoordinates = result["RecordingCoordinates"];
     console.log(RecordingCoordinates[0] , RecordingCoordinates[1]) ;
     customElements.define('daksha-recorder', WordCount);
-    recordingButton = document.createElement('daksha-recorder');
-    recordingButton.style.display = 'none';
-    document.body.parentNode.appendChild(recordingButton);
     draggabilityFunctionalityForrecordingDiv();
 });
 
