@@ -69,8 +69,7 @@ let draggabilityFunctionalityForrecordingDiv = () => {
     recordingButton = document.createElement('daksha-recorder');
     recordingButton.style.display = 'none';
     document.body.parentNode.appendChild(recordingButton);
-    var dragItem = recordingButton;
-    console.log(dragItem);
+    var dragItem = recordingButton
     var active = false;
     var currentX;
     var currentY;
@@ -81,7 +80,6 @@ let draggabilityFunctionalityForrecordingDiv = () => {
     let dragStart = function (x, y) {
         initialX = x - xOffset;
         initialY = y - yOffset;
-        console.log(initialX, initialY, 'pulkit');
         active = true;
     }
 
@@ -111,7 +109,6 @@ let draggabilityFunctionalityForrecordingDiv = () => {
     window.addEventListener('message', (e) => {
 
         if (e.data.type === "mousedown") {
-            console.log(e, 'listening msg')
             dragStart(e.data.x, e.data.y);
             intialX = e.data.x;
             intialY = e.data.y
@@ -148,7 +145,6 @@ chrome.storage.sync.get(playPauseStorageKey, function (result) {
 });
 chrome.storage.sync.get("RecordingCoordinates", function (result) {
     RecordingCoordinates = result["RecordingCoordinates"];
-    console.log(RecordingCoordinates[0] , RecordingCoordinates[1]) ;
     customElements.define('daksha-recorder', WordCount);
     draggabilityFunctionalityForrecordingDiv();
 });
@@ -372,6 +368,7 @@ window.addEventListener('mousedown', (event) => {
         }
     }
 })
+
 // Listening to the Context Menu Clicks.
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     if (request.type === "copy_to_clipboard") {
