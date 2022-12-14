@@ -6,7 +6,7 @@ import PauseButton from '../Icons/PauseButton.png';
 import StopButton from '../Icons/StopButton.png';
 import RightArrow from '../Icons/RightArrow.png';
 import removeBadgeForRecording from "./removeBadgeForRecording";
-import badgeForRecording from "./badgeForRecording";
+import setBadgeForRecording from "./setBadgeForRecording";
 
 
 function PlayPause(props) {
@@ -34,7 +34,7 @@ function PlayPause(props) {
                         "type": "resume"
                     }
                     chrome.tabs.sendMessage(tabs[0].id, obj, () => { return true; });
-                    badgeForRecording();
+                    setBadgeForRecording();
                 })
             }} />
         )

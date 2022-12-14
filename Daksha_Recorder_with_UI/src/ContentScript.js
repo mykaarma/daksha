@@ -49,7 +49,6 @@ class WordCount extends HTMLElement {
         ifrm.style.position = 'relative';
         ifrm.style.height = '100%';
         ifrm.style.width = '100%';
-        //ifrm.style.background = '#5795ff' ;
         ifrm.style.padding = "0px";
         ifrm.style.boxShadow = "2px 4px 6px silver";
         ifrm.style.borderRadius = "5px";
@@ -186,7 +185,6 @@ function updateDakshaYamlFile(dakshaYamlObjects) {
         dakshaYamlObject[dakshaYamlStorageKey] = array;
         chrome.storage.sync.set(dakshaYamlObject, () => {
         });
-        // getYamlFileData(array) ;
     });
 }
 // Defined the dakshaYamlObjectss which will be added into the updateDakshaYamlFile function!!
@@ -334,7 +332,6 @@ chrome.storage.sync.get(pauseValueStorageKey, function (result) {
         pauseVal = result[pauseValueStorageKey];
         if (pauseVal === false) {
             createRecordingButton();
-            //draggabilityFunctionalityForrecordingDiv();
         }
     }
 })
@@ -431,17 +428,8 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         });
         pauseVal = false;
         createRecordingButton();
-        //draggabilityFunctionalityForrecordingDiv();
     }
     else if (request.type === "customSecondsWait") {
-        // let secondsToWait = window.prompt("Please enter the seconds you want to wait");
-        // if (/^[0-9.,]+$/.test(secondsToWait)) {
-        //     alert(`${secondsToWait} seconds hard wait added!`);
-        //     secondsToWait = parseInt(secondsToWait);
-        //     updateDakshaYamlFile([hard_wait(secondsToWait)]);
-        // } else {
-        //     alert("Kindly enter numeric values only");
-        // }
         updateDakshaYamlFile([hard_wait(request.sec)]);
         alert(`${request.sec} seconds hard wait added!`);
     }
@@ -486,6 +474,5 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     }
 
     sendResponse({ msg: "Request Processed" });
-    // return true;
     return Promise.resolve("Dummy response to keep the console quiet");
 });

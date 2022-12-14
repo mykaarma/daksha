@@ -1,5 +1,5 @@
 /*global chrome*/
-function badgeForRecording() {
+function setBadgeForRecording() {
   return (
     chrome.action.setBadgeBackgroundColor({color:'#F00'} , ()=>{
         chrome.action.setBadgeText({text: 'REC'}) ;
@@ -7,4 +7,4 @@ function badgeForRecording() {
   )
 }
 
-export default badgeForRecording
+export default setBadgeForRecording

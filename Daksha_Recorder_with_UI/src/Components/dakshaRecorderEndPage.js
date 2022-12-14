@@ -1,7 +1,7 @@
 /*global chrome*/
 import React from "react";
 import '../ComponentCss/dakshaRecorderEndPage.css';
-import badgeForRecording from "./badgeForRecording";
+import setBadgeForRecording from "./setBadgeForRecording";
 
 function DakshaRecorderEndPage(props) {
     return (
@@ -44,7 +44,7 @@ function DakshaRecorderEndPage(props) {
                                     "msg": url
                                 }
                                 chrome.tabs.sendMessage(tabs[0].id, obj, () => { return true; });
-                                badgeForRecording() ;
+                                setBadgeForRecording() ;
                             })
                     }}>
                         START RECORDING
