@@ -1,0 +1,32 @@
+.main-container {
+    top:0px;
+    left: 0px;
+    position: fixed;
+    display: flex;
+    height: 100%;
+    width: 100%;
+
+}
+
+.left-div {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 30%;
+    height: 100%;
+    user-select: none;
+}
+
+.right-div {
+   position: relative;
+   width: 70%;
+   height: 100%;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   font-size: 25px;
+   user-select: none;
+   background-color: rgb(26, 96, 187);
+   color: white;
+}
