@@ -1,0 +1,49 @@
+.custom-hardwait-main-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 150px;
+    width: 215px;
+    font-size: medium;
+    user-select: none;
+}
+
+.custom-hardwait-input-container{
+    display: flex ;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items:center;
+    height: 120px;
+}
+#custom-hardwait-inputbox{
+    width: 175px;
+    height: 25px;
+    border-radius: 7px;
+    border-color:  #0377B3;
+    border-style: solid;
+    border-width: thin;
+    
+}
+#custom-hardwait-button{
+    border-radius: 7px;
+    border-color:  #0377B3;
+    background-color:  #0377B3;
+    border-style: solid;
+    color: white;
+    text-align: center;
+    padding: 5px;
+    cursor: pointer;
+    width: 175px;
+    height: 20px;
+}
+
+.custom-hardwait-back-function{
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.custom-hardwait-title-div{
+    height: 20px;
+}
