@@ -5,7 +5,10 @@ import DakshaRecorderStartingPage from './Components/dakshaRecorderStartingPage'
 import DakshaRecorderMainPage from './Components/dakshaRecorderMainPage';
 import DakshaRecorderCustomHardwaitPage from './Components/dakshaRecorderCustomHardwaitPage';
 import DakshaRecorderEndPage from './Components/dakshaRecorderEndPage';
-
+let dakshaRecorderStartingPage = 1;
+let dakshaRecorderMainPage = 2 ;
+let dakshaRecorderCustomHardwaitPage = 3 ;
+let dakshaRecorderEndPage = 4 ;
 let pageNumber;
 chrome.storage.sync.get("popupPageNumber", function (result) {
   pageNumber = result["popupPageNumber"] ;
@@ -40,20 +43,20 @@ const MainComponent = () => {
         });
     }, [image]);
   
-  if (state == 1)
+  if (state == dakshaRecorderStartingPage)
     return (
       <DakshaRecorderStartingPage setState={setState} />
 
     )
-  else if (state == 2)
+  else if (state == dakshaRecorderMainPage)
     return (
       <DakshaRecorderMainPage setState={setState} image={image} changeImage={changeImage}/>
     )
-  else if (state == 3)
+  else if (state == dakshaRecorderCustomHardwaitPage)
     return (
       <DakshaRecorderCustomHardwaitPage setState={setState} />
     )
-  else if (state == 4)
+  else if (state == dakshaRecorderEndPage)
     return (
       <DakshaRecorderEndPage setState={setState} image={image} changeImage={changeImage}/>
     )

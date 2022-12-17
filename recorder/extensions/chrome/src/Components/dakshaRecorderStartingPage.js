@@ -2,6 +2,12 @@
 import React from 'react'
 import '../ComponentCss/dakshaRecorderStartingPage.css' ;
 import setBadgeForRecording from './setBadgeForRecording';
+
+let dakshaRecorderStartingPage = 1;
+let dakshaRecorderMainPage = 2 ;
+let dakshaRecorderCustomHardwaitPage = 3 ;
+let dakshaRecorderEndPage = 4 ;
+
 function DakshaRecorderStartingPage(props){
     
  return (
@@ -11,7 +17,7 @@ function DakshaRecorderStartingPage(props){
         Daksha Recorder
     </div>
     <div className="recording-button-div" id="record" onClick={()=>{
-        props.setState(2) ;
+        props.setState(dakshaRecorderMainPage) ;
         let url = "" ;
         chrome.tabs.query({active: true, lastFocusedWindow: true}, tabs => {
              url = tabs[0].url;

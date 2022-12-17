@@ -3,6 +3,11 @@ import React from "react";
 import '../ComponentCss/dakshaRecorderEndPage.css';
 import setBadgeForRecording from "./setBadgeForRecording";
 
+let dakshaRecorderStartingPage = 1;
+let dakshaRecorderMainPage = 2 ;
+let dakshaRecorderCustomHardwaitPage = 3 ;
+let dakshaRecorderEndPage = 4 ;
+
 function DakshaRecorderEndPage(props) {
     return (
         <>
@@ -12,7 +17,7 @@ function DakshaRecorderEndPage(props) {
                 </div>
                 <div className="end-page-all-options-container">
                     <div className="end-page-each-option-div" onClick={() => {
-                        props.setState(1);
+                        props.setState(dakshaRecorderStartingPage);
                         chrome.tabs.query({ active: true, lastFocusedWindow: true }, tabs => {
                             let obj = {
                                 "type": "download"
@@ -23,7 +28,7 @@ function DakshaRecorderEndPage(props) {
                         DOWNLOAD
                     </div>
                     <div className="end-page-each-option-div" onClick={() => {
-                        props.setState(1);
+                        props.setState(dakshaRecorderStartingPage);
                         chrome.tabs.query({ active: true, lastFocusedWindow: true }, tabs => {
                             let obj = {
                                 "type": "copy_to_clipboard"
@@ -35,7 +40,7 @@ function DakshaRecorderEndPage(props) {
                     </div>
                     <div className="end-page-each-option-div" id="end-page-recording-button" onClick={() => {
                         props.changeImage(1);
-                        props.setState(2);
+                        props.setState(dakshaRecorderMainPage);
                         let url = "" ;
                             chrome.tabs.query({ active: true, lastFocusedWindow: true }, tabs => {
                                 url = tabs[0].url;

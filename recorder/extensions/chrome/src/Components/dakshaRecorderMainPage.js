@@ -8,6 +8,10 @@ import RightArrow from '../Icons/RightArrow.png';
 import removeBadgeForRecording from "./removeBadgeForRecording";
 import setBadgeForRecording from "./setBadgeForRecording";
 
+let dakshaRecorderStartingPage = 1;
+let dakshaRecorderMainPage = 2 ;
+let dakshaRecorderCustomHardwaitPage = 3 ;
+let dakshaRecorderEndPage = 4 ;
 
 function PlayPause(props) {
 
@@ -50,7 +54,7 @@ function DakshaRecorderMainPage(props) {
                 <div className="main-page-playpause-div">
                     <PlayPause image={props.image} changeImage={props.changeImage} />
                     <img className="main-page-button" src={StopButton} onClick={() => {
-                        props.setState(4);
+                        props.setState(dakshaRecorderEndPage);
                         removeBadgeForRecording();
                         chrome.tabs.query({ active: true, lastFocusedWindow: true }, tabs => {
                             let obj = {
@@ -72,7 +76,7 @@ function DakshaRecorderMainPage(props) {
                         }}>
                             HARD WAIT (10 SEC)
                         </div>
-                        <div id="custom-hardwait" onClick={() => props.setState(3)}>
+                        <div id="custom-hardwait" onClick={() => props.setState(dakshaRecorderCustomHardwaitPage)}>
                             <img id="main-page-right-arrow" src={RightArrow} />
                         </div>
                     </div>

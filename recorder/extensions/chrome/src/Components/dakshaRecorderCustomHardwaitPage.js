@@ -1,6 +1,10 @@
 /*global chrome*/
 import React, { useState } from 'react';
 import '../ComponentCss/dakshaRecorderCustomHardwaitPage.css';
+let dakshaRecorderStartingPage = 1;
+let dakshaRecorderMainPage = 2 ;
+let dakshaRecorderCustomHardwaitPage = 3 ;
+let dakshaRecorderEndPage = 4 ;
 function DakshaRecorderCustomHardwaitPage(props) {
     const [val, setval] = useState();
     const func = (value) => {
@@ -11,7 +15,7 @@ function DakshaRecorderCustomHardwaitPage(props) {
     return (
         <>
             <div className='custom-hardwait-main-container'>
-                <div  className='custom-hardwait-back-function' onClick={() => props.setState(2)}>
+                <div  className='custom-hardwait-back-function' onClick={() => props.setState(dakshaRecorderMainPage)}>
                     Back
                 </div>
                 <div className='custom-hardwait-input-container'>
