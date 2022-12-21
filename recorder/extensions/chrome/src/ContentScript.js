@@ -43,8 +43,8 @@ class WordCount extends HTMLElement {
 
         this.style.top = `${RecordingCoordinates[1]}px`;
         this.style.left = `${RecordingCoordinates[0]}px`;
-        this.style.height = '50px';
-        this.style.width = '300px';
+        this.style.height = '40px';
+        this.style.width = '200px';
         let ifrm = document.createElement('iframe')
         ifrm.style.border = 'none';
         ifrm.style.position = 'relative';
