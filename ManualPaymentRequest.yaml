@@ -1,0 +1,77 @@
+config:
+  env: local
+  browser: Chrome
+  driverAddress:  E:\Chrome web driver\chromedriver.exe
+name: Manual_Payment_Request
+alert_type: gchat
+task:
+  - open_url:
+      url: '{{appUrl}}/login.html?page=service.html'
+  - click_button:
+      xpath: //input[@id="tbUsername"]
+  - fill_data:
+      value: "{{ username}}"
+      xpath: //input[@id="tbUsername"]
+  - click_button:
+      xpath: //button[@id="bSignIn"]
+  - click_button:
+      xpath: //button[@id="bSignIn"]
+  - click_button:
+      xpath: //input[@id="password"]
+  - fill_data:
+      value: "{{ password }}"
+      xpath: //input[@id="password"]
+  - click_button:
+      xpath: //button[@id="bSignIn"]
+  - click_button:
+      xpath: //td[@id="PaymentsTabInMenu"]
+  - click_button:
+      xpath: //button[@id="Payment_bPayReq"]
+  - make_HTTP_request:
+      request : 'POST'
+      url : '{{baseUrl}}/automationsuite/dmsro/process?Dealer_id={{dealer_id}}&DMS=cdk&status=PRE-INVOICED'
+      auth: 
+        type : "Basic" #can be Basic, Digest and Proxy
+        dealer_id : "{{ dealer_id }}"
+        username : "{{ apiUsername}}"
+        password : "{{ apiPassword }}"
+      response:
+        'status' : 200   
+        save:       
+          - 'key' : "ordernumber"
+            'save in' : RO_number
+          - 'key' : "amount" 
+            'save in' : Amount
+  - fill_data:  
+      xpath: //input[@id="paynowinvoicetbRefNum"]
+      value: '{{ RO_number }}'
+  - click_button:
+      xpath: //input[@id='paynowinvoicetbAmount']
+  - click_button:
+      xpath: //button[@id="PaymentRequest_bPay"]
+  - wait_for:
+      mode: hardwait
+      value: 2
+  - click_button:
+      xpath: //button[@id="ConfirmPreviewDialog_yes"]   
+  - wait_for:
+      mode: visibility
+      xpath:  //div[contains(text(),"Successfully sent payment request!")]   
+  - click_button:
+      xpath: //td[@id="MessagesTabInMenu"]
+  - wait_for:
+      mode: hardwait
+      value: 100
+  - click_button:
+      xpath: //tbody/tr[1]/td[5]/input[1]
+  - fill_data:
+      value: '{{ RO_number }}'
+      xpath: //tbody/tr[1]/td[5]/input[1]
+  - click_button:
+      xpath: //tbody/tr[1]/td[5]/input[1]
+  - click_button:
+      xpath: //body/div[8]
+  - wait_for:
+      mode: hardwait
+      value: 5 
+  
