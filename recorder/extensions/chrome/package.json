@@ -20,7 +20,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "walk": "react-scripts build && webpack --config webpack.config.js"
+    "walk": "webpack --config webpack.config.js && react-scripts build"
   },
   "eslintConfig": {
     "extends": [

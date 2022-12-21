@@ -40,6 +40,7 @@ class WordCount extends HTMLElement {
         this.style.border = 'none';
         this.style.zIndex = '1000';
         this.style.position = 'absolute';
+
         this.style.top = `${RecordingCoordinates[1]}px`;
         this.style.left = `${RecordingCoordinates[0]}px`;
         this.style.height = '50px';
@@ -74,6 +75,8 @@ let draggabilityFunctionalityForrecordingDiv = () => {
     var currentY;
     var initialX;
     var initialY;
+    var startingX ;
+    var startingY ;
     let xOffset = 0;
     var yOffset = 0;
     let dragStart = function (x, y) {
@@ -109,8 +112,8 @@ let draggabilityFunctionalityForrecordingDiv = () => {
 
         if (e.data.type === "mousedown") {
             dragStart(e.data.x, e.data.y);
-            intialX = e.data.x;
-            intialY = e.data.y
+            startingX = e.data.x;
+            startingY = e.data.y;
         }
         else if (e.data.type === "mousemove") {
             let obj = { screenX: e.data.x, screenY: e.data.y };
@@ -119,8 +122,8 @@ let draggabilityFunctionalityForrecordingDiv = () => {
         else if (e.data.type === "mouseup") {
             let obj = { screenX: e.data.x, screenY: e.data.y };
             dragEnd(obj);
-            RecordingCoordinates[0] = obj.screenX - (initialX - RecordingCoordinates[0]);
-            RecordingCoordinates[1] = obj.screenY - (initialY - RecordingCoordinates[1]);
+            RecordingCoordinates[0] = obj.screenX - (startingX - RecordingCoordinates[0]);
+            RecordingCoordinates[1] = obj.screenY - (startingY - RecordingCoordinates[1]);
             var dakshaYamlObject = {};
             dakshaYamlObject["RecordingCoordinates"] = RecordingCoordinates;
             chrome.storage.sync.set(dakshaYamlObject, () => {

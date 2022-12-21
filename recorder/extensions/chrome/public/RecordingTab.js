@@ -1,8 +1,8 @@
 window.addEventListener("mousedown" , (e)=>{
-    console.log('i am called.........')
     const obj = {x:e.screenX,y:e.screenY , type:'mousedown'} ;
     window.parent.postMessage(obj , '*') ;
 });
+
 window.addEventListener("mousemove" , (e)=>{
     const obj = {x:e.screenX,y:e.screenY , type:'mousemove'} ;
     window.parent.postMessage(obj , '*') ;
