@@ -17,19 +17,18 @@
 }
 #custom-hardwait-inputbox{
     width: 175px;
-    height: 25px;
+    height: 20px;
     border-radius: 7px;
     border-color:  #0377B3;
     border-style: solid;
     border-width: thin;
-    
+    padding: 5px;
 }
 #custom-hardwait-button{
     border-radius: 7px;
     border-color:  #0377B3;
-    background-color:  #0377B3;
     border-style: solid;
-    color: white;
+    border-width: thin;
     text-align: center;
     padding: 5px;
     cursor: pointer;

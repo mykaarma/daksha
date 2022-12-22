@@ -9,11 +9,12 @@
 }
 
 .recording-button-div{
-    text-align: center;
+    display: flex;
     background:#0377B3;
     color: white;
-    height: 35%;
+    height: 40%;
     border-radius: 5px;
-    padding-top: 10px;
     cursor: pointer;
+    align-items: center;
+    justify-content: center;
 }

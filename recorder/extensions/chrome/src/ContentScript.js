@@ -43,8 +43,8 @@ class WordCount extends HTMLElement {
 
         this.style.top = `${RecordingCoordinates[1]}px`;
         this.style.left = `${RecordingCoordinates[0]}px`;
-        this.style.height = '40px';
-        this.style.width = '200px';
+        this.style.height = '35px';
+        this.style.width = '140px';
         let ifrm = document.createElement('iframe')
         ifrm.style.border = 'none';
         ifrm.style.position = 'relative';
@@ -433,7 +433,8 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         createRecordingButton();
     }
     else if (request.type === "customSecondsWait") {
-        updateDakshaYamlFile([hard_wait(request.sec)]);
+        var secondsInInt = parseInt(request.sec) ;
+        updateDakshaYamlFile([hard_wait(secondsInInt)]);
         alert(`${request.sec} seconds hard wait added!`);
     }
     else if (request.type === "tenSecondsWait") {
