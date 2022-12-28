@@ -31,16 +31,11 @@ function DakshaRecorderCustomHardwaitPage(props) {
                     <div id='custom-hardwait-button' onClick={() => {
                         props.setState(2);
                         chrome.tabs.query({ active: true, lastFocusedWindow: true }, tabs => {
-                            if(val === undefined){
-                                alert("Kindly enter a numeric value") ;
-                            }
-                            else{
                             let obj = {
                                 "type": "customSecondsWait",
                                 "sec": val
                             }
                             chrome.tabs.sendMessage(tabs[0].id, obj, () => { return true; });
-                        }
                         })
                     }}>
                         ADD HARD WAIT

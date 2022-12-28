@@ -433,9 +433,14 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         createRecordingButton();
     }
     else if (request.type === "customSecondsWait") {
+        if(request.sec === undefined){
+            alert("Kindly enter a numberic value !") ;
+        }
+        else{
         var secondsInInt = parseInt(request.sec) ;
         updateDakshaYamlFile([hard_wait(secondsInInt)]);
         alert(`${request.sec} seconds hard wait added!`);
+        }
     }
     else if (request.type === "tenSecondsWait") {
         var secs = 10;
