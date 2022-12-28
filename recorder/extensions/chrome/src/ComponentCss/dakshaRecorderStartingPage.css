@@ -2,8 +2,8 @@
     display: flex;
     justify-content: space-evenly;
     flex-direction: column;
-    height: 100px;
-    width: 250px;
+    height: 80px;
+    width: 200px;
     font-size: medium;
     font-family: 'Lato', sans-serif;
 }

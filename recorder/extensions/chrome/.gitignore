@@ -10,6 +10,7 @@
 
 # production
 /build
+/public/ContentScript.js
 
 # misc
 .DS_Store

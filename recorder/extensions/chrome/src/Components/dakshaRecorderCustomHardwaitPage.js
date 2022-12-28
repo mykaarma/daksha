@@ -5,6 +5,7 @@ let dakshaRecorderStartingPage = 1;
 let dakshaRecorderMainPage = 2 ;
 let dakshaRecorderCustomHardwaitPage = 3 ;
 let dakshaRecorderEndPage = 4 ;
+let standardHardWaitTime = 10 ;
 function DakshaRecorderCustomHardwaitPage(props) {
     const [val, setval] = useState();
     const func = (value) => {
@@ -30,11 +31,16 @@ function DakshaRecorderCustomHardwaitPage(props) {
                     <div id='custom-hardwait-button' onClick={() => {
                         props.setState(2);
                         chrome.tabs.query({ active: true, lastFocusedWindow: true }, tabs => {
+                            if(val === undefined){
+                                alert("Kindly enter a numeric value") ;
+                            }
+                            else{
                             let obj = {
                                 "type": "customSecondsWait",
                                 "sec": val
                             }
                             chrome.tabs.sendMessage(tabs[0].id, obj, () => { return true; });
+                        }
                         })
                     }}>
                         ADD HARD WAIT
