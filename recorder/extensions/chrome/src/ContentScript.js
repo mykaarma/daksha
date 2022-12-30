@@ -220,9 +220,8 @@ let switch_iframe = (xpath) => {
     return json_obj;
 }
 let switch_to_default_iframe = () => {
-    let json_obj = {
-        "switch_to_default_iframe": {}
-    }
+    let json_obj = 
+        "switch_to_default_iframe"
 
     return json_obj;
 }
@@ -360,7 +359,7 @@ window.addEventListener('mousedown', (event) => {
             previousIframe = currentIframe;
             currentIframe = "";
             if (previousIframe != currentIframe) {
-                dakshaYamlObjects.push(switch_to_default_iframe);
+                dakshaYamlObjects.push(switch_to_default_iframe());
             }
             let dakshaEventsArray = getDakshaEventsArray(event);
             dakshaYamlObjects.push.apply(dakshaYamlObjects, dakshaEventsArray);
