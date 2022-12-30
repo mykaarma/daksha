@@ -263,12 +263,12 @@ function getDakshaEventsArray(event) {
     dakshaYamlObjects.push(click_button(XPath));
     return dakshaYamlObjects;
 }
-function eventHandlerInIframe(event) {
+function eventHandlerInIframe(event , iframeXPath) {
     //Handling the events occurred inside the Iframes 
     if (event.button === leftClickPressed) {
         if (pauseVal === false) {
             let dakshaYamlObjects = [];
-            let selectedIframeXpath = getXPath(document.activeElement, document);
+            let selectedIframeXpath = iframeXPath ;
             previousIframe = currentIframe;
             currentIframe = `${selectedIframeXpath}`;
             if (previousIframe != currentIframe) {
@@ -292,9 +292,9 @@ function AddEventListenerToAllIframe(document) {
     let allIframe = document.getElementsByTagName("iframe");
     Array.prototype.slice.call(allIframe).forEach(iframe => {
         let iwindow = iframe.contentWindow;
-
+        let iframeXPath = getXPath(iframe , document) ;
         iframe.onload = () => {
-            iwindow.addEventListener('mousedown', eventHandlerInIframe);
+            iwindow.addEventListener('mousedown', (e)=>eventHandlerInIframe(e , iframeXPath));
         }
     });
 }
