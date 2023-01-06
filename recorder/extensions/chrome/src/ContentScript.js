@@ -75,8 +75,8 @@ let draggabilityFunctionalityForrecordingDiv = () => {
     var currentY;
     var initialX;
     var initialY;
-    var startingX ;
-    var startingY ;
+    var startingX;
+    var startingY;
     let xOffset = 0;
     var yOffset = 0;
     let dragStart = function (x, y) {
@@ -220,7 +220,7 @@ let switch_iframe = (xpath) => {
     return json_obj;
 }
 let switch_to_default_iframe = () => {
-    let json_obj = 
+    let json_obj =
         "switch_to_default_iframe"
 
     return json_obj;
@@ -263,12 +263,12 @@ function getDakshaEventsArray(event) {
     dakshaYamlObjects.push(click_button(XPath));
     return dakshaYamlObjects;
 }
-function eventHandlerInIframe(event , iframeXPath) {
+function eventHandlerInIframe(event, iframeXPath) {
     //Handling the events occurred inside the Iframes 
     if (event.button === leftClickPressed) {
         if (pauseVal === false) {
             let dakshaYamlObjects = [];
-            let selectedIframeXpath = iframeXPath ;
+            let selectedIframeXpath = iframeXPath;
             previousIframe = currentIframe;
             currentIframe = `${selectedIframeXpath}`;
             if (previousIframe != currentIframe) {
@@ -292,9 +292,9 @@ function AddEventListenerToAllIframe(document) {
     let allIframe = document.getElementsByTagName("iframe");
     Array.prototype.slice.call(allIframe).forEach(iframe => {
         let iwindow = iframe.contentWindow;
-        let iframeXPath = getXPath(iframe , document) ;
+        let iframeXPath = getXPath(iframe, document);
         iframe.onload = () => {
-            iwindow.addEventListener('mousedown', (e)=>eventHandlerInIframe(e , iframeXPath));
+            iwindow.addEventListener('mousedown', (e) => eventHandlerInIframe(e, iframeXPath));
         }
     });
 }
@@ -432,13 +432,13 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         createRecordingButton();
     }
     else if (request.type === "customSecondsWait") {
-        if(request.sec === undefined){
-            alert("Kindly enter a numberic value !") ;
+        if (request.sec === undefined) {
+            alert("Kindly enter a numberic value !");
         }
-        else{
-        var secondsInInt = parseInt(request.sec) ;
-        updateDakshaYamlFile([hard_wait(secondsInInt)]);
-        alert(`${request.sec} seconds hard wait added!`);
+        else {
+            var secondsInInt = parseInt(request.sec);
+            updateDakshaYamlFile([hard_wait(secondsInInt)]);
+            alert(`${request.sec} seconds hard wait added!`);
         }
     }
     else if (request.type === "tenSecondsWait") {

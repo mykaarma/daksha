@@ -30,7 +30,7 @@ chrome.runtime.onInstalled.addListener(() => {
     chrome.storage.sync.set(dakshaYamlObject, () => {
     });
     var dakshaYamlObject = {};
-    dakshaYamlObject["RecordingCoordinates"] = [1100,700];
+    dakshaYamlObject["RecordingCoordinates"] = [1100, 700];
     chrome.storage.sync.set(dakshaYamlObject, () => {
     });
 })

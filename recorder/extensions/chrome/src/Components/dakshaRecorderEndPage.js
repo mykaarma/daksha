@@ -2,11 +2,9 @@
 import React from "react";
 import '../ComponentCss/dakshaRecorderEndPage.css';
 import setBadgeForRecording from "./setBadgeForRecording";
-
-let dakshaRecorderStartingPage = 1;
-let dakshaRecorderMainPage = 2 ;
-let dakshaRecorderCustomHardwaitPage = 3 ;
-let dakshaRecorderEndPage = 4 ;
+import GlobalVariables from "./globalConfigs";
+let dakshaRecorderStartingPage = GlobalVariables.dakshaRecorderStartingPage;
+let dakshaRecorderMainPage = GlobalVariables.dakshaRecorderMainPage;
 
 function DakshaRecorderEndPage(props) {
     return (
@@ -41,16 +39,16 @@ function DakshaRecorderEndPage(props) {
                     <div className="end-page-each-option-div" id="end-page-recording-button" onClick={() => {
                         props.changeImage(1);
                         props.setState(dakshaRecorderMainPage);
-                        let url = "" ;
-                            chrome.tabs.query({ active: true, lastFocusedWindow: true }, tabs => {
-                                url = tabs[0].url;
-                                let obj = {
-                                    "type": "start",
-                                    "msg": url
-                                }
-                                chrome.tabs.sendMessage(tabs[0].id, obj, () => { return true; });
-                                setBadgeForRecording() ;
-                            })
+                        let url = "";
+                        chrome.tabs.query({ active: true, lastFocusedWindow: true }, tabs => {
+                            url = tabs[0].url;
+                            let obj = {
+                                "type": "start",
+                                "msg": url
+                            }
+                            chrome.tabs.sendMessage(tabs[0].id, obj, () => { return true; });
+                            setBadgeForRecording();
+                        })
                     }}>
                         START RECORDING
                     </div>

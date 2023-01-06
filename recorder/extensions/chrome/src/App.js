@@ -5,13 +5,14 @@ import DakshaRecorderStartingPage from './Components/dakshaRecorderStartingPage'
 import DakshaRecorderMainPage from './Components/dakshaRecorderMainPage';
 import DakshaRecorderCustomHardwaitPage from './Components/dakshaRecorderCustomHardwaitPage';
 import DakshaRecorderEndPage from './Components/dakshaRecorderEndPage';
-let dakshaRecorderStartingPage = 1;
-let dakshaRecorderMainPage = 2 ;
-let dakshaRecorderCustomHardwaitPage = 3 ;
-let dakshaRecorderEndPage = 4 ;
+import GlobalVariables from './Components/globalConfigs';
+let dakshaRecorderStartingPage = GlobalVariables.dakshaRecorderStartingPage;
+let dakshaRecorderMainPage = GlobalVariables.dakshaRecorderMainPage;
+let dakshaRecorderCustomHardwaitPage = GlobalVariables.dakshaRecorderCustomHardwaitPage;
+let dakshaRecorderEndPage = GlobalVariables.dakshaRecorderEndPage;
 let pageNumber;
 chrome.storage.sync.get("popupPageNumber", function (result) {
-  pageNumber = result["popupPageNumber"] ;
+  pageNumber = result["popupPageNumber"];
   var dakshaYamlObject = {};
   dakshaYamlObject["popupPageNumber"] = pageNumber;
   chrome.storage.sync.set(dakshaYamlObject, () => {
@@ -20,7 +21,7 @@ chrome.storage.sync.get("popupPageNumber", function (result) {
 
 let iconChanger;
 chrome.storage.sync.get("playPauseIcon", function (result) {
-    iconChanger = result["playPauseIcon"];
+  iconChanger = result["playPauseIcon"];
 });
 
 const MainComponent = () => {
@@ -36,13 +37,13 @@ const MainComponent = () => {
 
   const [image, changeImage] = useState(iconChanger);
 
-    useEffect(() => {
-        var dakshaYamlObject = {};
-        dakshaYamlObject["playPauseIcon"] = image;
-        chrome.storage.sync.set(dakshaYamlObject, () => {
-        });
-    }, [image]);
-  
+  useEffect(() => {
+    var dakshaYamlObject = {};
+    dakshaYamlObject["playPauseIcon"] = image;
+    chrome.storage.sync.set(dakshaYamlObject, () => {
+    });
+  }, [image]);
+
   if (state == dakshaRecorderStartingPage)
     return (
       <DakshaRecorderStartingPage setState={setState} />
@@ -50,7 +51,7 @@ const MainComponent = () => {
     )
   else if (state == dakshaRecorderMainPage)
     return (
-      <DakshaRecorderMainPage setState={setState} image={image} changeImage={changeImage}/>
+      <DakshaRecorderMainPage setState={setState} image={image} changeImage={changeImage} />
     )
   else if (state == dakshaRecorderCustomHardwaitPage)
     return (
@@ -58,7 +59,7 @@ const MainComponent = () => {
     )
   else if (state == dakshaRecorderEndPage)
     return (
-      <DakshaRecorderEndPage setState={setState} image={image} changeImage={changeImage}/>
+      <DakshaRecorderEndPage setState={setState} image={image} changeImage={changeImage} />
     )
 };
 

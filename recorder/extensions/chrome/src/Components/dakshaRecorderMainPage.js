@@ -7,11 +7,9 @@ import StopButton from '../Icons/StopButton.png';
 import RightArrow from '../Icons/RightArrow.png';
 import removeBadgeForRecording from "./removeBadgeForRecording";
 import setBadgeForRecording from "./setBadgeForRecording";
-
-let dakshaRecorderStartingPage = 1;
-let dakshaRecorderMainPage = 2 ;
-let dakshaRecorderCustomHardwaitPage = 3 ;
-let dakshaRecorderEndPage = 4 ;
+import GlobalVariables from "./globalConfigs";
+let dakshaRecorderCustomHardwaitPage = GlobalVariables.dakshaRecorderCustomHardwaitPage;
+let dakshaRecorderEndPage = GlobalVariables.dakshaRecorderEndPage;
 
 function PlayPause(props) {
 

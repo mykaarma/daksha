@@ -1,11 +1,8 @@
 /*global chrome*/
 import React, { useState } from 'react';
 import '../ComponentCss/dakshaRecorderCustomHardwaitPage.css';
-let dakshaRecorderStartingPage = 1;
-let dakshaRecorderMainPage = 2 ;
-let dakshaRecorderCustomHardwaitPage = 3 ;
-let dakshaRecorderEndPage = 4 ;
-let standardHardWaitTime = 10 ;
+import GlobalVariables from './globalConfigs';
+let dakshaRecorderMainPage = GlobalVariables.dakshaRecorderMainPage ;
 function DakshaRecorderCustomHardwaitPage(props) {
     const [val, setval] = useState();
     const func = (value) => {
