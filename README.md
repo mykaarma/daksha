@@ -19,7 +19,7 @@ You can also auto-generate test yamls through Daksha Recorder [chrome extension]
 
 ### Local deployment (without docker)
 
-  - Download [python 3.8+](https://docs.python.org/3/tutorial/venv.html) and setup a [virutal environment](https://www.python.org/downloads/)
+  - Download [python 3.8+](https://www.python.org/downloads/) and setup a [virutal environment](https://docs.python.org/3/tutorial/venv.html)
   - Install all requirements using `pip install -r requirements.txt`
   - (Optional) Create any env variables needed.
   - Download Chromedriver (https://chromedriver.chromium.org/downloads)
