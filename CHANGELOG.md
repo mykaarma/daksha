@@ -5,6 +5,9 @@
 ## v 2.1.2
 1. Added UI functionality to Daksha Chrome Extension.
 
+## v 1.1.0
+1. Added chrome extension for autogenerating Daksha Yaml
+
 ## v 1.0.1
 1. Added scroll_to functionality in helper methods
 
