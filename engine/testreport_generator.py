@@ -44,7 +44,8 @@ def generate_result(test_id, response, name, step, error_stack):
     try:
         logger.info('Creating test result')
         time_now = datetime.now()
-        result_file_path = f"{STORAGE_PATH}/{test_id}/result/{name}_{time_now}"
+        processed_time_now = time_now.__str__().replace(":", "_")
+        result_file_path = f"{STORAGE_PATH}/{test_id}/result/{name}_{processed_time_now}"
         os.makedirs(os.path.dirname(result_file_path), exist_ok=True)
         if response:
             test_status = "Passed"
