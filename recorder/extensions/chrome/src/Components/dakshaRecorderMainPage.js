@@ -25,10 +25,11 @@ import setBadgeForRecording from "./setBadgeForRecording";
 import GlobalVariables from "./globalConfigs";
 let dakshaRecorderCustomHardwaitPage = GlobalVariables.dakshaRecorderCustomHardwaitPage;
 let dakshaRecorderEndPage = GlobalVariables.dakshaRecorderEndPage;
-
+let play = 2 ;
+let pause = 1 ;
 function PlayPause(props) {
 
-    if (props.image === 1)
+    if (props.image === pause)
         return (
             <img className="main-page-button" src={PauseButton} onClick={() => {
                 props.changeImage(2);
@@ -42,7 +43,7 @@ function PlayPause(props) {
             }
             } />
         )
-    else if (props.image === 2) {
+    else if (props.image === play) {
         return (
             <img className="main-page-button" src={PlayButton} onClick={() => {
                 props.changeImage(1);
