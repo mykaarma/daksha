@@ -1,0 +1,20 @@
+.mainDiv{
+    display: flex;
+    justify-content: space-evenly;
+    flex-direction: column;
+    height: 80px;
+    width: 200px;
+    font-size: medium;
+    font-family: 'Lato', sans-serif;
+}
+
+.recording-button-div{
+    display: flex;
+    background:#0377B3;
+    color: white;
+    height: 40%;
+    border-radius: 5px;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+}

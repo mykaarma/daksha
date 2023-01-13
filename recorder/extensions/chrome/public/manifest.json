@@ -1,0 +1,48 @@
+{
+  "name": "Daksha Recorder",
+  "description": "Extension for Daksha",
+  "version": "2.1.2",
+  "manifest_version": 3,
+  "action": {
+    "default_icon":{
+      "16": "128.png",
+    "48": "128.png",            
+    "128": "128.png"
+    },
+    "default_popup": "index.html",
+    "default_title": "Open the popup"
+  },
+  "content_scripts":[
+    {
+        "js": [
+          "ContentScript.js" 
+        ],
+        "matches": ["http://*/*" , "https://*/*"],
+        "run_at": "document_end",
+        "all_frames": false
+    }
+],
+  "background" : {
+      "service_worker" : "EventPage.js"
+  },
+  "icons": {
+    "16": "128.png",
+    "48": "128.png",            
+    "128": "128.png"
+  },
+  "host_permissions": [
+    "*://*/*"
+  ],
+  "permissions": [
+      "tabs",
+      "contextMenus",
+      "storage"
+  ],
+  "web_accessible_resources": [        
+    {
+      "resources": [ "RecordingTab.html"],
+      "matches": [ "*://*/*" ],
+      "use_dynamic_url": true
+    }
+  ]
+}
