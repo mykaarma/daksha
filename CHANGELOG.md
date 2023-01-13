@@ -1,9 +1,6 @@
 # `DAKSHA` Change Log
 
-*version*: `2.1.2`
-
-## v 2.1.2
-1. Added UI functionality to Daksha Chrome Extension.
+*version*: `1.1.0`
 
 ## v 1.1.0
 1. Added chrome extension for autogenerating Daksha Yaml
