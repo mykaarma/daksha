@@ -197,7 +197,7 @@ def click_button(test_executor: TestExecutor, **kwargs):
 
     """
     locator, locator_value = get_locator_info(**kwargs)
-    logger.info("Testing Click!")
+    logger.info("I'll Click a button!")
     error_stack = None
     # try for 5 times
     for i in range(5):
