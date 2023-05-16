@@ -241,8 +241,10 @@ def validate_ui_element(test_executor: TestExecutor, **kwargs):
             elementTag = element.tag_name
             if elementTag == "input":
                 element_value = element.get_attribute("value")
+                logger.info("Validating textbox to: "+element_value)
             else:
                 element_value = element.text
+                logger.info("Validating text to: "+element_value)
             take_screenshot(test_executor.test_id, test_executor.test_yml["name"], test_executor.web_driver)
             if mode == 'equals':
                 validation_result = (value == element_value)
@@ -255,7 +257,7 @@ def validate_ui_element(test_executor: TestExecutor, **kwargs):
             if validation_result is True:
                 break
             else:
-                logger.info("Value found " + element.text + " did not match value given: " + value + ", mode=" + mode)
+                logger.info("Value found " + element_value + " did not match value given: " + value + ", mode=" + mode)
 
         except Exception as e:
             logger.error("Attempt " + str(i) + " for validation failed \n", exc_info=True)
@@ -455,8 +457,10 @@ def capture_ui_element(test_executor: TestExecutor, **kwargs):
     elementTag = element.tag_name
     if elementTag == "input":
         element_value = element.get_attribute("value")
+        logger.info("Capturing texbox")
     else:
         element_value = element.text
+        logger.info("Capturing text")
     test_executor.variable_dictionary[save_in] = element_value
     logger.info("saved text from UI element. variable: {}, value: {}".format(save_in, element_value))
     return True, None
