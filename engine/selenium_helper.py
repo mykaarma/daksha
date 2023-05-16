@@ -255,7 +255,7 @@ def validate_ui_element(test_executor: TestExecutor, **kwargs):
             if validation_result is True:
                 break
             else:
-                logger.info("Value found" + element.text + " did not match value given: " + value + ", mode=" + mode)
+                logger.info("Value found " + element.text + " did not match value given: " + value + ", mode=" + mode)
 
         except Exception as e:
             logger.error("Attempt " + str(i) + " for validation failed \n", exc_info=True)
