@@ -451,7 +451,7 @@ def capture_ui_element(test_executor: TestExecutor, **kwargs):
     element = WebDriverWait(test_executor.web_driver, 10).until(
         EC.element_to_be_clickable((locator, locator_value))
     )
-    take_screenshot(test_executors.test_id, test_executor.test_yml["name"], test_executor.web_driver)
+    take_screenshot(test_executor.test_id, test_executor.test_yml["name"], test_executor.web_driver)
     elementTag = element.tag_name
     if elementTag == "input":
         element_value = element.get_attribute("value")
