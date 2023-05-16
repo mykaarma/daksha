@@ -197,7 +197,7 @@ def click_button(test_executor: TestExecutor, **kwargs):
 
     """
     locator, locator_value = get_locator_info(**kwargs)
-    logger.info("I'll click a button!")
+    logger.info("Testing Click!")
     error_stack = None
     # try for 5 times
     for i in range(5):
@@ -238,19 +238,24 @@ def validate_ui_element(test_executor: TestExecutor, **kwargs):
             element = WebDriverWait(test_executor.web_driver, 10).until(
                 EC.visibility_of_element_located((locator, locator_value))
             )
+            elementTag = element.tag_name
+            if elementTag == "input":
+                element_value = element.get_attribute("value")
+            else:
+                element_value = element.text
             take_screenshot(test_executor.test_id, test_executor.test_yml["name"], test_executor.web_driver)
             if mode == 'equals':
-                validation_result = (value == element.text)
+                validation_result = (value == element_value)
             elif mode == 'contains':
-                validation_result = str(element.text).__contains__(value)
+                validation_result = str(element_value).__contains__(value)
             elif mode == 'not_contains':
-                validation_result = not str(element.text).__contains__(value)
+                validation_result = not str(element_value).__contains__(value)
             else:
                 validation_result = False
             if validation_result is True:
                 break
             else:
-                logger.info("Value found " + element.text + " did not match value given: " + value + ", mode=" + mode)
+                logger.info("Value found" + element.text + " did not match value given: " + value + ", mode=" + mode)
 
         except Exception as e:
             logger.error("Attempt " + str(i) + " for validation failed \n", exc_info=True)
@@ -333,7 +338,8 @@ def open_new_tab(test_executor: TestExecutor):
       :rtype: object
      """
     test_executor.web_driver.execute_script("window.open()")
-    test_executor.web_driver.switch_to_window(test_executor.web_driver.window_handles[len(test_executor.web_driver.window_handles) - 1])
+    test_executor.web_driver.switch_to_window(
+        test_executor.web_driver.window_handles[len(test_executor.web_driver.window_handles) - 1])
     take_screenshot(test_executor.test_id, test_executor.test_yml["name"], test_executor.web_driver)
     logger.info("Switched to new Tab successfully")
     return True, None
@@ -392,7 +398,7 @@ def wait_for(test_executor: TestExecutor, **kwargs):
     if mode in ["visibility", "invisibility"]:
         locator, locator_value = get_locator_info(**kwargs)
         logger.info("I'll wait for an UI element!")
-        error= None
+        error = None
         wait = WebDriverWait(test_executor.web_driver, 10, poll_frequency=1,
                              ignored_exceptions=[ElementNotVisibleException, ElementNotSelectableException])
         for i in range(5):
@@ -412,7 +418,7 @@ def wait_for(test_executor: TestExecutor, **kwargs):
                 logger.error("Attempt " + str(i) + " for waiting for " + mode + " of " + locator + " failed \n",
                              exc_info=True)
         if not wait_result:
-            error = "Waiting for " + mode + " of " + locator + + " "+locator_value+" failed"
+            error = "Waiting for " + mode + " of " + locator + + " " + locator_value + " failed"
         return wait_result, error
     elif mode == "hardwait":
         try:
@@ -442,9 +448,17 @@ def capture_ui_element(test_executor: TestExecutor, **kwargs):
         save_in = kwargs['save_in']
     except KeyError:
         return False, "Ill formatted arguments, 'save_in' must be present in the list of args"
-    element = test_executor.web_driver.find_element(locator, locator_value)
-    test_executor.variable_dictionary[save_in] = element.text
-    logger.info("saved text from UI element. variable: {}, value: {}".format(save_in, element.text))
+    element = WebDriverWait(test_executor.web_driver, 10).until(
+        EC.element_to_be_clickable((locator, locator_value))
+    )
+    take_screenshot(test_executors.test_id, test_executor.test_yml["name"], test_executor.web_driver)
+    elementTag = element.tag_name
+    if elementTag == "input":
+        element_value = element.get_attribute("value")
+    else:
+        element_value = element.text
+    test_executor.variable_dictionary[save_in] = element_value
+    logger.info("saved text from UI element. variable: {}, value: {}".format(save_in, element_value))
     return True, None
 
 
@@ -474,6 +488,7 @@ def get_locator_info(**kwargs):
     else:
         raise Exception("Invalid locator passed")
 
+
 def scroll_to(test_executor: TestExecutor, **kwargs):
     """
     Scrolls down to a particular element's view
@@ -500,3 +515,4 @@ def scroll_to(test_executor: TestExecutor, **kwargs):
             error_stack = traceback.format_exc()
             logger.error("Attempt " + str(i) + " to scroll to element failed")
     return False, error_stack
+
