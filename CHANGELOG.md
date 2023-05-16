@@ -1,6 +1,9 @@
 # `DAKSHA` Change Log
 
-*version*: `2.1.2`
+*version*: `2.1.3`
+
+## v 2.1.3
+1. Adressed issue #47
 
 ## v 2.1.2
 1. Added UI functionality to Daksha Chrome Extension.
