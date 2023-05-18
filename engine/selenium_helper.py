@@ -197,7 +197,7 @@ def click_button(test_executor: TestExecutor, **kwargs):
 
     """
     locator, locator_value = get_locator_info(**kwargs)
-    logger.info("I'll Click a button!")
+    logger.info("I'll click a button!")
     error_stack = None
     # try for 5 times
     for i in range(5):
@@ -241,7 +241,7 @@ def validate_ui_element(test_executor: TestExecutor, **kwargs):
             elementTag = element.tag_name
             if elementTag == "input":
                 element_value = element.get_attribute("value")
-                logger.info("Validating textbox to: "+element_value)
+                logger.info("Validating input textbox text to: "+element_value)
             else:
                 element_value = element.text
                 logger.info("Validating text to: "+element_value)
@@ -457,10 +457,10 @@ def capture_ui_element(test_executor: TestExecutor, **kwargs):
     elementTag = element.tag_name
     if elementTag == "input":
         element_value = element.get_attribute("value")
-        logger.info("Capturing texbox")
+        logger.info("Capturing input texbox text " + element_value)
     else:
         element_value = element.text
-        logger.info("Capturing text")
+        logger.info("Capturing text " + element_value)
     test_executor.variable_dictionary[save_in] = element_value
     logger.info("saved text from UI element. variable: {}, value: {}".format(save_in, element_value))
     return True, None
