@@ -14,3 +14,5 @@ Jinja2==2.11.3
 jmespath==0.10.0
 # Temporary patch for markupsafe issue https://github.com/pallets/markupsafe/issues/284
 markupsafe>=1.1.1,<2.1.0
+#psycopg2 is needed for establishing connection with Postgresql database
+psycopg2==2.9.6

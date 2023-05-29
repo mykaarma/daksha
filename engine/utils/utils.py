@@ -97,7 +97,7 @@ def get_org_instance(github, repo_user, repo_org):
 def get_yml_files_in_folder_local(folder_path):
     files = []
     for file in os.listdir(folder_path):
-        if file.endswith(".yml"):
+        if file.endswith(".yaml") or file.endswith(".yml"):
             file_path = os.path.join(folder_path, file)
             files.append(file_path)
     return files

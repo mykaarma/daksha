@@ -59,7 +59,7 @@ def generate_result(test_id, response, name, step, error_stack):
         
         with open(result_file_path, 'w') as f:
             json.dump(test_result.__dict__, f)
-        f.close()
+        f.close() 
     except Exception:
         logger.error("Error in test result generation:", exc_info=True)
 
@@ -99,7 +99,7 @@ def generate_report(test_id):
         test_result = json.dumps(test_result)
         replacement = {"test_id": test_id, "test_result": test_result, "passed_count": passed_count.__str__(),
                        "failed_count": failed_count.__str__()}
-
+        
         report_file_dir = f"{STORAGE_PATH}/{test_id}/"
         shutil.copy("templates/report.html", report_file_dir)
         shutil.copy("templates/report.js", report_file_dir)
@@ -114,7 +114,7 @@ def generate_report(test_id):
             file.seek(0)
             file.write(content)
             file.truncate()
-        logger.info("Test Report generated")
+        logger.info("Test Report generated")           
     except Exception:
         logger.error("Error in test report generation:", exc_info=True)
 

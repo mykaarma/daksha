@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'engine'
 ]
 
 MIDDLEWARE = [
@@ -90,10 +91,19 @@ WSGI_APPLICATION = 'daksha.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
+#If the user wants to use the database then he must set an Environment Variable named Test_Result_DB as "Postgres"
+#if the value of this environment variable is not set then the test data will not be saved in the database
+TEST_RESULT_DB=os.environ.get('Test_Result_DB',None)
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.environ.get('PG_DB','postgres'),
+        'USER':os.environ.get('PG_USER','postgres'),
+        'PASSWORD':os.environ.get('PG_PASSWORD','postgres'),
+        'HOST':os.environ.get('PG_HOST','localhost'),
+        'PORT':os.environ.get('PG_PORT',5432)
+        
     }
 }
 

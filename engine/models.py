@@ -21,12 +21,13 @@ from django.db import models
 
 # Create your models here.
 class TestExecutor:
-    def __init__(self, index, test_id, variable_dict, test_yml, web_driver):
+    def __init__(self, index, test_id, variable_dict, test_yml, web_driver , initialized_test_result):
         self.index = index
         self.test_id = test_id
         self.variable_dictionary = copy.deepcopy(variable_dict)
         self.test_yml = test_yml
         self.web_driver = web_driver
+        self.initialized_test_result=initialized_test_result
 
 
 class TestResult:
@@ -35,3 +36,12 @@ class TestResult:
         self.test_status = test_status
         self.failed_step = step
         self.failure_cause = failure_reason
+
+
+class ResultStored(models.Model):
+    Test_Id=models.TextField(max_length=11)
+    Test_Name=models.TextField()
+    Status=models.TextField()
+    Failure_Step=models.TextField()
+    Failure_Cause=models.TextField()
+    InsertTs=models.TextField()

@@ -22,6 +22,7 @@ from .models import TestExecutor
 from .selenium_helper import *
 from .testreport_generator import *
 from .email_generator import *
+from daksha import settings
 
 import jinja2
 import ast
@@ -64,7 +65,21 @@ def execute_test(test_executor: TestExecutor, email):
             if execution_result is False:
                 break
         logger.info("Test " + name + " finished, generating  result ")
-        generate_result(test_executor.test_id, execution_result, name, step, error_stack)
+        generate_result(test_executor.test_id, execution_result, name, step, error_stack )
+        
+        if(settings.TEST_RESULT_DB != None and settings.TEST_RESULT_DB == "postgres"):
+            test_executor.initialized_test_result.Failure_Cause=str(error_stack)[0:200]
+            
+            if execution_result:
+                test_executor.initialized_test_result.Failure_Step=""
+                test_executor.initialized_test_result.Status="Passed"
+            else:
+                test_executor.initialized_test_result.Failure_Step=step
+                test_executor.initialized_test_result.Status="Failed"
+                
+            test_executor.initialized_test_result.save()
+            logger.info("The test has ended and the test result is updated")
+            
         if execution_result:
             logger.info("Test " + name + " successful")
         else:
