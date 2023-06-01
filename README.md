@@ -37,7 +37,7 @@ Setup selenium grid using https://www.selenium.dev/downloads/. Or if you want to
 ## Database
  - The user can opt for this functionality if he/she wants to save the test results in the database. 
  - To enable this, please provide the following environment variables:-
- TEST_RESULT_DB, PG_DB, PG_USER, PG_PASSWORD, PG_HOST, PG_PORT
+ `TEST_RESULT_DB`, PG_DB, PG_USER, PG_PASSWORD, PG_HOST, PG_PORT
 
  - We only support Postgresql database at this point. To enable this one has to set the environment        variable TEST_RESULT_DB to "postgres".
  - This functionality is optional and Daksha workflow does not depend on it.
