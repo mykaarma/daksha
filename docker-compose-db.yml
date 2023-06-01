@@ -34,6 +34,7 @@ services:
     ports:
       - "8485:80"
 
+#If you want to provide external Postgresql database then please run docker-compose-external-db.yml
   postgresdb:
     container_name: postgresdb
     image: postgres:12
