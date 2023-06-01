@@ -39,7 +39,7 @@ class TestResult:
 
 
 class TestResults(models.Model):
-    TestUUId=models.TextField(max_length=11)
+    TestUUID=models.TextField(max_length=11)
     TestName=models.TextField()
     Status=models.TextField()
     FailureStep=models.TextField()

@@ -23,11 +23,9 @@ def initialize_test_result(test_id,test_yml):
     test_result=models.TestResults()
     if(settings.TEST_RESULT_DB != None and settings.TEST_RESULT_DB.lower() == "postgres"):
         test_name=test_yml["name"]
-        test_result.TestUUId=test_id
+        test_result.TestUUID=test_id
         test_result.TestName=test_name
         test_result.Status="Waiting"
-        test_result.FailureCause="NULL"
-        test_result.FailureStep="NULL"
         test_result.save()
         logger.info(f"Initialized test named {test_name} with TestUUID {test_id} in the database")
         
@@ -39,12 +37,11 @@ def initialize_test_result(test_id,test_yml):
 def save_result_in_db(test_executor,execution_result,step,error_stack):
     test_name=test_executor.test_yml["name"]
     testUUID=test_executor.test_id
-    test_executor.test_result.FailureCause=str(error_stack)[0:200]
     if execution_result:
-        test_executor.test_result.FailureStep=""
         test_executor.test_result.Status="Passed"
     else:
         test_executor.test_result.FailureStep=str(step)[0:200]
+        test_executor.test_result.FailureCause=str(error_stack)[0:200]
         test_executor.test_result.Status="Failed"
                 
     test_executor.test_result.save()
