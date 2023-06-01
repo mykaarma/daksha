@@ -37,7 +37,7 @@ Setup selenium grid using https://www.selenium.dev/downloads/. Or if you want to
 ## Database
  - The user can opt for this functionality if he/she wants to save the test results in the database. 
  - To enable this, please provide the following environment variables:-
- `TEST_RESULT_DB`, PG_DB, PG_USER, PG_PASSWORD, PG_HOST, PG_PORT
+ `TEST_RESULT_DB`, `PG_DB`, `PG_USER`, `PG_PASSWORD`, `PG_HOST`, `PG_PORT`
 
  - We only support Postgresql database at this point. To enable this one has to set the environment        variable TEST_RESULT_DB to "postgres".
  - This functionality is optional and Daksha workflow does not depend on it.
@@ -48,7 +48,7 @@ Setup selenium grid using https://www.selenium.dev/downloads/. Or if you want to
 
 ### Deploying Daksha with external Postgressql Database
  - You need to run the [docker-compose-external-db](docker-compose-external-db.yml) file.This assumes that you have an external Postgresql database up and provide the correct environment variables :-
- TEST_RESULT_DB, PG_DB, PG_USER, PG_PASSWORD, PG_HOST, PG_PORT
+ `TEST_RESULT_DB`, `PG_DB`, `PG_USER`, `PG_PASSWORD`, `PG_HOST`, `PG_PORT`
 - Run the command `docker compose -f docker-compose-external-db.yml up -d` to initiate the build and deploy the project.
 
 ## #Environment Variables
