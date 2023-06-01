@@ -35,11 +35,11 @@ Download Chromedriver according to your chrome version from https://chromedriver
 Setup selenium grid using https://www.selenium.dev/downloads/. Or if you want to use the dockerized version you can download and run selenium grid images from dockerhub: https://hub.docker.com/u/selenium.
 
 ## Database
- - The user can opt for this functionality if he/she wants to save the test results in the database. 
+ - The user can opt for this functionality if he/she wants to save the test results in the database.
  - To enable this, please provide the following environment variables:-
- TEST_RESULT_DB, PG_DB, PG_USER, PG_PASSWORD, PG_HOST, PG_PORT
+ `TEST_RESULT_DB`, `PG_DB`, `PG_USER`, `PG_PASSWORD`, `PG_HOST`, `PG_PORT`
 
- - We only support Postgresql database at this point. To enable this one has to set the environment        variable TEST_RESULT_DB to "postgres".
+ - We only support Postgresql database at this point. To enable this one has to set the environment        variable TEST_RESULT_DB to `postgres`.
  - This functionality is optional and Daksha workflow does not depend on it.
 
 ### Deploying Daksha with Database enabled by Docker
@@ -47,8 +47,8 @@ Setup selenium grid using https://www.selenium.dev/downloads/. Or if you want to
  - Run the command `docker compose -f docker-compose-db.yml up -d` to initiate the build and deploy the project.
 
 ### Deploying Daksha with external Postgressql Database
- - You need to run the [docker-compose-external-db](docker-compose-external-db.yml) file.This assumes that you have an external Postgresql database up and provide the correct environment variables :-
- TEST_RESULT_DB, PG_DB, PG_USER, PG_PASSWORD, PG_HOST, PG_PORT
+ - You need to run the [docker-compose-external-db](docker-compose-external-db.yml) file. This assumes that you have an external Postgresql database up and provide the correct environment variables :-
+ `TEST_RESULT_DB`, `PG_DB`, `PG_USER`, `PG_PASSWORD`, `PG_HOST`, `PG_PORT`
 - Run the command `docker compose -f docker-compose-external-db.yml up -d` to initiate the build and deploy the project.
 
 ## #Environment Variables
@@ -105,23 +105,23 @@ You can configure the application in a lot of ways by setting the following envi
   * Provide a comma separated list of hosts which you'd like to be added to ALLOWED_HOSTS.
 
 * **TEST_RESULT_DB**
-  * If you want to use the Postgresql database to save your test reports, create this environment variable and set its value to postgres.
-  * If you set this value as postgres, you need to provide additional environment variables.
+  * If you want to use the Postgresql database to save your test reports, create this environment variable and set its value to `postgres`.
+  * If you set this value as `postgres`, you need to provide additional environment variables.
 
 *  **PG_DB**
-  * Name of the database.If this value is not provided, the default name of database will be postgres.
+  * Name of the database. If this value is not provided, the default name of database will be `postgres`.
 
 *  **PG_USER**
-  * Name of the User.If this value is not provided, the default name of user will be postgres.
+  * Name of the User. If this value is not provided, the default name of user will be `postgres`.
 
 *  **PG_PASSWORD**
-  * Password corresponding to the user.Default password for user postgres is postgres.
+  * Password corresponding to the user. Default password for user postgres is `postgres`.
 
 *  **PG_HOST**
-  * The host of our database.If this value is not provided, the default host is localhost.
+  * The host of our database. If this value is not provided, the default host is `localhost`.
 
 *  **PG_PORT**
-  * Port provided to the database.If this value is not provided, the default port will be 5432.
+  * Port provided to the database. If this value is not provided, the default port will be `5432`.
 
 ## Get in Touch
 
