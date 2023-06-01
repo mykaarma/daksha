@@ -3,7 +3,8 @@
 *version*: `2.2.0`
 
 ## v 2.2.0
-1. Added the database feature in such a way that the existing functionality of Daksha remains as it
+1. Added Database for Test Results in Daksha.
+2. Now users can opt for test results to be saved in a Postgres database
 
 ## v 2.1.3
 1. Adressed issue #47
