@@ -108,19 +108,19 @@ You can configure the application in a lot of ways by setting the following envi
   * If you want to use the Postgresql database to save your test reports, create this environment variable and set its value to `postgres`.
   * If you set this value as `postgres`, you need to provide additional environment variables.
 
-*  **PG_DB**
+* **PG_DB**
   * Name of the database. If this value is not provided, the default name of database will be `postgres`.
 
-*  **PG_USER**
+* **PG_USER**
   * Name of the User. If this value is not provided, the default name of user will be `postgres`.
 
-*  **PG_PASSWORD**
+* **PG_PASSWORD**
   * Password corresponding to the user. Default password for user postgres is `postgres`.
 
-*  **PG_HOST**
+* **PG_HOST**
   * The host of our database. If this value is not provided, the default host is `localhost`.
 
-*  **PG_PORT**
+* **PG_PORT**
   * Port provided to the database. If this value is not provided, the default port will be `5432`.
 
 ## Get in Touch
