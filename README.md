@@ -34,6 +34,23 @@ Download Chromedriver according to your chrome version from https://chromedriver
 ### Remote Webdriver
 Setup selenium grid using https://www.selenium.dev/downloads/. Or if you want to use the dockerized version you can download and run selenium grid images from dockerhub: https://hub.docker.com/u/selenium.
 
+## Database
+ - The user can opt for this functionality if he/she wants to save the test results in the database. 
+ - To enable this, please provide the following environment variables:-
+    TEST_RESULT_DB , PG_DB , PG_USER , PG_PASSWORD , PG_HOST , PG_PORT
+
+ - We only support Postgresql database at this point. To enable this one has to set the environment        variable TEST_RESULT_DB to "postgres".
+ - This functionality is optional and Daksha workflow does not depend on it.
+
+### Deploying with Docker
+ - We have provided a docker-compose file [docker-compose-db.yml](docker-compose-db.yml) to up the application with the database.
+ - Run the command `docker compose -f docker-compose-db.yml up -d` to initiate the build and deploy the project.
+
+### Local Deployment (using database through docker)
+ - Build and Run the database using the command `docker compose -f docker-compose-db.yml up -d postgresdb` 
+ - Run the file command `./startup_command.sh` to run the file [startup_commands.sh](startup_command.sh) using bash
+
+
 ## #Environment Variables
 You can configure the application in a lot of ways by setting the following environment variables:
 * **STORAGE_PATH**
@@ -101,7 +118,7 @@ You can configure the application in a lot of ways by setting the following envi
   * Password corresponding to the user.Default password for user postgres is postgres.
 
 *  **PG_HOST**
-  * The host of our application.If this value is not provided, the default host is Localhost.
+  * The host of our database.If this value is not provided, the default host is localhost.
 
 *  **PG_PORT**
   * Port provided to the database.If this value is not provided, the default port will be 5432.

@@ -91,9 +91,9 @@ WSGI_APPLICATION = 'daksha.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
-#If the user wants to use the database then he must set an Environment Variable named Test_Result_DB as "Postgres"
-#if the value of this environment variable is not set then the test data will not be saved in the database
-TEST_RESULT_DB=os.environ.get('Test_Result_DB',None)
+#If the user wants to use the database then he must set an Environment Variable named Test_Result_DB as "postgres"
+#if the value of this environment variable is not set then the test results will not be saved in the database
+TEST_RESULT_DB=os.environ.get('TEST_RESULT_DB',None)
 
 DATABASES = {
     'default': {

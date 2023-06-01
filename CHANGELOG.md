@@ -1,6 +1,9 @@
 # `DAKSHA` Change Log
 
-*version*: `2.1.3`
+*version*: `2.2.0`
+
+## v 2.2.0
+1. Added the database feature in such a way that the existing functionality of Daksha remains as it
 
 ## v 2.1.3
 1. Adressed issue #47

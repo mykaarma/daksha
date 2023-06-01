@@ -21,14 +21,14 @@ from .logs import *
 from daksha.settings import APACHE_URL
 from .models import TestExecutor
 from .testreport_generator import generate_report
-from engine import test_result_initializer
+from engine import test_result_utils
 
 def thread_executor(test_ymls, initial_variable_dictionary, test_id, email):
     # Test Executor object initialization and store in a list
     testExecutorObjects=[]
 
     for test_yml in test_ymls:
-        test_result_object=test_result_initializer.initialize_test_result(test_id,test_yml) 
+        test_result_object=test_result_utils.initialize_test_result(test_id,test_yml) 
         test_executor = TestExecutor(1, test_id, initial_variable_dictionary, test_yml, None ,test_result_object)
         testExecutorObjects.append(test_executor)
            
