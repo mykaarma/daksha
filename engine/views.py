@@ -52,7 +52,7 @@ def executor(request):
                 logger.info("task submitted to thread pool executor")
             except Exception as e:
                 logger.error("Exception occurred", e)
-            response_message = "Your test UUID is: " + test_uuid + ". We'll send you an email with report shortly"
+            response_message = "Your Test UUID is: " + test_uuid + ". We'll send you an email with report shortly"
             return HttpResponse(response_message, status=status.HTTP_200_OK)
         except Exception as e:
             logger.error("Exception caught", exc_info=True)
