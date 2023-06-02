@@ -66,7 +66,7 @@ def execute_test(test_executor: TestExecutor, email):
             if execution_result is False:
                 break
         logger.info("Test " + name + " finished, generating  result ")
-        generate_result(test_executor.test_id, execution_result, name, step, error_stack )
+        generate_result(test_executor.test_uuid, execution_result, name, step, error_stack )
         
         if settings.TEST_RESULT_DB != None and settings.TEST_RESULT_DB.lower() == "postgres":
             test_result_utils.save_result_in_db(test_executor,execution_result,step,error_stack)
@@ -74,8 +74,8 @@ def execute_test(test_executor: TestExecutor, email):
         if execution_result:
             logger.info("Test " + name + " successful")
         else:
-            logger.info("Test " + name + " failed for test ID: " + test_executor.test_id)
-            send_alert(test_executor.test_id, name, str(step), error_stack, alert_type)
+            logger.info("Test " + name + " failed for test ID: " + test_executor.test_uuid)
+            send_alert(test_executor.test_uuid, name, str(step), error_stack, alert_type)
         __cleanup(web_driver)
     except Exception:
         logger.error("Error encountered in executor: ", exc_info=True)

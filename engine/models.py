@@ -21,9 +21,9 @@ from django.db import models
 
 # Create your models here.
 class TestExecutor:
-    def __init__(self, index, test_id, variable_dict, test_yml, web_driver , test_result):
+    def __init__(self, index, test_uuid, variable_dict, test_yml, web_driver , test_result):
         self.index = index
-        self.test_id = test_id
+        self.test_uuid = test_uuid
         self.variable_dictionary = copy.deepcopy(variable_dict)
         self.test_yml = test_yml
         self.web_driver = web_driver

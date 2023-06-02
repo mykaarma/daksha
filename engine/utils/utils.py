@@ -41,11 +41,11 @@ def get_file_content(repo_name, branch_name, file_path):
 
 
 # Download the file from github
-def download_file_content(file_content, test_id):
+def download_file_content(file_content, test_uuid):
     content = base64.b64decode(file_content.content)
     ymlcontent = yaml.full_load(content)
     logger.info(ymlcontent)
-    file_path = f"{STORAGE_PATH}/{test_id}/"
+    file_path = f"{STORAGE_PATH}/{test_uuid}/"
 
     try:
         with open(file_path + file_content.name, "w") as file:
@@ -58,11 +58,11 @@ def download_file_content(file_content, test_id):
 
 
 # read yaml file
-def read_yaml(repo, branch, file_path, test_id):
+def read_yaml(repo, branch, file_path, test_uuid):
     try:
         file_content = get_file_content(repo, branch, file_path)
-        download_file_content(file_content, test_id)
-        file_name = f"{STORAGE_PATH}/{test_id}/{file_content.name}"
+        download_file_content(file_content, test_uuid)
+        file_name = f"{STORAGE_PATH}/{test_uuid}/{file_content.name}"
         with open(file_name, 'r') as stream:
             yaml_content = yaml.full_load(stream)
             logger.info("Find your text file at location %s" % file_name)

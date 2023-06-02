@@ -22,7 +22,7 @@ from .api_response import make_http_request
 
 # action: implementing_method
 
-# Each of the methods listed here must take webdriver and test_id as params
+# Each of the methods listed here must take webdriver and test_uuid as params
 
 method_map = {
     "config": browser_config,

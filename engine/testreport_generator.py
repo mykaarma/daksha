@@ -27,11 +27,11 @@ from .models import TestResult
 from datetime import datetime
 
 
-def generate_result(test_id, response, name, step, error_stack):
+def generate_result(test_uuid, response, name, step, error_stack):
     """
     Generates Test Result
-     :param test_id: ID of the Test
-     :type test_id: str
+     :param test_uuid: ID of the Test
+     :type test_uuid: str
      :param response: Execution Status
      :type response: bool
      :param step : Last executed step of the Test
@@ -45,7 +45,7 @@ def generate_result(test_id, response, name, step, error_stack):
         logger.info('Creating test result')
         time_now = datetime.now()
         processed_time_now = time_now.__str__().replace(":", "_")
-        result_file_path = f"{STORAGE_PATH}/{test_id}/result/{name}_{processed_time_now}"
+        result_file_path = f"{STORAGE_PATH}/{test_uuid}/result/{name}_{processed_time_now}"
         os.makedirs(os.path.dirname(result_file_path), exist_ok=True)
         if response:
             test_status = "Passed"
@@ -64,7 +64,7 @@ def generate_result(test_id, response, name, step, error_stack):
         logger.error("Error in test result generation:", exc_info=True)
 
 
-def generate_test_id():
+def generate_test_uuid():
     """
     Generates an unique 11 Digit Test ID
      :returns : 11 Digit unique Test ID
@@ -72,21 +72,21 @@ def generate_test_id():
     """
     res = ''.join(random.choices(string.ascii_uppercase +
                                  string.digits, k=11))
-    logger.info("Test ID: " + res)
+    logger.info("Test UUID: " + res)
     return res
 
 
-def generate_report(test_id):
+def generate_report(test_uuid):
     """
     Generates Test Report
-     :param test_id: ID of the Test
-     :type test_id: str
+     :param test_uuid: ID of the Test
+     :type test_uuid: str
     """
     try:
         logger.info('Creating test report')
         passed_count, failed_count = 0, 0
         test_result = []
-        result_folder_path = f"{STORAGE_PATH}/{test_id}/result"
+        result_folder_path = f"{STORAGE_PATH}/{test_uuid}/result"
         for file in os.listdir(result_folder_path):
             result_file_path = os.path.join(result_folder_path, file)
             with open(result_file_path) as f:
@@ -97,10 +97,10 @@ def generate_report(test_id):
                     else:
                         failed_count += 1
         test_result = json.dumps(test_result)
-        replacement = {"test_id": test_id, "test_result": test_result, "passed_count": passed_count.__str__(),
+        replacement = {"test_uuid": test_uuid, "test_result": test_result, "passed_count": passed_count.__str__(),
                        "failed_count": failed_count.__str__()}
         
-        report_file_dir = f"{STORAGE_PATH}/{test_id}/"
+        report_file_dir = f"{STORAGE_PATH}/{test_uuid}/"
         shutil.copy("templates/report.html", report_file_dir)
         shutil.copy("templates/report.js", report_file_dir)
         shutil.copy("templates/report.css", report_file_dir)

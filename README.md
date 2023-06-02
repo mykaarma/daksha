@@ -47,9 +47,10 @@ Setup selenium grid using https://www.selenium.dev/downloads/. Or if you want to
  - Run the command `docker compose -f docker-compose-db.yml up -d` to initiate the build and deploy the project.
 
 ### Deploying Daksha with external Postgressql Database
- - You need to run the [docker-compose-external-db](docker-compose-external-db.yml) file. This assumes that you have an external Postgresql database up and provide the correct environment variables :-
+ - Remove the database service in [docker-compose-db.yml](docker-compose-db.yml).
+ - This assumes that you have an external Postgresql database up and provide the correct environment variables :-
  `TEST_RESULT_DB`, `PG_DB`, `PG_USER`, `PG_PASSWORD`, `PG_HOST`, `PG_PORT`
-- Run the command `docker compose -f docker-compose-external-db.yml up -d` to initiate the build and deploy the project.
+- Run the command `docker compose -f docker-compose-db.yml up -d` to initiate the build and deploy the project.
 
 ## #Environment Variables
 You can configure the application in a lot of ways by setting the following environment variables:

@@ -19,15 +19,15 @@ from .logs import *
 from daksha import settings
 from engine import models
 
-def initialize_test_result(test_id,test_yml):
+def initialize_test_result(test_uuid,test_yml):
     test_result=models.TestResults()
     if(settings.TEST_RESULT_DB != None and settings.TEST_RESULT_DB.lower() == "postgres"):
         test_name=test_yml["name"]
-        test_result.TestUUID=test_id
+        test_result.TestUUID=test_uuid
         test_result.TestName=test_name
         test_result.Status="Waiting"
         test_result.save()
-        logger.info(f"Initialized test named {test_name} with TestUUID {test_id} in the database")
+        logger.info(f"Initialized test named {test_name} with TestUUID {test_uuid} in the database")
         
     else :
         logger.info("The Test results would not be saved in database as that functionality is not opted for")
@@ -36,7 +36,7 @@ def initialize_test_result(test_id,test_yml):
             
 def save_result_in_db(test_executor,execution_result,step,error_stack):
     test_name=test_executor.test_yml["name"]
-    testUUID=test_executor.test_id
+    testUUID=test_executor.test_uuid
     if execution_result:
         test_executor.test_result.Status="Passed"
     else:

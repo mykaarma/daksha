@@ -23,13 +23,13 @@ from .models import TestExecutor
 from .testreport_generator import generate_report
 from engine import test_result_utils
 
-def thread_executor(test_ymls, initial_variable_dictionary, test_id, email):
+def thread_executor(test_ymls, initial_variable_dictionary, test_uuid, email):
     # Test Executor object initialization and store in a list
     testExecutorObjects=[]
 
     for test_yml in test_ymls:
-        test_result_object=test_result_utils.initialize_test_result(test_id,test_yml) 
-        test_executor = TestExecutor(1, test_id, initial_variable_dictionary, test_yml, None ,test_result_object)
+        test_result_object=test_result_utils.initialize_test_result(test_uuid,test_yml) 
+        test_executor = TestExecutor(1, test_uuid, initial_variable_dictionary, test_yml, None ,test_result_object)
         testExecutorObjects.append(test_executor)
            
         
@@ -42,7 +42,7 @@ def thread_executor(test_ymls, initial_variable_dictionary, test_id, email):
                 logger.error("Exception occurred", e)
             pass
     logger.info("All threads complete, generating test report")
-    generate_report(test_id)
-    report_url = APACHE_URL + test_executor.test_id + '/report.html'
-    send_report_email(test_executor.test_id, report_url, email)
+    generate_report(test_uuid)
+    report_url = APACHE_URL + test_executor.test_uuid + '/report.html'
+    send_report_email(test_executor.test_uuid, report_url, email)
 

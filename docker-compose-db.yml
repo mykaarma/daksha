@@ -1,6 +1,15 @@
 version: '3'
 
 services:
+  engine-apache:
+    image: httpd:2.4-alpine
+    container_name: engine-apache
+    restart: always
+    volumes:
+      - /daksha/test-data:/usr/local/apache2/htdocs/
+    ports:
+      - "8485:80"
+
   web:
     build: .
     container_name: daksha
@@ -22,19 +31,10 @@ services:
     
     command: bash /startup_command.sh
 
+    #If you want to provide an external Postgres SQL database then remove the below lines .
     depends_on:
       - postgresdb
  
-  engine-apache:
-    image: httpd:2.4-alpine
-    container_name: engine-apache
-    restart: always
-    volumes:
-      - /daksha/test-data:/usr/local/apache2/htdocs/
-    ports:
-      - "8485:80"
-
-#If you want to provide external Postgresql database then please run docker-compose-external-db.yml
   postgresdb:
     container_name: postgresdb
     image: postgres:12
