@@ -20,24 +20,24 @@ from .logs import *
 from postmarker.core import PostmarkClient
 
 
-def send_report_email(test_id, report_url, recipient_email):
+def send_report_email(test_uuid, report_url, recipient_email):
     """
     Sends email to the recipient email provided
-     :param test_id: ID of the Test
-     :type test_id: str
+     :param test_uuid: ID of the Test
+     :type test_uuid: str
      :param report_url: The url where the report is hoisted
      :type report_url: str
      :param recipient_email:  The email where the report will be sent
      :type recipient_email: str
     """
 
-    subject = "Report for Test ID: " + test_id
+    subject = "Report for Test ID: " + test_uuid
 
     if len(APACHE_URL) == 0:
-        test_folder = STORAGE_PATH + '/' + test_id + '/'
+        test_folder = STORAGE_PATH + '/' + test_uuid + '/'
         message = "Please open this folder on your system to get the test Report : '" + test_folder + "'"
     else:
-        folder_url = APACHE_URL + test_id + '/'
+        folder_url = APACHE_URL + test_uuid + '/'
         message = "Please open this url to get your test Report : " + report_url + "\nTest folder url: " + folder_url
     # message.attach_file('/templates/testPage.html')
     logger.info(message)

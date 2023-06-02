@@ -20,8 +20,8 @@ import requests
 from string import Template
 
 
-def gchat_alert(test_id, name, step, error_stack):
-    alert_body = "Test Case: " + name + " failed for test id : " + test_id + "\n _ERROR_  :  ```" + error_stack.replace(
+def gchat_alert(test_uuid, name, step, error_stack):
+    alert_body = "Test Case: " + name + " failed for test id : " + test_uuid + "\n _ERROR_  :  ```" + error_stack.replace(
         '"', "") + "```" + "\n in _step_ ```" + step.replace('"', "") + "```"
     if len(ALERT_URL) == 0:
         logger.info('Alert not sent, ALERT_URL  not set')
@@ -31,8 +31,8 @@ def gchat_alert(test_id, name, step, error_stack):
         return requests.post(ALERT_URL, data=alert_template.substitute(body=alert_body))
 
 
-def slack_alert(test_id, name, step, error_stack):
-    alert_body = "Test Case: " + name + " failed for test id : " + test_id + "\n _ERROR_  :  ```" + error_stack.replace(
+def slack_alert(test_uuid, name, step, error_stack):
+    alert_body = "Test Case: " + name + " failed for test id : " + test_uuid + "\n _ERROR_  :  ```" + error_stack.replace(
         '"', "") + "```" + "\n in _step_ ```" + step.replace('"', "") + "```"
     headers = {'content-type': 'application/json'}
     if len(ALERT_URL) == 0:
@@ -49,7 +49,7 @@ switcher = {
 }
 
 
-def send_alert(test_id, name, step, error_stack, alert_type):
+def send_alert(test_uuid, name, step, error_stack, alert_type):
     
     func = switcher.get(alert_type, "no_alert")
     if (alert_type == None) or (len(alert_type) == 0):
@@ -57,4 +57,4 @@ def send_alert(test_id, name, step, error_stack, alert_type):
     elif func == "no_alert":
         logger.warn("Supported alert type not found,alert types supported: " + str(list(switcher.keys())))
     else:
-        return func(test_id, name, step, error_stack)
+        return func(test_uuid, name, step, error_stack)
