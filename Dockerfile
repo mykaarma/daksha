@@ -15,7 +15,7 @@ ADD . /daksha/
 # Install any needed packages specified in requirements.txt
 RUN pip install -r ./requirements.txt
 
-ADD startup_command.sh /daksha/
+COPY startup_command.sh /daksha/
 
 # start server
 CMD ["gunicorn", "--bind", "0.0.0.0:8000", "daksha.wsgi"]
