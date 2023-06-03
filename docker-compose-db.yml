@@ -16,7 +16,6 @@ services:
     restart: always
     volumes:
       - /daksha/test-data:/daksha/test-data
-      - ./startup_command.sh:/startup_command.sh
     ports:
       - "8083:8000"
     environment:
@@ -29,7 +28,7 @@ services:
       PG_PASSWORD: "postgres"
       PG_PORT: "5432"
     
-    command: bash /startup_command.sh
+    command: bash startup_command.sh
 
     #If you want to provide an external Postgres SQL database then remove the below lines .
     depends_on:
