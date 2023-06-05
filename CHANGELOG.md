@@ -1,6 +1,9 @@
 # `DAKSHA` Change Log
 
-*version*: `2.2.0`
+*version*: `2.2.1`
+
+## v 2.2.1
+1. Added In_Progress status for tests in database
 
 ## v 2.2.0
 1. Added Database for Test Results in Daksha.
