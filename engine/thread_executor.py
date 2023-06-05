@@ -36,9 +36,9 @@ def thread_executor(test_ymls, initial_variable_dictionary, test_uuid, email):
     with ThreadPoolExecutor(max_workers=3) as pool_executor:
         for test_executor in testExecutorObjects:
             try:
+                pool_executor.submit(execute_test, test_executor, email)
                 test_executor.test_result.Status="In_Progress"
                 test_executor.test_result.save()
-                pool_executor.submit(execute_test, test_executor, email)
                 logger.info("Task submitted")
             except Exception as e:
                 logger.error("Exception occurred", e)
