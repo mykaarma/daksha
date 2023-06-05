@@ -43,4 +43,6 @@ method_map = {
     "wait_for": wait_for,
     "capture_ui_element": capture_ui_element,
     "scroll_to": scroll_to,
+    "download_file": download_file,
+    "read_file":read_file,
 }

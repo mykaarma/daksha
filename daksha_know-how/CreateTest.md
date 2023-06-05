@@ -71,6 +71,8 @@ task:
    * **scroll_to**:  You need to provide the locator of the webelement that you want to scroll down/up to.**Locator** can be *xpath, id, css, name, tagname, classname, linktext and partiallinktext*
    * **wait-for**: This has 2 fields- mode, value/locator.This has 3 mode : *visibility,invisibility,hardwait*.For *visibility/invisibility* please provide the locator of the webelement that you want to wait for. In case of mode *hardwait*, please provide the value as number of seconds you want to wait for.
    * **quit_browser**: You are recommended to add this step at the end of your test case steps to quit the remote or local browser.
+   * **download_file**: This has two sub-fileds; *locator* and *save_in*. **Locator** is the file path that needs to be downloaded. I can be *xpath, id, css, name, tagname, classname, linktext and partiallinktext*. **Save_in** is optional in case user wants to read the downloaded file.
+   * **read_file**: This is to read a downloaded file in the same session. Pass the *save_in* key previously provided in **downloads_file**
    
 
 

@@ -1,6 +1,10 @@
 # `DAKSHA` Change Log
 
-*version*: `2.2.1`
+*version*: `2.3.0`
+
+## v 2.3.0
+1. Added files download functionality to Daksha 
+2. Text & Csv file read functionality on the downloaded file
 
 ## v 2.2.1
 1. Added In_Progress status for tests in database
