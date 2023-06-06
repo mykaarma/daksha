@@ -31,8 +31,7 @@ def thread_executor(test_ymls, initial_variable_dictionary, test_uuid, email):
         test_result_object=test_result_utils.initialize_test_result(test_uuid,test_yml) 
         test_executor = TestExecutor(1, test_uuid, initial_variable_dictionary, test_yml, None ,test_result_object)
         testExecutorObjects.append(test_executor)
-           
-        
+
     with ThreadPoolExecutor(max_workers=3) as pool_executor:
         for test_executor in testExecutorObjects:
             try:
@@ -42,7 +41,7 @@ def thread_executor(test_ymls, initial_variable_dictionary, test_uuid, email):
                 logger.info("Task submitted")
             except Exception as e:
                 logger.error("Exception occurred", e)
-            pass
+        pass
     logger.info("All threads complete, generating test report")
     generate_report(test_uuid)
     report_url = APACHE_URL + test_executor.test_uuid + '/report.html'

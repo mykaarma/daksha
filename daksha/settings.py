@@ -95,8 +95,9 @@ WSGI_APPLICATION = 'daksha.wsgi.application'
 #if the value of this environment variable is not set then the test results will not be saved in the database
 TEST_RESULT_DB=os.environ.get('TEST_RESULT_DB',None)
 
-DATABASES = {
-    'default': {
+if(TEST_RESULT_DB != None and TEST_RESULT_DB == "postgres"):
+    DATABASES = {
+        'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': os.environ.get('PG_DB','postgres'),
         'USER':os.environ.get('PG_USER','postgres'),
@@ -104,8 +105,8 @@ DATABASES = {
         'HOST':os.environ.get('PG_HOST','localhost'),
         'PORT':os.environ.get('PG_PORT',5432)
         
+        }
     }
-}
 
 
 # Password validation
