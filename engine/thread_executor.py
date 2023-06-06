@@ -22,7 +22,6 @@ from daksha.settings import APACHE_URL
 from .models import TestExecutor
 from .testreport_generator import generate_report
 from engine import test_result_utils
-from apscheduler.schedulers.background import BackgroundScheduler,BlockingScheduler
 
 def thread_executor(test_ymls, initial_variable_dictionary, test_uuid, email):
     # Test Executor object initialization and store in a list
@@ -32,25 +31,17 @@ def thread_executor(test_ymls, initial_variable_dictionary, test_uuid, email):
         test_result_object=test_result_utils.initialize_test_result(test_uuid,test_yml) 
         test_executor = TestExecutor(1, test_uuid, initial_variable_dictionary, test_yml, None ,test_result_object)
         testExecutorObjects.append(test_executor)
-           
-        executors = {
-        'default': ThreadPoolExecutor(3),
-    }
 
-    sd=BlockingScheduler(executors=executors)
-    
-    # with ThreadPoolExecutor(max_workers=3) as pool_executor:
-    for test_executor in testExecutorObjects:
-        try:
-            sd.add_job(execute_test(test_executor,email),'interval',minutes=1)
-            sd.start()
-            # pool_executor.submit(execute_test, test_executor, email)
-            test_executor.test_result.Status="In_Progress"
-            test_executor.test_result.save()
-            logger.info("Task submitted")
-        except Exception as e:
-            logger.error("Exception occurred", e)
-        # pass
+    with ThreadPoolExecutor(max_workers=3) as pool_executor:
+        for test_executor in testExecutorObjects:
+            try:
+                pool_executor.submit(execute_test, test_executor, email)
+                test_executor.test_result.Status="In_Progress"
+                test_executor.test_result.save()
+                logger.info("Task submitted")
+            except Exception as e:
+                logger.error("Exception occurred", e)
+        pass
     logger.info("All threads complete, generating test report")
     generate_report(test_uuid)
     report_url = APACHE_URL + test_executor.test_uuid + '/report.html'
