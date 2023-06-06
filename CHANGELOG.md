@@ -3,7 +3,7 @@
 *version*: `2.2.2`
 
 ## v2.2.2
-1. Fixed server initialisation issue in case of local with no database
+1. Fixed server initialisation issue in case of running daksha server in local with no database
 
 ## v 2.2.1
 1. Added In_Progress status for tests in database
