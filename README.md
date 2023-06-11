@@ -52,6 +52,13 @@ Setup selenium grid using https://www.selenium.dev/downloads/. Or if you want to
  `TEST_RESULT_DB`, `PG_DB`, `PG_USER`, `PG_PASSWORD`, `PG_HOST`, `PG_PORT`
 - Run the command `docker compose -f docker-compose-db.yml up -d` to initiate the build and deploy the project.
 
+## Cron Jobs
+ - The user can opt for this functionality if he/she wants to run tests at regulated intervals without hitting the api endpoints.
+ - To enable this the user has to provide an environment variable `CRON_STATE` and set it to `enabled`.
+ - If `CRON_STATE` is `enabled` then user has to provide additional environment variables `CRON_FILE_SOURCE`
+ and `CRON_FILE_PATH`.
+ - The user has to provide the description of Cron Jobs he/she wants to regulate in a YAML file. This yaml file can be loaded locally or from github. In both cases the necessary environment variables have to be set up accordingly.
+
 ## #Environment Variables
 You can configure the application in a lot of ways by setting the following environment variables:
 * **STORAGE_PATH**
@@ -123,6 +130,15 @@ You can configure the application in a lot of ways by setting the following envi
 
 * **PG_PORT**
   * Port provided to the database. If this value is not provided, the default port will be `5432`.
+
+* **CRON_STATE**
+  * If you want to run tests at regulated intervals, set this variable to `enabled`.
+
+* **CRON_FILE_SOURCE**
+  * This value can either be `local` or `git`. It denotes the source of yaml file which contains Cron jobs description.
+
+* **CRON_FILE_PATH**
+  * This value should be set to the path of the yaml file which contains cron job description.
 
 ## Get in Touch
 

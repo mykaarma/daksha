@@ -16,3 +16,4 @@ jmespath==0.10.0
 markupsafe>=1.1.1,<2.1.0
 #psycopg2 is needed for establishing connection with Postgresql database
 psycopg2==2.9.6
+django_crontab==0.7.1

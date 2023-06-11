@@ -1,13 +1,19 @@
 # `DAKSHA` Change Log
 
-*version*: `2.2.1`
+*version*: `2.3.0`
+
+## v 2.3.0
+1. Added Cron Job functionality to run tests in regulated intervals.
+
+## v 2.2.2
+1. Fixed server initialisation issue in case of running daksha server in local with no database.
 
 ## v 2.2.1
-1. Added In_Progress status for tests in database
+1. Added In_Progress status for tests in database.
 
 ## v 2.2.0
 1. Added Database for Test Results in Daksha.
-2. Users can opt for test results to be saved in a Postgres database
+2. Users can opt for test results to be saved in a Postgres database.
 
 ## v 2.1.3
 1. Adressed issue #47
