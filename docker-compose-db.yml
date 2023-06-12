@@ -21,16 +21,17 @@ services:
     environment:
       STORAGE_PATH: "/daksha/test-data"
       APACHE_URL: "http://127.0.0.1:8485/"
-      TEST_RESULT_DB: "postgres"
+      TEST_RESULT_DB: disabled
       PG_DB : "postgres"
       PG_USER : "postgres"
       PG_HOST: "postgresdb"
       PG_PASSWORD: "postgres"
       PG_PORT: "5432"
-      CRON_STATE : 
-      CRON_FILE_SOURCE : 
-      CRON_FILE_PATH : 
+      CRON_STATE : disabled
+      CRON_FILE_SOURCE : none
+      CRON_FILE_PATH : none
       
+
     command: bash startup_command.sh
 
   #   #If you want to provide an external Postgres SQL database then remove the below lines .

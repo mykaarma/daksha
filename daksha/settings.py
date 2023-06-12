@@ -179,10 +179,8 @@ REPO_USER = os.environ.get('REPO_USER', '')
 CRON_STATE=os.environ.get('CRON_STATE','disabled')
 CRON_FILE_SOURCE=os.environ.get('CRON_FILE_SOURCE','')
 CRON_FILE_PATH=os.environ.get('CRON_FILE_PATH','')
-from daksha.cron_utils import read_yaml
+from engine.utils.utils import read_yaml
 from engine.logs import *
-
-
 
 if ( CRON_STATE != None and CRON_STATE.lower()=="enabled"):
 
@@ -199,14 +197,16 @@ if ( CRON_STATE != None and CRON_STATE.lower()=="enabled"):
             cron_job_descriptor_yml=read_yaml(REPO_NAME,BRANCH_NAME,CRON_FILE_PATH,cron_store)
         except:
             logger.info("Cron_File_Path/Repo_Name/Branch_Name given incorrectly ")
-    
+
     cron_jobs_list = []
     
     try:
         for cron_job in cron_job_descriptor_yml['crons']:
-            cron_jobs_list.append((f"{cron_job['cron']}", 'daksha.cron.cron_job_executor',[cron_job['params']],{},'>> /daksha/logs/uiengine.log'))
+            cron_jobs_list.append((f"{cron_job['cron']}", 'daksha.cron.cron_job_executor',[cron_job['params']],{},'>> /daksha/logs/uiengine.log 2>&1 '))
     except:
         logger.info("Cron Job is not initialised. Rechek the environment variables and the format of yaml file")
 
-
     CRONJOBS=cron_jobs_list
+    
+else:
+    logger.info("Cron jobs not enabled")
