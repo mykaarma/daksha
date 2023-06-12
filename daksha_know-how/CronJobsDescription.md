@@ -1,6 +1,6 @@
 # Description of Cron Jobs 
 
-You need to write test case in yml file and it should be in the following format -
+You need to write description of Cron jobs in yml file and it should be in the following format -
 ```
 crons: 
 - cron: 
