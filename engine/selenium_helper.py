@@ -14,7 +14,10 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 """
-
+import csv
+import glob
+import os
+import pathlib
 import traceback
 import time
 from selenium import webdriver
@@ -24,13 +27,14 @@ from selenium.webdriver.chrome.webdriver import WebDriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait, Select
 from selenium.webdriver.support import expected_conditions as EC
+from daksha.settings import DOWNLOAD_PATH
 
 from .logs import logger
 from .models import TestExecutor
 from .utils.screenshot_utils import take_screenshot
 
 
-def browser_config(config) -> WebDriver:
+def browser_config(config,test_uuid) -> WebDriver:
     """
     Configures the browser in accordance with mentioned specifications(env,browser,driverAddress) in YAML
      :param config: Browser configuration fetched from YAML
@@ -44,11 +48,15 @@ def browser_config(config) -> WebDriver:
         env = config['env']
         brow = config['browser']
         path = config['driverAddress']
+        download_path = os.path.join(DOWNLOAD_PATH,  test_uuid)
+        prefs = {'download.default_directory': download_path}
     except KeyError:
         raise Exception(
             "Ill formatted arguments, 'env', 'browser' and 'driverAddress' must be present in the list of args")
     if brow.lower() == 'chrome' and env.lower() == 'local':
-        web_driver = webdriver.Chrome(executable_path=path)
+        options = webdriver.ChromeOptions()
+        options.add_experimental_option('prefs', prefs)
+        web_driver = webdriver.Chrome(executable_path=path, options=options)
     elif brow.lower() == 'chrome' and env.lower() == 'remote':
         options = webdriver.ChromeOptions()
         options.add_argument("no-sandbox")
@@ -56,6 +64,7 @@ def browser_config(config) -> WebDriver:
         options.add_argument("--window-size=800,600")
         options.add_argument("--disable-dev-shm-usage")
         options.add_argument("--start-maximized")
+        options.add_experimental_option('prefs', prefs)
         web_driver = webdriver.Remote(
             command_executor=path,
             desired_capabilities=DesiredCapabilities.CHROME,
@@ -519,4 +528,69 @@ def scroll_to(test_executor: TestExecutor, **kwargs):
             error_stack = traceback.format_exc()
             logger.error("Attempt " + str(i) + " to scroll to element failed")
     return False, error_stack
+
+def download_file(test_executor: TestExecutor, **kwargs):
+    locator, locator_value = get_locator_info(**kwargs)
+    test_uuid = test_executor.test_uuid
+    wait = True
+    download_path = os.path.join(DOWNLOAD_PATH,  test_uuid)
+    try:
+        logger.info("Going to download file")
+        element = WebDriverWait(test_executor.web_driver, 10).until(
+            EC.visibility_of_element_located((locator, locator_value))
+        )
+        element.click()
+        logger.info("Downloading File....")
+        time.sleep(2)
+        # waiting for download to complete
+        while wait:
+            files = glob.glob(download_path + "/*")
+            downloaded_file = max(files, key=os.path.getctime)
+            file_extension = pathlib.Path(downloaded_file).suffix
+            if file_extension.lower() == ".crdownload" or file_extension.lower() == ".part":
+                wait = True
+                time.sleep(1)
+            else:
+                wait = False
+        # Printing file name & download path
+        file_name = pathlib.Path(downloaded_file).stem
+        file_downloaded = file_name+file_extension
+        logger.info("File "+file_downloaded+" downloaded in Daksha/"+test_uuid+" downloads folder")
+        # saving downloaded file in save_in variable
+        if 'save_in' in kwargs.keys():
+            save_in = kwargs['save_in']
+            test_executor.variable_dictionary[save_in] = downloaded_file
+            logger.info("File saved in: "+save_in+". Can be used for reading file ")
+        else :
+            logger.info("No SAVE_IN key passed. Read file won't be supported for this download")
+    except Exception as e:
+        logger.error(traceback.format_exc())
+        return False, None
+    return True, None
+
+def read_file(test_executor: TestExecutor, **kwargs):
+    # Reading text & CSV files
+    try:
+        save_in = kwargs['read_from']
+    except KeyError:
+        return False, "Ill formatted arguments, 'save_in' must be present in the list of args"
+    file = test_executor.variable_dictionary[save_in]
+    logger.info("Read file: "+file)
+    file_extension = pathlib.Path(file).suffix
+    if file_extension == '.txt':
+        logger.info("Reading Text File: \n")
+        with open(file) as f:
+            contents = f.read()
+            logger.info(contents)
+        f.close()
+    elif file_extension == '.csv':
+        logger.info("Reading CSV File: \n")
+        with open(file) as f:
+            csvFile = csv.reader(f)
+            for lines in csvFile:
+                logger.info(lines)
+        f.close()
+    else:
+        logger.info("Daksha currently only support txt & csv files readability !")
+    return True, None
 

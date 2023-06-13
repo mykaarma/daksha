@@ -1,6 +1,10 @@
 # `DAKSHA` Change Log
 
-*version*: `2.2.2`
+*version*: `2.3.0`
+
+## v2.3.0
+1. Added files download functionality to Daksha
+2. Text & Csv file read functionality on the downloaded file
 
 ## v2.2.2
 1. Fixed server initialisation issue in case of running daksha server in local with no database
