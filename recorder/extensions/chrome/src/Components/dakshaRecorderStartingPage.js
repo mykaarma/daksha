@@ -29,18 +29,18 @@ function DakshaRecorderStartingPage(props) {
                     Daksha Recorder
                 </div>
                 <div className="recording-button-div" id="record" onClick={() => {
-                    props.setState(dakshaRecorderMainPage);
-                    let url = "";
-                    chrome.tabs.query({ active: true, lastFocusedWindow: true }, tabs => {
-                        url = tabs[0].url;
-                        let obj = {
-                            "type": "start",
-                            "msg": url
-                        }
-                        chrome.tabs.sendMessage(tabs[0].id, obj, () => { return true; });
-                        setBadgeForRecording();
-                    });
-
+                     props.setState(dakshaRecorderMainPage);
+                     let url = "";
+                     chrome.tabs.query({ active: true, lastFocusedWindow: true }, tabs => {
+                         url = tabs[0].url;
+                         let obj = {
+                             "type": "start",
+                             "msg": url
+                         }
+                         chrome.tabs.sendMessage(tabs[0].id, obj, () => { return true; });
+                         setBadgeForRecording();
+                     });
+ 
                 }}>
                     START RECORDING
                 </div>
