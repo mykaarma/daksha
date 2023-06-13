@@ -1,0 +1,18 @@
+config:
+  env: local
+  browser: chrome
+  driverAddress: /Users/wayne/Desktop/chromedriver
+name: downloadTest
+task:
+  - open_url:
+      url: https://wsform.com/knowledgebase/sample-csv-files/
+  - wait_for:
+      mode: hardwait
+      value: 1
+  - download_file:
+      xpath: //a[contains(text(),'month.csv')]
+      save_in: downloadF
+  - download_file:
+      xpath: //a[contains(text(),'time.csv')]
+  - read_file:
+      read_from: downloadF
