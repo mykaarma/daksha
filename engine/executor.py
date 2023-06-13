@@ -50,6 +50,7 @@ def execute_test(test_executor: TestExecutor, email):
         execution_result, error_stack = True, None
         step = {}
         test_yml = test_executor.test_yml
+        test_uuid = test_executor.test_uuid
         config = test_yml["config"]
         task = test_yml["task"]
         name = test_yml["name"]  # TODO: Alert user if no/null config/task/name is provided
@@ -59,7 +60,7 @@ def execute_test(test_executor: TestExecutor, email):
             logger.info("Users has opted for alerts via " + alert_type)
         else:
             logger.info("User has not opted for alerts")
-        web_driver = browser_config(config)
+        web_driver = browser_config(config,test_uuid)
         test_executor.web_driver = web_driver
         for step in task:
             execution_result, error_stack = execute_step(test_executor, step)

@@ -158,6 +158,10 @@ APACHE_URL = os.environ.get('APACHE_URL', '')
 ALERT_URL = os.environ.get('ALERT_URL', '')
 # Github Configurations (if you choose to store test ymls in github)
 
+#Downloads configurations
+downloads = os.path.join(BASE_DIR, "downloads")
+DOWNLOAD_PATH = downloads
+
 """
 If either GIT_USER OR GIT_PASSWORD OR both are empty then only Public Repository or Organisation can be accessed
 If both GIT_USER and GIT_PASSWORD are given then Public/Private Repository or Organisation can be accessed
