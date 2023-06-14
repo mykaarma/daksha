@@ -58,6 +58,7 @@ Setup selenium grid using https://www.selenium.dev/downloads/. Or if you want to
  - If `CRON_STATE` is `enabled` then user has to provide additional environment variables `CRON_FILE_SOURCE`
  and `CRON_FILE_PATH`.
  - The user has to provide the description of Cron Jobs he/she wants to regulate in a YAML file. This yaml file can be loaded locally or from github. In both cases the necessary environment variables have to be set up accordingly.
+ - Note that the YAML file containing cron jobs description and the YAML files containing the tests to be executed must not be present in same sub folders in the github branch.
  - The format of the yaml file containing the cron jobs description is provided in [CronJob Description](daksha_know-how/CronJobsDescription.md)
 
  - If the user is deploying the application locally, the CronJob functionality is only supported in Unix-like operating systems like Linux and macOS.
@@ -119,7 +120,7 @@ You can configure the application in a lot of ways by setting the following envi
 * **TEST_RESULT_DB**
   * If you want to use the Postgresql database to save your test reports, create this environment variable and set its value to `postgres`.
   * If you set this value as `postgres`, you need to provide additional environment variables.
-  * If you don't want the database functionality, delete this environment variable or set it to some non null value
+  * If you don't want the database functionality, delete this environment variable or set it to disabled.
 
 * **PG_DB**
   * Name of the database. If this value is not provided, the default name of database will be `postgres`.
@@ -138,7 +139,7 @@ You can configure the application in a lot of ways by setting the following envi
 
 * **CRON_STATE**
   * If you want to run tests at regulated intervals, set this variable to `enabled`.
-  * If you don't want to run cron jobs, delete this environment variable or set it to `disabled` or some non NULL value.
+  * If you don't want to run cron jobs, delete this environment variable or set it to `disabled`.
 
 * **CRON_FILE_SOURCE**
   * This value can either be `local` or `git`. It denotes the source of yaml file which contains Cron jobs description.
