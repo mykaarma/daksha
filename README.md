@@ -64,6 +64,34 @@ Setup selenium grid using https://www.selenium.dev/downloads/. Or if you want to
  - If the user is deploying the application locally, the CronJob functionality is only supported in Unix-like operating systems like Linux and macOS.
  - Windows users need to deploy the application using Docker to avail the CronJob functionality.
 
+## Receiving Test Result Data 
+- The user can recieve the test result data by providing TestUUID. 
+- This functionality can only be availed if the user has opted for database feature and has set up the necessary environment variables.
+- To receive the test result data, the user has to hit a GET request at the endpoint:-
+  - `http://127.0.0.1:8083/daksha/data/testuuid/{testuuid}` if the application is deployed through docker.
+  - `http://127.0.0.1:8000/daksha/data/testuuid/{testuuid}` if the application is deployed locally.
+- The user can request for test result data of all the tests of a TestUUID or can provide test names of the test he/she wants in the body of the request.
+- Sample body of the request is
+  ```
+  [
+      {
+          "name" : "TestQA"
+      },
+      {
+          "name":"send_text"
+      }
+  ]
+  ```
+- Different possibles responses are:-
+  - Status Code 405 : Method not allowed
+    - Please recheck that the method of the request is GET.
+  - Status Code 400 : Bad Request
+    - Please recheck that the TestUUID is entered correctly.
+    - Please recheck that the Test Names provided in the body of request are given correctly.
+    - Please recheck that the database functionality is opted for and all the necessary environment variables are set.
+  - Status Code 404 : Page not found
+    - Please recheck that the correct endpoint is being hit.
+
 ## #Environment Variables
 You can configure the application in a lot of ways by setting the following environment variables:
 * **STORAGE_PATH**
