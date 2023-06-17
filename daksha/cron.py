@@ -21,6 +21,6 @@ from daksha import settings
 
 def cron_job_executor(parameters):
     logger.info("Cron Job is running")
-    requests.post(settings.endpoint,json=parameters)
+    requests.post(settings.daksha_endpoint,json=parameters)
     
     

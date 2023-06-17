@@ -150,7 +150,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 #Endpoint which is being hit regulary when cron jobs are executed
-endpoint="http://127.0.0.1:8000/daksha/runner"
+daksha_endpoint="http://127.0.0.1:8000/daksha/runner"
 
 # Set Email to receive test reports
 EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', '')
