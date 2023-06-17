@@ -21,7 +21,7 @@ services:
     environment:
       STORAGE_PATH: "/daksha/test-data"
       APACHE_URL: "http://127.0.0.1:8485/"
-      TEST_RESULT_DB: disabled
+      TEST_RESULT_DB: "postgres"
       PG_DB : "postgres"
       PG_USER : "postgres"
       PG_HOST: "postgresdb"

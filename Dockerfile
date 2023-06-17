@@ -24,7 +24,8 @@ COPY startup_command.sh /daksha/
 
 #We use the sed command to update the sources in /etc/apt/sources.list file to the new location for 
 #old package repositories.
-RUN sed -i 's/stable\/updates/stable-security\/updates/' /etc/apt/sources.list
+#RUN sed -i 's/stable\/updates/stable-security\/updates/' /etc/apt/sources.list
+#RUN sed -i 's/stable\/updates/stable-security\/updates/' /etc/apt/sources.list.d/debian.sources
 
 # Update the package files
 RUN apt-get update 
