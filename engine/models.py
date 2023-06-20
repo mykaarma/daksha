@@ -37,7 +37,7 @@ class TestResult:
         self.failed_step = step
         self.failure_cause = failure_reason
 
-class GetTestResults:
+class GetTestResultsResponse:
     def __init__(self,testresults,errors):
         self.testresults=testresults
         self.errors=errors
