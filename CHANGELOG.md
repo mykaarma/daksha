@@ -1,6 +1,9 @@
 # `DAKSHA` Change Log
 
-*version*: `2.3.0`
+*version*: `2.4.0`
+
+## v 2.4.0
+1. Created a GET endpoint to recieve test result data by providing TestUUID.
 
 ## v 2.3.0
 1. Added Cron Job functionality to run tests in regulated intervals.

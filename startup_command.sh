@@ -18,21 +18,21 @@ then
     echo "================================="
 fi
 
-if [ "${CRON_STATE,,}" == "enabled" ]
+if [ "${CRON_ENABLED,,}" == "true" ]
 then
     echo "Starting Cron Service"
     service cron start
     echo "================================="
 fi
 
-if [ "${CRON_STATE,,}" == "enabled" ]
+if [ "${CRON_ENABLED,,}" == "true" ]
 then
     echo "Adding the listed cron jobs"
     python manage.py crontab add
     echo "================================="
 fi
 
-if [ "${CRON_STATE,,}" == "enabled" ]
+if [ "${CRON_ENABLED,,}" == "true" ]
 then
     echo "The Cron Jobs registered are :-"
     python manage.py crontab show
