@@ -18,7 +18,7 @@ from concurrent.futures.thread import ThreadPoolExecutor
 from engine.executor import execute_test
 from .email_generator import send_report_email
 from .logs import *
-from daksha.settings import APACHE_URL
+from daksha.settings import APACHE_URL,TEST_RESULT_DB
 from .models import TestExecutor
 from .testreport_generator import generate_report
 from engine import test_result_utils
@@ -36,8 +36,9 @@ def thread_executor(test_ymls, initial_variable_dictionary, test_uuid, email):
         for test_executor in testExecutorObjects:
             try:
                 pool_executor.submit(execute_test, test_executor, email)
-                test_executor.test_result.Status="In_Progress"
-                test_executor.test_result.save()
+                if(TEST_RESULT_DB!= None and TEST_RESULT_DB.lower() == "postgres"):
+                    test_executor.test_result.Status="In_Progress"
+                    test_executor.test_result.save()
                 logger.info("Task submitted")
             except Exception as e:
                 logger.error("Exception occurred", e)

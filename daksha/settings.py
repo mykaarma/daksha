@@ -27,6 +27,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
+import yaml
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -55,7 +56,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'engine'
+    'engine',
+    'django_crontab'
 ]
 
 MIDDLEWARE = [
@@ -95,19 +97,21 @@ WSGI_APPLICATION = 'daksha.wsgi.application'
 #if the value of this environment variable is not set then the test results will not be saved in the database
 TEST_RESULT_DB=os.environ.get('TEST_RESULT_DB',None)
 
-if(TEST_RESULT_DB != None and TEST_RESULT_DB == "postgres"):
+if (TEST_RESULT_DB !=None and TEST_RESULT_DB.lower() == "postgres"):    
     DATABASES = {
         'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ.get('PG_DB','postgres'),
-        'USER':os.environ.get('PG_USER','postgres'),
-        'PASSWORD':os.environ.get('PG_PASSWORD','postgres'),
-        'HOST':os.environ.get('PG_HOST','localhost'),
-        'PORT':os.environ.get('PG_PORT',5432)
-        
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': os.environ.get('PG_DB','postgres'),
+            'USER':os.environ.get('PG_USER','postgres'),
+            'PASSWORD':os.environ.get('PG_PASSWORD','postgres'),
+            'HOST':os.environ.get('PG_HOST','localhost'),
+            'PORT':os.environ.get('PG_PORT',5432)
         }
     }
 
+#Starting with 3.2 new projects are generated with DEFAULT_AUTO_FIELD set to BigAutoField.
+#To avoid unwanted migrations in the future, either explicitly set DEFAULT_AUTO_FIELD to AutoField:
+DEFAULT_AUTO_FIELD='django.db.models.AutoField' 
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
@@ -145,6 +149,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 STATIC_URL = '/static/'
 
+#Endpoint which is being hit regulary when cron jobs are executed
+daksha_endpoint="http://127.0.0.1:8000/daksha/runner"
+
 # Set Email to receive test reports
 EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', '')
 POSTMARK_TOKEN = os.environ.get('POSTMARK_TOKEN', '')
@@ -172,4 +179,37 @@ BRANCH_NAME = os.environ.get('BRANCH_NAME', 'main')
 REPO_ORG = os.environ.get('REPO_ORG', '')
 REPO_USER = os.environ.get('REPO_USER', '')
 
+CRON_STATE=os.environ.get('CRON_STATE','disabled')
+CRON_FILE_SOURCE=os.environ.get('CRON_FILE_SOURCE','')
+CRON_FILE_PATH=os.environ.get('CRON_FILE_PATH','')
+from engine.utils.utils import read_yaml
+from engine.logs import *
 
+if ( CRON_STATE != None and CRON_STATE.lower()=="enabled"):
+
+    if(CRON_FILE_SOURCE != None and CRON_FILE_SOURCE.lower()=="local"):
+        try:
+            cron_job_descriptor_yml = yaml.safe_load(open(CRON_FILE_PATH))
+        except:
+            logger.info("Cron File Path is given incorrectly")
+        
+    elif(CRON_FILE_SOURCE != None and CRON_FILE_SOURCE.lower()=="git"):
+        try:
+            cron_store="CRON"
+            os.makedirs(f"{STORAGE_PATH}/{cron_store}",exist_ok=True)
+            cron_job_descriptor_yml=read_yaml(REPO_NAME,BRANCH_NAME,CRON_FILE_PATH,cron_store)
+        except:
+            logger.info("Cron_File_Path/Repo_Name/Branch_Name given incorrectly ")
+
+    cron_jobs_list = []
+    
+    try:
+        for cron_job in cron_job_descriptor_yml['crons']:
+            cron_jobs_list.append((f"{cron_job['cron']}", 'daksha.cron.cron_job_executor',[cron_job['params']],{},'>> /daksha/logs/uiengine.log 2>&1 '))
+    except:
+        logger.info("Cron Job is not initialised. Rechek the environment variables and the format of yaml file")
+
+    CRONJOBS=cron_jobs_list
+    
+else:
+    logger.info("Cron jobs not enabled")

@@ -27,10 +27,14 @@ services:
       PG_HOST: "postgresdb"
       PG_PASSWORD: "postgres"
       PG_PORT: "5432"
-    
+      CRON_STATE : disabled
+      CRON_FILE_SOURCE : none
+      CRON_FILE_PATH : none
+      
+
     command: bash startup_command.sh
 
-    #If you want to provide an external Postgres SQL database then remove the below lines .
+  #   #If you want to provide an external Postgres SQL database then remove the below lines .
     depends_on:
       - postgresdb
  
