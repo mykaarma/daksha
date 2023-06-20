@@ -74,7 +74,7 @@ Setup selenium grid using https://www.selenium.dev/downloads/. Or if you want to
 - Sample body of the request is
   ```
   {
-    "names" : ["TestQA","send_text"]
+    "names" : ["TestQA", "send_text"]
   }
   ```
 - Different possibles responses are:-
