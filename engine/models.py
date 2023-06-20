@@ -37,10 +37,6 @@ class TestResult:
         self.failed_step = step
         self.failure_cause = failure_reason
 
-class GetTestResultsResponse:
-    def __init__(self,testresults,errors):
-        self.testresults=testresults
-        self.errors=errors
 
 class TestResults(models.Model):
     TestUUID=models.TextField(max_length=11)

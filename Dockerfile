@@ -12,9 +12,6 @@ WORKDIR /daksha
 # Copy the current directory contents into the container at /ui_automation_engine
 ADD . /daksha/
 
-#gives required premissions
-RUN chmod og+x -R /daksha/daksha
-
 # Install any needed packages specified in requirements.txt
 RUN pip install -r ./requirements.txt
 

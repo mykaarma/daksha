@@ -179,13 +179,13 @@ BRANCH_NAME = os.environ.get('BRANCH_NAME', 'main')
 REPO_ORG = os.environ.get('REPO_ORG', '')
 REPO_USER = os.environ.get('REPO_USER', '')
 
-CRON_ENABLED=os.environ.get('CRON_ENABLED','false')
+CRON_STATE=os.environ.get('CRON_STATE','disabled')
 CRON_FILE_SOURCE=os.environ.get('CRON_FILE_SOURCE','')
 CRON_FILE_PATH=os.environ.get('CRON_FILE_PATH','')
 from engine.utils.utils import read_yaml
 from engine.logs import *
 
-if ( CRON_ENABLED != None and CRON_ENABLED.lower()=="true"):
+if ( CRON_STATE != None and CRON_STATE.lower()=="enabled"):
 
     if(CRON_FILE_SOURCE != None and CRON_FILE_SOURCE.lower()=="local"):
         try:
