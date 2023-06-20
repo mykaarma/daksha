@@ -73,14 +73,9 @@ Setup selenium grid using https://www.selenium.dev/downloads/. Or if you want to
 - The user can request for test result data of all the tests of a TestUUID or can provide test names of the test he/she wants in the body of the request.
 - Sample body of the request is
   ```
-  [
-      {
-          "name" : "TestQA"
-      },
-      {
-          "name":"send_text"
-      }
-  ]
+  {
+    "names" : ["TestQA","send_text"]
+  }
   ```
 - Different possibles responses are:-
   - Status Code 405 : Method not allowed

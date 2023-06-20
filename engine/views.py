@@ -19,7 +19,7 @@ import json
 import os
 from concurrent.futures.thread import ThreadPoolExecutor
 
-from django.http import HttpResponse,JsonResponse
+from django.http import HttpResponse, JsonResponse
 from rest_framework import status
 
 from daksha.settings import REPO_NAME, BRANCH_NAME, TEST_RESULT_DB
@@ -27,7 +27,7 @@ from .errors import UnsupportedFileSourceError, BadArgumentsError
 from .testreport_generator import *
 from .thread_executor import thread_executor
 from .utils.utils import read_yaml, read_local_yaml, get_yml_files_in_folder_local, get_yml_files_in_folder_git
-from .models import TestResults,GetTestResults
+from .models import TestResults, GetTestResults
 
 
 # Create your views here.
@@ -68,54 +68,87 @@ def retriever(request, testuuid):
     Receives GET request and returns relevant data from the database
 
     """
-    errors=[]
-    testresults=[]
-    if request.method == 'GET':
+    errors = []
+    testresults = []
+    if request.method == "GET":
         try:
             logger.info("GET request recieved")
-            if(TEST_RESULT_DB!= None and TEST_RESULT_DB.lower() == 'postgres'):
-                results_for_given_testuuid=TestResults.objects.all().filter(TestUUID=testuuid).values()
-                if request.body and results_for_given_testuuid:
-                    testnames=json.loads(request.body)
-                    for testname in testnames:
-                        results_for_given_testname=TestResults.objects.all().filter(TestUUID=testuuid, TestName=testname["name"]).values()
-                        if results_for_given_testname:
-                            testresults.append(results_for_given_testname[0])
+            if TEST_RESULT_DB != None and TEST_RESULT_DB.lower() == "postgres":
+                test_results_for_uuid = (
+                    TestResults.objects.all().filter(TestUUID=testuuid).values()
+                )
+                if not test_results_for_uuid:
+                    errors.append(
+                        f"Bad Request : No Test with the TestUUID {testuuid} "
+                    )
+                    fetched_test_results = GetTestResults(testresults, errors)
+                    fetched_test_results_json_string = json.dumps(
+                        fetched_test_results.__dict__, default=str
+                    )
+                    fetched_test_results_json = json.loads(
+                        fetched_test_results_json_string
+                    )
+                    return JsonResponse(
+                        fetched_test_results_json, status=status.HTTP_400_BAD_REQUEST
+                    )
+
+                if request.body:
+                    testnames = json.loads(request.body)
+                    for testname in testnames["names"]:
+                        test_result_for_testname = (
+                            TestResults.objects.all()
+                            .filter(TestUUID=testuuid, TestName=testname)
+                            .values()
+                        )
+                        if test_result_for_testname:
+                            testresults.append(test_result_for_testname[0])
                         else:
-                            wrong_test_name=testname["name"]
-                            wrong_test_id=testuuid
-                            errors.append(f"Bad Request : No Test in the TestUUID {wrong_test_id} is with TestName {wrong_test_name} ")
-                            logger.error(f"Bad Request : No Test in the TestUUID {wrong_test_id} is with TestName {wrong_test_name} ")            
+                            errors.append(
+                                f"Bad Request : No Test in the TestUUID {testname} is with TestName {testuuid} "
+                            )
                 else:
-                    if results_for_given_testuuid:
-                        for testresult in results_for_given_testuuid:
-                            testresults.append(testresult)
-                    else:
-                        wrong_test_id=testuuid
-                        logger.error(f"Bad Request : No Test with the TestUUID {wrong_test_id} ")
-                        errors.append(f"Bad Request : No Test with the TestUUID {wrong_test_id} ")
-                
-                if(errors):
+                    logger.info(
+                        f"Since no Test names are provided, All Test in TestUUID {testuuid} would be returned"
+                    )
+                    for test_result_for_uuid in test_results_for_uuid:
+                        testresults.append(test_result_for_uuid)
+
+                if errors:
                     testresults.clear()
-                    fetched_test_results=GetTestResults(testresults,errors)
-                    fetched_test_results_json_string = json.dumps(fetched_test_results.__dict__, default=str)
-                    fetched_test_results_json=json.loads(fetched_test_results_json_string)
+                    fetched_test_results = GetTestResults(testresults, errors)
+                    fetched_test_results_json_string = json.dumps(
+                        fetched_test_results.__dict__, default=str
+                    )
+                    fetched_test_results_json = json.loads(
+                        fetched_test_results_json_string
+                    )
                     logger.error(f"Bad Request : {fetched_test_results_json}")
-                    return JsonResponse(fetched_test_results_json,status=status.HTTP_400_BAD_REQUEST)
+                    return JsonResponse(
+                        fetched_test_results_json, status=status.HTTP_400_BAD_REQUEST
+                    )
                 else:
-                    fetched_test_results=GetTestResults(testresults,errors)
-                    fetched_test_results_json_string = json.dumps(fetched_test_results.__dict__, default=str)
-                    fetched_test_results_json=json.loads(fetched_test_results_json_string)
+                    fetched_test_results = GetTestResults(testresults, errors)
+                    fetched_test_results_json_string = json.dumps(
+                        fetched_test_results.__dict__, default=str
+                    )
+                    fetched_test_results_json = json.loads(
+                        fetched_test_results_json_string
+                    )
                     logger.info(f"Returning data : {fetched_test_results_json}")
                     return JsonResponse(fetched_test_results_json)
-                
+
             else:
-                logger.error("Database Functionality is not opted for.Hence GET request can't be processed")
-                return HttpResponse("Database Functionality is not opted for.Hence GET request can't be processed",status=status.HTTP_400_BAD_REQUEST)
+                logger.error(
+                    "Database Functionality is not opted for.Hence GET request can't be processed"
+                )
+                return HttpResponse(
+                    "Database Functionality is not opted for.Hence GET request can't be processed",
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
         except:
             logger.error("Exception caught", exc_info=True)
             return HttpResponse("error", status=status.HTTP_400_BAD_REQUEST)
-    else :
+    else:
         return HttpResponse(status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
 
