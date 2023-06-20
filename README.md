@@ -54,8 +54,8 @@ Setup selenium grid using https://www.selenium.dev/downloads/. Or if you want to
 
 ## Cron Jobs
  - The user can opt for this functionality if he/she wants to run tests at regulated intervals without hitting the api endpoints.
- - To enable this the user has to provide an environment variable `CRON_STATE` and set it to `enabled`.
- - If `CRON_STATE` is `enabled` then user has to provide additional environment variables `CRON_FILE_SOURCE`
+ - To enable this the user has to provide an environment variable `CRON_ENABLED` and set it to `true`.
+ - If `CRON_ENABLED` is `true` then user has to provide additional environment variables `CRON_FILE_SOURCE`
  and `CRON_FILE_PATH`.
  - The user has to provide the description of Cron Jobs he/she wants to regulate in a YAML file. This yaml file can be loaded locally or from github. In both cases the necessary environment variables have to be set up accordingly.
  - Note that the YAML file containing cron jobs description and the YAML files containing the tests to be executed must not be present in same sub folders in the github branch.
@@ -165,9 +165,9 @@ You can configure the application in a lot of ways by setting the following envi
 * **PG_PORT**
   * Port provided to the database. If this value is not provided, the default port will be `5432`.
 
-* **CRON_STATE**
-  * If you want to run tests at regulated intervals, set this variable to `enabled`.
-  * If you don't want to run cron jobs, delete this environment variable or set it to `disabled`.
+* **CRON_ENABLED**
+  * If you want to run tests at regulated intervals, set this variable to `true`.
+  * If you don't want to run cron jobs, delete this environment variable or set it to `false`.
 
 * **CRON_FILE_SOURCE**
   * This value can either be `local` or `git`. It denotes the source of yaml file which contains Cron jobs description.

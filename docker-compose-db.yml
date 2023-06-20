@@ -27,7 +27,7 @@ services:
       PG_HOST: "postgresdb"
       PG_PASSWORD: "postgres"
       PG_PORT: "5432"
-      CRON_STATE : disabled
+      CRON_ENABLED : "false"
       CRON_FILE_SOURCE : none
       CRON_FILE_PATH : none
       
