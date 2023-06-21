@@ -205,7 +205,7 @@ if ( CRON_ENABLED != None and CRON_ENABLED.lower()=="true"):
     
     try:
         for cron_job in cron_job_descriptor_yml['crons']:
-            cron_jobs_list.append((f"{cron_job['cron']}", 'daksha.cron.cron_job_executor',[cron_job['params']],{},'>> /daksha/logs/uiengine.log 2>&1 '))
+            cron_jobs_list.append((f"{cron_job['cron']}", 'daksha.cron.cron_job_executor',[cron_job['params']],{}))
     except:
         logger.info("Cron Job is not initialised. Rechek the environment variables and the format of yaml file")
 

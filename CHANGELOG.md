@@ -1,6 +1,9 @@
 # `DAKSHA` Change Log
 
-*version*: `2.4.0`
+*version*: `2.4.1`
+
+## v 2.4.1
+1. Modified permissions and fixed initialisation issues with cron jobs.
 
 ## v 2.4.0
 1. Created a GET endpoint to recieve test result data by providing TestUUID.
