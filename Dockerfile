@@ -13,7 +13,7 @@ WORKDIR /daksha
 ADD . /daksha/
 
 #gives required premissions
-RUN chmod 755 -R /daksha/daksha
+RUN chmod og+x -R /daksha/daksha
 
 # Install any needed packages specified in requirements.txt
 RUN pip install -r ./requirements.txt
