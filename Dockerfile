@@ -12,14 +12,14 @@ WORKDIR /daksha
 # Copy the current directory contents into the container at /ui_automation_engine
 ADD . /daksha/
 
+# Copy the script file for startup
+COPY startup_command.sh /daksha/
+
 #gives required premissions
 RUN chmod og+x -R /daksha/daksha
 
 # Install any needed packages specified in requirements.txt
 RUN pip install -r ./requirements.txt
-
-# Copy the script file for startup
-COPY startup_command.sh /daksha/
 
 #Ubuntu releases are only supported for 9 months. LTS (Long Term Support) releases have support for 5 years.
 # Once support is cut for the version you're using, you'll see error messages. 
