@@ -13,16 +13,13 @@ WORKDIR /daksha
 ADD . /daksha/
 
 # Copy the script file for startup
-COPY startup_command.sh /daksha/
+# COPY startup_command.sh /daksha/
 
 #gives required premissions
-RUN chmod og+x -R /daksha/daksha
+RUN chmod og+x -R /daksha
 
 # Install any needed packages specified in requirements.txt
 RUN pip install -r ./requirements.txt
-
-#install virtual environment
-RUN pip install virtualenv
 
 #Ubuntu releases are only supported for 9 months. LTS (Long Term Support) releases have support for 5 years.
 # Once support is cut for the version you're using, you'll see error messages. 
@@ -33,6 +30,10 @@ RUN pip install virtualenv
 #RUN sed -i 's/stable\/updates/stable-security\/updates/' /etc/apt/sources.list
 #RUN sed -i 's/stable\/updates/stable-security\/updates/' /etc/apt/sources.list.d/debian.sources
 
+COPY startup_command.sh /usr/local/bin/startup_command.sh
+
+RUN chmod +x /usr/local/bin/startup_command.sh
+
 # Update the package files
 RUN apt-get update 
 
@@ -40,4 +41,4 @@ RUN apt-get update
 RUN apt-get install -y cron
 
 # start server
-CMD ["gunicorn", "--bind", "0.0.0.0:8000", "daksha.wsgi"]
+CMD ["startup_command.sh"]
