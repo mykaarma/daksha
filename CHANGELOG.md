@@ -1,7 +1,16 @@
 # `DAKSHA` Change Log
 
-*version*: `2.4.1`
+*version*: `2.6.1`
 
+## v 2.6.1
+1. Started the server using gunicorn
+
+## v 2.6.0
+1. Added startup command in entrypoint
+   
+## v 2.5.0
+1. Added minor imporvement in startup command for db
+   
 ## v 2.4.1
 1. Modified permissions and fixed initialisation issues with cron jobs.
 
