@@ -21,5 +21,5 @@ from . import views
 
 urlpatterns = [
     path('runner', views.executor, name='singletest'),
-    path('data/testuuid/<str:testuuid>',views.retriever)
+    path('data/testuuid/<str:testuuid>',views.testresultsretriever)
 ]

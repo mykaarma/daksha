@@ -1,6 +1,10 @@
 # `DAKSHA` Change Log
 
-*version*: `2.6.1`
+*version*: `2.7.0`
+
+## v 2.7.0
+1. Added the Variable Dictionary in the test result table of postgres database 
+2. Changed request method to retrieve data to POST.
 
 ## v 2.6.1
 1. Started the server using gunicorn

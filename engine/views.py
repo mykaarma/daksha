@@ -63,9 +63,9 @@ def executor(request):
         return HttpResponse(status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
 
-def retriever(request, testuuid):
+def testresultsretriever(request, testuuid):
     """
-    Receives GET request and returns relevant data from the database
+    Receives POST request and returns relevant data from the database
 
     """
     errors = []
