@@ -1,9 +1,12 @@
 # `DAKSHA` Change Log
 
-*version*: `2.5.0`
+*version*: `2.5.1`
 
+## v 2.5.1
+1. Added virtual env in Dockerfile
+   
 ## v 2.5.0
-1. Added minor imporvement in startup coomand for db
+1. Added minor imporvement in startup command for db
    
 ## v 2.4.1
 1. Modified permissions and fixed initialisation issues with cron jobs.
