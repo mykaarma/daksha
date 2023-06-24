@@ -21,6 +21,9 @@ RUN chmod og+x -R /daksha/daksha
 # Install any needed packages specified in requirements.txt
 RUN pip install -r ./requirements.txt
 
+#install virtual environment
+RUN pip install virtualenv
+
 #Ubuntu releases are only supported for 9 months. LTS (Long Term Support) releases have support for 5 years.
 # Once support is cut for the version you're using, you'll see error messages. 
 #Ubuntu moves the repositories to another server and the defined URL to reach the sources are no longer available on default location
