@@ -1,9 +1,9 @@
 # `DAKSHA` Change Log
 
-*version*: `2.5.1`
+*version*: `2.6.0`
 
-## v 2.5.1
-1. Added virtual env in Dockerfile
+## v 2.6.0
+1. Added startup command in entrypoint
    
 ## v 2.5.0
 1. Added minor imporvement in startup command for db
