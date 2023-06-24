@@ -50,3 +50,4 @@ class TestResults(models.Model):
     FailureCause=models.TextField()
     InsertTs = models.DateTimeField(auto_now_add=True) #The values updated here are following UTC time zone
     UpdateTs = models.DateTimeField(auto_now=True) #The values updated here are following UTC time zone
+    VariableDictionary=models.TextField()
