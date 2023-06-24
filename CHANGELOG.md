@@ -3,7 +3,7 @@
 *version*: `2.6.1`
 
 ## v 2.6.1
-1. Started the server using Gunicorn
+1. Started the server using gunicorn
 
 ## v 2.6.0
 1. Added startup command in entrypoint
