@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 #The reason for this is that Cron sets up a minimalistic environment and doesn't read the environment variables  
 #that you may have already had set.We solve it by giving cron access to environment variables we need
 env >> /etc/environment 
@@ -40,4 +42,4 @@ then
 fi
 
 echo "Starting the server"
-python manage.py runserver 0.0.0.0:8000 
+gunicorn --bind 0.0.0.0:8000 daksha.wsgi
