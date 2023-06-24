@@ -3,6 +3,9 @@
 *version*: `2.4.1`
 
 ## v 2.4.1
+1. Added minor imporvement in startup coomand for db
+   
+## v 2.4.1
 1. Modified permissions and fixed initialisation issues with cron jobs.
 
 ## v 2.4.0
