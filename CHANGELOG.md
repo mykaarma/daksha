@@ -1,8 +1,8 @@
 # `DAKSHA` Change Log
 
-*version*: `2.5.0`
+*version*: `2.5.1`
 
-## v 2.5.0
+## v 2.5.1
 1. Added virtual env in Dockerfile
    
 ## v 2.5.0
