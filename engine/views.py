@@ -70,7 +70,7 @@ def retriever(request, testuuid):
     """
     errors = []
     testresults = []
-    if request.method == "GET":
+    if request.method == "POST":
         try:
             logger.info(f"Fetching Test Results from database for TestUUID {testuuid}")
             if TEST_RESULT_DB != None and TEST_RESULT_DB.lower() == "postgres":
@@ -145,10 +145,10 @@ def retriever(request, testuuid):
 
             else:
                 logger.error(
-                    "Database Functionality is not opted for.Hence GET request can't be processed"
+                    "Database Functionality is not opted for.Hence POST request can't be processed"
                 )
                 return HttpResponse(
-                    "Database Functionality is not opted for.Hence GET request can't be processed",
+                    "Database Functionality is not opted for.Hence POST request can't be processed",
                     status=status.HTTP_400_BAD_REQUEST,
                 )
         except:

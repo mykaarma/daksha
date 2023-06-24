@@ -15,6 +15,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 """
 
+import json
 from .logs import *
 from daksha import settings
 from engine import models
@@ -43,6 +44,7 @@ def save_result_in_db(test_executor,execution_result,step,error_stack):
         test_executor.test_result.FailureStep=str(step)[0:200]
         test_executor.test_result.FailureCause=str(error_stack)[0:200]
         test_executor.test_result.Status="Failed"
+        test_executor.test_result.VariableDictionary=json.dumps(test_executor.variable_dictionary)
                 
     test_executor.test_result.save()
     logger.info(f"The Test Result for test named {test_name} of TestUUId {testUUID} have been updated in the database")
