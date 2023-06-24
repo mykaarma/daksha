@@ -1,5 +1,3 @@
-#!/usr/bin/env bash
-
 #The reason for this is that Cron sets up a minimalistic environment and doesn't read the environment variables  
 #that you may have already had set.We solve it by giving cron access to environment variables we need
 env >> /etc/environment 
