@@ -12,16 +12,6 @@
     "default_popup": "index.html",
     "default_title": "Open the popup"
   },
-  "content_scripts":[
-    {
-        "js": [
-          "ContentScript.js" 
-        ],
-        "matches": ["http://*/*" , "https://*/*"],
-        "run_at": "document_end",
-        "all_frames": false
-    }
-],
   "background" : {
       "service_worker" : "EventPage.js"
   },
@@ -36,8 +26,19 @@
   "permissions": [
       "tabs",
       "contextMenus",
-      "storage"
+      "storage",
+      "scripting"
   ],
+  "content_scripts":[
+    {
+        "js": [
+          "ContentScript.js" 
+        ],
+        "matches": ["http://*/*" , "https://*/*"],
+        "run_at": "document_end",
+        "all_frames": false
+    }
+],
   "web_accessible_resources": [        
     {
       "resources": [ "RecordingTab.html"],
