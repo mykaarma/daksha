@@ -1,8 +1,8 @@
 # `DAKSHA` Change Log
 
-*version*: `2.7.1`
+*version*: `2.8.0`
 
-## v 2.7.1
+## v 2.8.0
 1. Added startup_command.bat for starting the app locally in Windows 
 
 ## v 2.7.0
