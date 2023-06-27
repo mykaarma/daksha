@@ -150,9 +150,9 @@ def testresultsretriever(request, testuuid):
                 fetched_test_results_json_string = json.dumps( fetched_test_results.__dict__, default=str)
                 fetched_test_results_json = json.loads( fetched_test_results_json_string )
                 return JsonResponse( fetched_test_results_json, status=status.HTTP_400_BAD_REQUEST)
-        except:
+        except Exception as e:
             logger.error("Exception caught", exc_info=True)
-            errors.append("Exception Caught")
+            errors.append("Exception Caught: " + str(e))
             fetched_test_results = GetTestResultsResponse(testresults, errors)
             fetched_test_results_json_string = json.dumps( fetched_test_results.__dict__, default=str)
             fetched_test_results_json = json.loads( fetched_test_results_json_string )
