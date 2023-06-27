@@ -40,6 +40,7 @@ def save_result_in_db(test_executor,execution_result,step,error_stack):
     testUUID=test_executor.test_uuid
     if execution_result:
         test_executor.test_result.Status="Passed"
+        test_executor.test_result.VariableDictionary=json.dumps(test_executor.variable_dictionary)
     else:
         test_executor.test_result.FailureStep=str(step)[0:200]
         test_executor.test_result.FailureCause=str(error_stack)[0:200]
