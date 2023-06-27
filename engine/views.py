@@ -108,9 +108,9 @@ def testresultsretriever(request, testuuid):
                             logger.info(f"Fetching Test result for test name {testname} of TestUUID {testuuid}")
                             testresults.append(test_result_for_testname[0])
                         else:
-                            logger.info(f"No Test in the TestUUID {testname} is with TestName {testuuid} ")
+                            logger.info(f"No Test in the TestUUID {testuuid} is with TestName {testname} ")
                             errors.append(
-                                f"Bad Request : No Test in the TestUUID {testname} is with TestName {testuuid} "
+                                f"Bad Request : No Test in the TestUUID {testuuid} is with TestName {testname} "
                             )
                 else:
                     logger.info(
@@ -144,19 +144,26 @@ def testresultsretriever(request, testuuid):
                     return JsonResponse(fetched_test_results_json)
 
             else:
-                logger.error(
-                    "Database Functionality is not opted for.Hence POST request can't be processed"
-                )
-                return HttpResponse(
-                    "Database Functionality is not opted for.Hence POST request can't be processed",
-                    status=status.HTTP_400_BAD_REQUEST,
-                )
-        except:
+                logger.error( "Database Functionality is not opted for.Hence POST request can't be processed")
+                errors.append( f"Database Functionality is not opted for.Hence POST request can't be processed" )
+                fetched_test_results = GetTestResultsResponse(testresults, errors)
+                fetched_test_results_json_string = json.dumps( fetched_test_results.__dict__, default=str)
+                fetched_test_results_json = json.loads( fetched_test_results_json_string )
+                return JsonResponse( fetched_test_results_json, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
             logger.error("Exception caught", exc_info=True)
-            return HttpResponse("error", status=status.HTTP_400_BAD_REQUEST)
+            errors.append("Exception Caught: " + str(e))
+            fetched_test_results = GetTestResultsResponse(testresults, errors)
+            fetched_test_results_json_string = json.dumps( fetched_test_results.__dict__, default=str)
+            fetched_test_results_json = json.loads( fetched_test_results_json_string )
+            return JsonResponse( fetched_test_results_json, status=status.HTTP_400_BAD_REQUEST)
     else:
         logger.error("Method not allowed")
-        return HttpResponse(status=status.HTTP_405_METHOD_NOT_ALLOWED)
+        errors.append("Method not allowed")
+        fetched_test_results = GetTestResultsResponse(testresults, errors)
+        fetched_test_results_json_string = json.dumps( fetched_test_results.__dict__, default=str)
+        fetched_test_results_json = json.loads( fetched_test_results_json_string )
+        return JsonResponse( fetched_test_results_json, status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
 
 def __extract_test_data(test_uuid, test):
