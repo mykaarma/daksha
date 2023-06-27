@@ -92,7 +92,7 @@ def testresultsretriever(request, testuuid):
                         fetched_test_results_json_string
                     )
                     return JsonResponse(
-                        fetched_test_results_json, status=status.HTTP_400_BAD_REQUEST
+                        fetched_test_results_json, status=400
                     )
 
                 if request.body:
@@ -130,7 +130,7 @@ def testresultsretriever(request, testuuid):
                     )
                     logger.error(f"Bad Request : {fetched_test_results_json}")
                     return JsonResponse(
-                        fetched_test_results_json, status=status.HTTP_400_BAD_REQUEST
+                        fetched_test_results_json, status=400
                     )
                 else:
                     fetched_test_results = GetTestResultsResponse(testresults, errors)
@@ -147,16 +147,14 @@ def testresultsretriever(request, testuuid):
                 logger.error(
                     "Database Functionality is not opted for.Hence POST request can't be processed"
                 )
-                return HttpResponse(
-                    "Database Functionality is not opted for.Hence POST request can't be processed",
-                    status=status.HTTP_400_BAD_REQUEST,
-                )
+                return JsonResponse(status=400,data="Database Functionality is not opted for.Hence POST request can't be processed",safe=False)
+                
         except:
             logger.error("Exception caught", exc_info=True)
-            return HttpResponse("error", status=status.HTTP_400_BAD_REQUEST)
+            return JsonResponse(status=400,data="Exception caught",safe=False)
     else:
         logger.error("Method not allowed")
-        return HttpResponse(status=status.HTTP_405_METHOD_NOT_ALLOWED)
+        return JsonResponse(status=405,data="Method not allowed",safe=False)
 
 
 def __extract_test_data(test_uuid, test):
