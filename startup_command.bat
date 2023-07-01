@@ -1,15 +1,14 @@
+@echo off
+
 set "TEST_RESULT_DB=%TEST_RESULT_DB%"
 
-@REM If the environment variable test_result_db is not set, we will directly run the server
+@REM If the environment variable TEST_RESULT_DB is not set, we will directly run the server
 if not defined TEST_RESULT_DB goto :runserver
 
-@REM The parameter /i tells the cmd to do a insensitive case comparison
-IF /i TEST_RESULT_DB==postgres (
-python manage.py makimigrations engine
-)
-
-IF /i TEST_RESULT_DB==postgres (
-python manage.py migrate
+@REM The parameter /i tells the cmd to do a case-insensitive comparison
+IF /i "%TEST_RESULT_DB%"=="postgres" (
+    python manage.py makemigrations engine
+    python manage.py migrate
 )
 
 :runserver
