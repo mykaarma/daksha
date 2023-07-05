@@ -17,7 +17,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 import logging
 import os
 
-from daksha.settings import LOG_FILE
+from reportportal_client.helpers import timestamp
+from daksha.settings import LOG_FILE,REPORT_PORTAL_ENABLED
 
 os.makedirs(os.path.dirname(LOG_FILE), exist_ok=True)
 
@@ -33,3 +34,15 @@ logger.addHandler(fileHandler)
 consoleHandler = logging.StreamHandler()
 consoleHandler.setFormatter(logFormatter)
 logger.addHandler(consoleHandler)
+
+def report_portal_logger(report_portal_service,report_portal_test_id,message,level,screenshot=None):
+    if(REPORT_PORTAL_ENABLED != None and REPORT_PORTAL_ENABLED.lower() == "true"):
+        if(screenshot == None):
+            report_portal_service.log(level=level, message=message,time=timestamp(),item_id=report_portal_test_id)
+            logger.info("Logs sents to Report Portal")       
+        else:
+            with open(screenshot, "rb") as file:
+                screenshot_data = file.read()
+            attachment={"data": screenshot_data, "mime": "image/png"}
+            report_portal_service.log(level=level,message=message, attachment=attachment,time=timestamp() ,item_id=report_portal_test_id)
+            logger.info("Screenshot sent to Report Portal")

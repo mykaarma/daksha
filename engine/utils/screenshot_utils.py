@@ -16,14 +16,17 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 import os
 from datetime import datetime
-
+from engine.logs import logger
 from daksha.settings import STORAGE_PATH
-
+import random
 
 def take_screenshot(test_uuid, test_name,  web_driver):
     current_time = datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%S.%f')[:-3]
+    #This form of naming where current time is taken as file name is problematic in Windows as it has dots
+    random_number = random.randint(1000000, 9999999)
     screenshot_dir = f"{STORAGE_PATH}/{test_uuid}/Screenshots/{test_name}"
     if not os.path.isdir(screenshot_dir):
         os.makedirs(screenshot_dir)
-    screenshot_file = f"{screenshot_dir}/{current_time}.png"
+    screenshot_file = f"{screenshot_dir}/{random_number}.png"
     web_driver.save_screenshot(screenshot_file)
+    return screenshot_file

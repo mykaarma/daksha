@@ -1,22 +1,25 @@
 # `DAKSHA` Change Log
 
-*version*: `2.8.0`
+*version*: `2.9.0`
+
+## v 2.9.0
+1. Add Report Portal functionality to display Daksha test reports.
 
 ## v 2.8.0
-1. Added startup_command.bat for starting the app locally in Windows 
+1. Added startup_command.bat for starting the app locally in Windows. 
 
 ## v 2.7.0
-1. Added the Variable Dictionary in the test result table of postgres database 
+1. Added the Variable Dictionary in the test result table of postgres database.
 2. Changed request method to retrieve data to POST.
 
 ## v 2.6.1
-1. Started the server using gunicorn
+1. Started the server using gunicorn.
 
 ## v 2.6.0
-1. Added startup command in entrypoint
+1. Added startup command in entrypoint.
    
 ## v 2.5.0
-1. Added minor imporvement in startup command for db
+1. Added minor imporvement in startup command for db.
    
 ## v 2.4.1
 1. Modified permissions and fixed initialisation issues with cron jobs.

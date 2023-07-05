@@ -88,6 +88,14 @@ Setup selenium grid using https://www.selenium.dev/downloads/. Or if you want to
   - Status Code 404 : Page not found
     - Please recheck that the correct endpoint is being hit.
 
+## Report Portal
+- Users can choose to integrate Daksha test reports with Report Portal.
+- To enable this integration, users need to provide specific environment variables: 
+`REPORT_PORTAL_ENABLED`, `REPORT_PORTAL_PROJECT_NAME`, `REPORT_PORTAL_ENDPOINT`, `REPORT_PORTAL_TOKEN`.
+- To enable this functionality, set the value of `REPORT_PORTAL_ENABLED` to `True`.
+- Users must ensure that the Report Portal service is deployed and that the environment variable values align with the deployed service.
+- Run the command `docker compose -f docker-compose-reportportal.yml up -d` to initiate the build and deploy the project.
+
 ## #Environment Variables
 You can configure the application in a lot of ways by setting the following environment variables:
 * **STORAGE_PATH**
@@ -170,6 +178,18 @@ You can configure the application in a lot of ways by setting the following envi
 
 * **CRON_FILE_PATH**
   * This value should be set to the path of the yaml file which contains cron job description.
+
+* **REPORT_PORTAL_ENABLED**
+  * This value should be set to `True` if the user wants the Test reports to be displayed in Report Portal.
+
+* **REPORT_PORTAL_ENDPOINT**
+  * This value should be set to the URL of the ReportPortal server where the client should connect to.
+
+* **REPORT_PORTAL_PROJECT_NAME**
+  * This values should be set to the name of the specific project or workspace within ReportPortal where the user wants to show the Daksha test reports.
+
+* **REPORT_PORTAL_TOKEN**
+  * This value should match the authentication token provided by the user-deployed ReportPortal.
 
 ## Get in Touch
 

@@ -21,14 +21,15 @@ from django.db import models
 
 # Create your models here.
 class TestExecutor:
-    def __init__(self, index, test_uuid, variable_dict, test_yml, web_driver , test_result):
+    def __init__(self, index, test_uuid, variable_dict, test_yml, web_driver , test_result, report_portal_service=None, report_portal_test_id=None):
         self.index = index
         self.test_uuid = test_uuid
         self.variable_dictionary = copy.deepcopy(variable_dict)
         self.test_yml = test_yml
         self.web_driver = web_driver
         self.test_result=test_result
-
+        self.report_portal_service=report_portal_service
+        self.report_portal_test_id=report_portal_test_id
 
 class TestResult:
     def __init__(self, name, test_status, step, failure_reason):

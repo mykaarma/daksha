@@ -61,11 +61,28 @@ def execute_test(test_executor: TestExecutor, email):
             logger.info("User has not opted for alerts")
         web_driver = browser_config(config)
         test_executor.web_driver = web_driver
+        
+        if(REPORT_PORTAL_ENABLED != None and REPORT_PORTAL_ENABLED.lower() == "true"):
+            report_portal_service=test_executor.report_portal_service
+            report_portal_test_id=test_executor.report_portal_test_id
+            attributes = [{"key": "Test Status", "value": "In_Progress"}]
+            report_portal_service.update_test_item(item_uuid=report_portal_test_id, attributes=attributes)
+
         for step in task:
             execution_result, error_stack = execute_step(test_executor, step)
             if execution_result is False:
                 break
         logger.info("Test " + name + " finished, generating  result ")
+        
+        if(REPORT_PORTAL_ENABLED != None and REPORT_PORTAL_ENABLED.lower() == "true" and execution_result):
+            attributes = [{"key": "Test Status", "value": "Passed"}]
+            report_portal_service.update_test_item(item_uuid=report_portal_test_id, attributes=attributes)
+            report_portal_service.finish_test_item(status="PASSED",item_id=report_portal_test_id, end_time=timestamp())
+        elif(REPORT_PORTAL_ENABLED != None and REPORT_PORTAL_ENABLED.lower() == "true"):
+            attributes = [{"key": "Test Status", "value": "Failed"}]
+            report_portal_service.update_test_item(item_uuid=report_portal_test_id, attributes=attributes)
+            report_portal_service.finish_test_item(status="FAILED",item_id=report_portal_test_id,end_time=timestamp())
+        
         generate_result(test_executor.test_uuid, execution_result, name, step, error_stack )
         
         if settings.TEST_RESULT_DB != None and settings.TEST_RESULT_DB.lower() == "postgres":
