@@ -24,7 +24,8 @@ You can also auto-generate test yamls through Daksha Recorder [chrome extension]
   - (Optional) Create any env variables needed.
   - Download Chromedriver (https://chromedriver.chromium.org/downloads)
   - Run `.\startup_command.bat` to start the project in case of Windows
-  - Run `.\startup_command.sh` to start the project in case of Linux
+  - Run `sh startup_command.sh` to start the project in case of Linux
+  - Run `bash startup_command_mac.sh` to start the project in case of Mac
 
 ## Setting up webdriver
 We only support chromedriver at this point.
