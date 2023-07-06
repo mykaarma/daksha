@@ -16,9 +16,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 import os
 from datetime import datetime
-from engine.logs import logger
 from daksha.settings import STORAGE_PATH
-import random
 
 def take_screenshot(test_uuid, test_name,  web_driver):
     current_time = datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%S.%f')[:-3]
