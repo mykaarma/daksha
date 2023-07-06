@@ -70,7 +70,7 @@ def testresultsretriever(request, testuuid):
     """
     errors = []
     testresults = []
-    if request.method == "POST":
+    if request.method == "GET":
         try:
             logger.info(f"Fetching Test Results from database for TestUUID {testuuid}")
             if TEST_RESULT_DB != None and TEST_RESULT_DB.lower() == "postgres":
@@ -95,26 +95,25 @@ def testresultsretriever(request, testuuid):
                         fetched_test_results_json, status=status.HTTP_400_BAD_REQUEST
                     )
 
-                if request.body:
-                    logger.info(f"User has opted for specific test results in the TestUUID {testuuid}")
-                    testnames = json.loads(request.body)
-                    for testname in testnames["names"]:
-                        test_result_for_testname = (
-                            TestResults.objects.all()
-                            .filter(TestUUID=testuuid, TestName=testname)
-                            .values()
+                if request.GET.get('testName',None) != None:
+                    testname = request.GET.get('testName')
+                    logger.info(f"User has opted for test results of test {testname} in the TestUUID {testuuid}")
+                    test_result_for_testname = (
+                        TestResults.objects.all()
+                        .filter(TestUUID=testuuid, TestName=testname)
+                        .values()
+                    )
+                    if test_result_for_testname:
+                        logger.info(f"Fetching Test result for test name {testname} of TestUUID {testuuid}")
+                        testresults.append(test_result_for_testname[0])
+                    else:
+                        logger.info(f"No Test in the TestUUID {testuuid} is with TestName {testname} ")
+                        errors.append(
+                            f"Bad Request : No Test in the TestUUID {testuuid} is with TestName {testname} "
                         )
-                        if test_result_for_testname:
-                            logger.info(f"Fetching Test result for test name {testname} of TestUUID {testuuid}")
-                            testresults.append(test_result_for_testname[0])
-                        else:
-                            logger.info(f"No Test in the TestUUID {testuuid} is with TestName {testname} ")
-                            errors.append(
-                                f"Bad Request : No Test in the TestUUID {testuuid} is with TestName {testname} "
-                            )
                 else:
                     logger.info(
-                        f"Since no Test names are provided in the request body, All Test in TestUUID {testuuid} would be returned"
+                        f"Since no Test names are provided in the query parameters, All Test in TestUUID {testuuid} would be returned"
                     )
                     for test_result_for_uuid in test_results_for_uuid:
                         testresults.append(test_result_for_uuid)
@@ -144,8 +143,8 @@ def testresultsretriever(request, testuuid):
                     return JsonResponse(fetched_test_results_json)
 
             else:
-                logger.error( "Database Functionality is not opted for.Hence POST request can't be processed")
-                errors.append( f"Database Functionality is not opted for.Hence POST request can't be processed" )
+                logger.error( "Database Functionality is not opted for.Hence GET request can't be processed")
+                errors.append( f"Database Functionality is not opted for.Hence GET request can't be processed" )
                 fetched_test_results = GetTestResultsResponse(testresults, errors)
                 fetched_test_results_json_string = json.dumps( fetched_test_results.__dict__, default=str)
                 fetched_test_results_json = json.loads( fetched_test_results_json_string )
