@@ -1,8 +1,8 @@
 # `DAKSHA` Change Log
 
-*version*: `2.9.0`
+*version*: `2.10.0`
 
-## v 2.9.0
+## v 2.10.0
 1. Add Report Portal functionality to display Daksha test reports.
 
 ## v 2.8.0

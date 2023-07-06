@@ -65,8 +65,6 @@ def execute_test(test_executor: TestExecutor, email):
         if(REPORT_PORTAL_ENABLED != None and REPORT_PORTAL_ENABLED.lower() == "true"):
             report_portal_service=test_executor.report_portal_service
             report_portal_test_id=test_executor.report_portal_test_id
-            attributes = [{"key": "Test Status", "value": "In_Progress"}]
-            report_portal_service.update_test_item(item_uuid=report_portal_test_id, attributes=attributes)
 
         for step in task:
             execution_result, error_stack = execute_step(test_executor, step)
@@ -74,14 +72,11 @@ def execute_test(test_executor: TestExecutor, email):
                 break
         logger.info("Test " + name + " finished, generating  result ")
         
-        if(REPORT_PORTAL_ENABLED != None and REPORT_PORTAL_ENABLED.lower() == "true" and execution_result):
-            attributes = [{"key": "Test Status", "value": "Passed"}]
-            report_portal_service.update_test_item(item_uuid=report_portal_test_id, attributes=attributes)
-            report_portal_service.finish_test_item(status="PASSED",item_id=report_portal_test_id, end_time=timestamp())
-        elif(REPORT_PORTAL_ENABLED != None and REPORT_PORTAL_ENABLED.lower() == "true"):
-            attributes = [{"key": "Test Status", "value": "Failed"}]
-            report_portal_service.update_test_item(item_uuid=report_portal_test_id, attributes=attributes)
-            report_portal_service.finish_test_item(status="FAILED",item_id=report_portal_test_id,end_time=timestamp())
+        if(REPORT_PORTAL_ENABLED != None and REPORT_PORTAL_ENABLED.lower() == "true"):
+            if execution_result:
+                report_portal_service.finish_test_item(status="PASSED",item_id=report_portal_test_id, end_time=timestamp())
+            else:    
+                report_portal_service.finish_test_item(status="FAILED",item_id=report_portal_test_id,end_time=timestamp())
         
         generate_result(test_executor.test_uuid, execution_result, name, step, error_stack )
         

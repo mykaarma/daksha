@@ -23,9 +23,9 @@ You can also auto-generate test yamls through Daksha Recorder [chrome extension]
   - Install all requirements using `pip install -r requirements.txt`
   - (Optional) Create any env variables needed.
   - Download Chromedriver (https://chromedriver.chromium.org/downloads)
-  - Run `.\startup_command.bat` to start the project in case of Windows
-  - Run `sh startup_command.sh` to start the project in case of Linux
-  - Run `bash startup_command_mac.sh` to start the project in case of Mac
+  - Run `.\startup_command.bat` to start the project in case of Windows.
+  - Run `sh startup_command.sh` to start the project in case of Linux.
+  - Run `bash startup_command_mac.sh` to start the project in case of MacOS.
 
 ## Setting up webdriver
 We only support chromedriver at this point.
@@ -90,10 +90,12 @@ Setup selenium grid using https://www.selenium.dev/downloads/. Or if you want to
     - Please recheck that the correct endpoint is being hit.
 
 ## Report Portal
-- Users can choose to integrate Daksha test reports with Report Portal.
+- Users can choose to integrate Daksha test reports with [Report Portal](https://github.com/reportportal).
 - To enable this integration, users need to provide specific environment variables: 
 `REPORT_PORTAL_ENABLED`, `REPORT_PORTAL_PROJECT_NAME`, `REPORT_PORTAL_ENDPOINT`, `REPORT_PORTAL_TOKEN`.
 - To enable this functionality, set the value of `REPORT_PORTAL_ENABLED` to `True`.
+- User must have deployed Report Portal through building the [Report Portal Docker Compose file](https://github.com/reportportal/reportportal/blob/master/docker-compose.yml). Please edit this file and expose the ports of the Postgres Database before initiating the build.
+- This can be done by uncommenting the ports section for postgres service defined in the yml file.
 - Users must ensure that the Report Portal service is deployed and that the environment variable values align with the deployed service.
 - Run the command `docker compose -f docker-compose-reportportal.yml up -d` to initiate the build and deploy the project.
 
@@ -190,7 +192,7 @@ You can configure the application in a lot of ways by setting the following envi
   * This values should be set to the name of the specific project or workspace within ReportPortal where the user wants to show the Daksha test reports.
 
 * **REPORT_PORTAL_TOKEN**
-  * This value should match the authentication token provided by the user-deployed ReportPortal.
+  * This value should match the authentication token provided by the user-deployed ReportPortal.Please refer [Token to be used by Report Portal Client Tools](https://reportportal.io/docs/reportportal-configuration/HowToGetAnAccessTokenInReportPortal/#2-authorization-with-users-uuid-access-token-for-agents)
 
 ## Get in Touch
 

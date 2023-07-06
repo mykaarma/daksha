@@ -116,9 +116,8 @@ def open_url(test_executor: TestExecutor, **kwargs):
     logger.info(url)
     test_executor.web_driver.get(url)
     screenshot=take_screenshot(test_executor.test_uuid, test_executor.test_yml["name"], test_executor.web_driver)
-    report_portal_logger(test_executor.report_portal_service,test_executor.report_portal_test_id,'Ill open the url',"INFO")
+    report_portal_logger(test_executor.report_portal_service,test_executor.report_portal_test_id,'Ill open the url',"INFO",screenshot)
     report_portal_logger(test_executor.report_portal_service,test_executor.report_portal_test_id,url,"INFO")
-    report_portal_logger(test_executor.report_portal_service,test_executor.report_portal_test_id,'Screenshot',"INFO",screenshot)
     return True, None
 
 
@@ -151,8 +150,7 @@ def fill_data(test_executor: TestExecutor, **kwargs):
             element.send_keys(value)
             logger.info("Data filled successfully")
             screenshot=take_screenshot(test_executor.test_uuid, test_executor.test_yml["name"], test_executor.web_driver)
-            report_portal_logger(test_executor.report_portal_service,test_executor.report_portal_test_id,'Data filled successfully',"INFO")
-            report_portal_logger(test_executor.report_portal_service,test_executor.report_portal_test_id,'Screnshot',"INFO",screenshot)
+            report_portal_logger(test_executor.report_portal_service,test_executor.report_portal_test_id,'Data filled successfully',"INFO",screenshot)
             return True, None
         except Exception as e:
             error_stack = traceback.format_exc()
@@ -188,8 +186,7 @@ def select_in_dropdown(test_executor: TestExecutor, **kwargs):
             select.select_by_visible_text(value)
             logger.info("Dropdown selected successfully")
             screenshot=take_screenshot(test_executor.test_uuid, test_executor.test_yml["name"], test_executor.web_driver)
-            report_portal_logger(test_executor.report_portal_service,test_executor.report_portal_test_id,'Dropdown selected successfully',"INFO")
-            report_portal_logger(test_executor.report_portal_service,test_executor.report_portal_test_id,'screenshot',"INFO",screenshot)
+            report_portal_logger(test_executor.report_portal_service,test_executor.report_portal_test_id,'Dropdown selected successfully',"INFO",screenshot)
             return True, None
         except Exception as e:
             error_stack = traceback.format_exc()
@@ -222,8 +219,7 @@ def click_button(test_executor: TestExecutor, **kwargs):
             element.click()
             logger.info("Click successful")
             screenshot=take_screenshot(test_executor.test_uuid, test_executor.test_yml["name"], test_executor.web_driver)
-            report_portal_logger(test_executor.report_portal_service,test_executor.report_portal_test_id,'Click successful',"INFO")
-            report_portal_logger(test_executor.report_portal_service,test_executor.report_portal_test_id,'screenshot',"INFO",screenshot)
+            report_portal_logger(test_executor.report_portal_service,test_executor.report_portal_test_id,'Click successful',"INFO",screenshot)
             return True, None
         except Exception as e:
             error_stack = traceback.format_exc()
@@ -308,8 +304,7 @@ def switch_iframe(test_executor: TestExecutor, **kwargs):
         test_executor.web_driver.switch_to.frame(element)
         logger.info("switched successful to frame. " + locator + " = " + locator_value)
         screenshot=take_screenshot(test_executor.test_uuid, test_executor.test_yml["name"], test_executor.web_driver)
-        report_portal_logger(test_executor.report_portal_service,test_executor.report_portal_test_id,f"switched successful to frame {locator} =  {locator_value}","INFO")
-        report_portal_logger(test_executor.report_portal_service,test_executor.report_portal_test_id,'screenshot',"INFO",screenshot)
+        report_portal_logger(test_executor.report_portal_service,test_executor.report_portal_test_id,f"switched successful to frame {locator} =  {locator_value}","INFO",screenshot)
         return True, None
     except Exception as e:
         report_portal_logger(test_executor.report_portal_service,test_executor.report_portal_test_id,"switch to frame failed ","ERROR")
@@ -328,8 +323,7 @@ def switch_to_default_iframe(test_executor: TestExecutor):
     test_executor.web_driver.switch_to.default_content()
     screenshot=take_screenshot(test_executor.test_uuid, test_executor.test_yml["name"], test_executor.web_driver)
     logger.info("switched successful to default window")
-    report_portal_logger(test_executor.report_portal_service,test_executor.report_portal_test_id,'switched successful to default window',"INFO")
-    report_portal_logger(test_executor.report_portal_service,test_executor.report_portal_test_id,'screenshot',"INFO",screenshot)
+    report_portal_logger(test_executor.report_portal_service,test_executor.report_portal_test_id,'switched successful to default window',"INFO",screenshot)
     return True, None
 
 
@@ -343,9 +337,8 @@ def refresh_page(test_executor: TestExecutor):
     """
     test_executor.web_driver.refresh()
     screenshot=take_screenshot(test_executor.test_uuid, test_executor.test_yml["name"], test_executor.web_driver)
-    report_portal_logger(test_executor.report_portal_service,test_executor.report_portal_test_id,'screenshot',"INFO",screenshot)
     logger.info("Page refreshed successfully")
-    report_portal_logger(test_executor.report_portal_service,test_executor.report_portal_test_id,"Page refreshed successfully","INFO")
+    report_portal_logger(test_executor.report_portal_service,test_executor.report_portal_test_id,"Page refreshed successfully","INFO",screenshot)
     return True, None
 
 
@@ -359,9 +352,8 @@ def navigate_back(test_executor: TestExecutor):
     """
     test_executor.web_driver.back()
     screenshot=take_screenshot(test_executor.test_uuid, test_executor.test_yml["name"], test_executor.web_driver)
-    report_portal_logger(test_executor.report_portal_service,test_executor.report_portal_test_id,'screenshot',"INFO",screenshot)
     logger.info("User navigated Back successfully")
-    report_portal_logger(test_executor.report_portal_service,test_executor.report_portal_test_id,'User navigated Back successfully',"INFO")
+    report_portal_logger(test_executor.report_portal_service,test_executor.report_portal_test_id,'User navigated Back successfully',"INFO",screenshot)
     return True, None
 
 
@@ -377,9 +369,8 @@ def open_new_tab(test_executor: TestExecutor):
     test_executor.web_driver.switch_to_window(
         test_executor.web_driver.window_handles[len(test_executor.web_driver.window_handles) - 1])
     screenshot=take_screenshot(test_executor.test_uuid, test_executor.test_yml["name"], test_executor.web_driver)
-    report_portal_logger(test_executor.report_portal_service,test_executor.report_portal_test_id,'screenshot',"INFO",screenshot)
     logger.info("Switched to new Tab successfully")
-    report_portal_logger(test_executor.report_portal_service,test_executor.report_portal_test_id,'Switched to new Tab successfully',"INFO")
+    report_portal_logger(test_executor.report_portal_service,test_executor.report_portal_test_id,'Switched to new Tab successfully',"INFO", screenshot)
     return True, None
 
 
@@ -563,9 +554,8 @@ def scroll_to(test_executor: TestExecutor, **kwargs):
             )
             test_executor.web_driver.execute_script("arguments[0].scrollIntoView();", element)
             logger.info("Scrolled to element successfully")
-            report_portal_logger(test_executor.report_portal_service,test_executor.report_portal_test_id,"Scrolled to element successfully","INFO")
             screenshot=take_screenshot(test_executor.test_uuid, test_executor.test_yml["name"], test_executor.web_driver)
-            report_portal_logger(test_executor.report_portal_service,test_executor.report_portal_test_id,"screenshot","INFO",screenshot)
+            report_portal_logger(test_executor.report_portal_service,test_executor.report_portal_test_id,"Scrolled to element successfully","INFO",screenshot)
             return True, None
         except Exception as e:
             error_stack = traceback.format_exc()
