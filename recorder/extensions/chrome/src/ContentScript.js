@@ -340,11 +340,11 @@ chrome.storage.sync.get(pauseValueStorageKey, function (result) {
     }
 })
 //Listening to the mutation to add dakshaEventsArrayeners of iframes.
+
 let mutationObserver = new MutationObserver(function (mutations) {
-    mutations.forEach(function (mutation) {
         AddEventListenerToAllIframe(document);
-    });
 });
+mutationObserver.disconnect() ;
 mutationObserver.observe(document, {
     attributes: true,
     characterData: true,
@@ -353,6 +353,7 @@ mutationObserver.observe(document, {
     attributeOldValue: true,
     characterDataOldValue: true
 });
+
 // Adding mousdown dakshaEventsArrayener to window.
 window.addEventListener('mousedown', (event) => {
     if (event.button === leftClickPressed) {
