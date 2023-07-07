@@ -3,13 +3,13 @@
 *version*: `2.9.0`
 
 ## v 2.9.0
-1. Modified GET endpoint to include test name as query params.
+1. Modified GET endpoint to include test name as query params. 
 
 ## v 2.8.0
 1. Added startup_command.bat for starting the app locally in Windows 
 
 ## v 2.7.0
-1. Added the Variable Dictionary in the test result table of postgres database
+1. Added the Variable Dictionary in the test result table of postgres database 
 2. Changed request method to retrieve data to POST.
 
 ## v 2.6.1
