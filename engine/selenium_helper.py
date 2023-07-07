@@ -25,7 +25,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait, Select
 from selenium.webdriver.support import expected_conditions as EC
 
-from .logs import logger,report_portal_logger
+from .logs import logger,daksha_logger
 from .models import TestExecutor
 from .utils.screenshot_utils import take_screenshot
 
@@ -110,14 +110,11 @@ def open_url(test_executor: TestExecutor, **kwargs):
     try:
         url = kwargs['url']
     except KeyError:
-        report_portal_logger(test_executor.report_portal_service,test_executor.report_portal_test_id,"Ill formatted arguments, 'url' must be present in the list of args","ERROR")
+        daksha_logger(test_executor.report_portal_service,test_executor.report_portal_test_id,"Ill formatted arguments, 'url' must be present in the list of args","ERROR")
         return False, "Ill formatted arguments, 'url' must be present in the list of args"
-    logger.info("I'll open it's url")
-    logger.info(url)
     test_executor.web_driver.get(url)
     screenshot=take_screenshot(test_executor.test_uuid, test_executor.test_yml["name"], test_executor.web_driver)
-    report_portal_logger(test_executor.report_portal_service,test_executor.report_portal_test_id,'Ill open the url',"INFO",screenshot)
-    report_portal_logger(test_executor.report_portal_service,test_executor.report_portal_test_id,url,"INFO")
+    daksha_logger(test_executor.report_portal_service,test_executor.report_portal_test_id,'Ill open the url',"INFO",screenshot)
     return True, None
 
 
@@ -135,11 +132,10 @@ def fill_data(test_executor: TestExecutor, **kwargs):
     try:
         value = kwargs['value']
     except KeyError:
-        report_portal_logger(test_executor.report_portal_service,test_executor.report_portal_test_id,'Ill formatted arguments,value must be present in the list of args',"ERROR")
+        daksha_logger(test_executor.report_portal_service,test_executor.report_portal_test_id,'Ill formatted arguments,value must be present in the list of args',"ERROR")
         return False, "Ill formatted arguments, 'value' must be present in the list of args"
     locator, locator_value = get_locator_info(**kwargs)
-    logger.info("I'll fill data in input box")
-    report_portal_logger(test_executor.report_portal_service,test_executor.report_portal_test_id,'Ill fill data in input box',"INFO")
+    daksha_logger(test_executor.report_portal_service,test_executor.report_portal_test_id,'Ill fill data in input box',"INFO")
     error_stack = None
     for i in range(5):
         try:
@@ -148,14 +144,12 @@ def fill_data(test_executor: TestExecutor, **kwargs):
             )
             element.clear()
             element.send_keys(value)
-            logger.info("Data filled successfully")
             screenshot=take_screenshot(test_executor.test_uuid, test_executor.test_yml["name"], test_executor.web_driver)
-            report_portal_logger(test_executor.report_portal_service,test_executor.report_portal_test_id,'Data filled successfully',"INFO",screenshot)
+            daksha_logger(test_executor.report_portal_service,test_executor.report_portal_test_id,'Data filled successfully',"INFO",screenshot)
             return True, None
         except Exception as e:
             error_stack = traceback.format_exc()
-            logger.error("Attempt " + str(i) + " to fill input failed")
-            report_portal_logger(test_executor.report_portal_service,test_executor.report_portal_test_id,f"Attempt {str(i)} to fill input failed","ERROR")
+            daksha_logger(test_executor.report_portal_service,test_executor.report_portal_test_id,f"Attempt {str(i)} to fill input failed","ERROR")
     return False, error_stack
 
 
@@ -172,10 +166,10 @@ def select_in_dropdown(test_executor: TestExecutor, **kwargs):
     try:
         value = kwargs['value']
     except KeyError:
-        report_portal_logger(test_executor.report_portal_service,test_executor.report_portal_test_id,"Ill formatted arguments, 'value' must be present in the list of args","ERROR")
+        daksha_logger(test_executor.report_portal_service,test_executor.report_portal_test_id,"Ill formatted arguments, 'value' must be present in the list of args","ERROR")
         return False, "Ill formatted arguments, 'value' must be present in the list of args"
     locator, locator_value = get_locator_info(**kwargs)
-    report_portal_logger(test_executor.report_portal_service,test_executor.report_portal_test_id,"I'll select value from drop-down","INFO")
+    daksha_logger(test_executor.report_portal_service,test_executor.report_portal_test_id,"I'll select value from drop-down","INFO")
     error_stack = None
     for i in range(5):
         try:
@@ -184,14 +178,12 @@ def select_in_dropdown(test_executor: TestExecutor, **kwargs):
             )
             select = Select(element)
             select.select_by_visible_text(value)
-            logger.info("Dropdown selected successfully")
             screenshot=take_screenshot(test_executor.test_uuid, test_executor.test_yml["name"], test_executor.web_driver)
-            report_portal_logger(test_executor.report_portal_service,test_executor.report_portal_test_id,'Dropdown selected successfully',"INFO",screenshot)
+            daksha_logger(test_executor.report_portal_service,test_executor.report_portal_test_id,'Dropdown selected successfully',"INFO",screenshot)
             return True, None
         except Exception as e:
             error_stack = traceback.format_exc()
-            report_portal_logger(test_executor.report_portal_service,test_executor.report_portal_test_id,f"Attempt {str(i)} to select dropdown failed","ERROR")
-            logger.error("Attempt " + str(i) + " to select dropdown failed")
+            daksha_logger(test_executor.report_portal_service,test_executor.report_portal_test_id,f"Attempt {str(i)} to select dropdown failed","ERROR")
     return False, error_stack
 
 
@@ -207,8 +199,7 @@ def click_button(test_executor: TestExecutor, **kwargs):
 
     """
     locator, locator_value = get_locator_info(**kwargs)
-    logger.info("I'll click a button!")
-    report_portal_logger(test_executor.report_portal_service,test_executor.report_portal_test_id,'Ill click a button',"INFO")
+    daksha_logger(test_executor.report_portal_service,test_executor.report_portal_test_id,'Ill click a button',"INFO")
     error_stack = None
     # try for 5 times
     for i in range(5):
@@ -217,14 +208,12 @@ def click_button(test_executor: TestExecutor, **kwargs):
                 EC.element_to_be_clickable((locator, locator_value))
             )
             element.click()
-            logger.info("Click successful")
             screenshot=take_screenshot(test_executor.test_uuid, test_executor.test_yml["name"], test_executor.web_driver)
-            report_portal_logger(test_executor.report_portal_service,test_executor.report_portal_test_id,'Click successful',"INFO",screenshot)
+            daksha_logger(test_executor.report_portal_service,test_executor.report_portal_test_id,'Click successful',"INFO",screenshot)
             return True, None
         except Exception as e:
             error_stack = traceback.format_exc()
-            report_portal_logger(test_executor.report_portal_service,test_executor.report_portal_test_id,f"Attempt {str(i)} to click failed","ERROR")
-            logger.error("Attempt " + str(i) + " to click failed")
+            daksha_logger(test_executor.report_portal_service,test_executor.report_portal_test_id,f"Attempt {str(i)} to click failed","ERROR")
     return False, error_stack
 
 
@@ -241,11 +230,10 @@ def validate_ui_element(test_executor: TestExecutor, **kwargs):
         mode = kwargs['mode']
         value = kwargs['value']
     except KeyError:
-        report_portal_logger(test_executor.report_portal_service,test_executor.report_portal_test_id,"Ill formatted arguments, 'mode' and 'value' must be present in the list of args","ERROR")
+        daksha_logger(test_executor.report_portal_service,test_executor.report_portal_test_id,"Ill formatted arguments, 'mode' and 'value' must be present in the list of args","ERROR")
         return False, "Ill formatted arguments, 'mode' and 'value' must be present in the list of args"
     locator, locator_value = get_locator_info(**kwargs)
-    logger.info("I'll verify a UI element!")
-    report_portal_logger(test_executor.report_portal_service,test_executor.report_portal_test_id,'Ill verify a UI element',"INFO")
+    daksha_logger(test_executor.report_portal_service,test_executor.report_portal_test_id,'Ill verify a UI element',"INFO")
     # try for 5 times
     validation_result = False
     for i in range(5):
@@ -256,15 +244,13 @@ def validate_ui_element(test_executor: TestExecutor, **kwargs):
             elementTag = element.tag_name
             if elementTag == "input":
                 element_value = element.get_attribute("value")
-                report_portal_logger(test_executor.report_portal_service,test_executor.report_portal_test_id,f"Validating input textbox text to: {element_value} ","INFO")
-                logger.info("Validating input textbox text to: "+element_value)
+                daksha_logger(test_executor.report_portal_service,test_executor.report_portal_test_id,f"Validating input textbox text to: {element_value} ","INFO")
             else:
                 element_value = element.text
-                report_portal_logger(test_executor.report_portal_service,test_executor.report_portal_test_id,f"Validating text to: {element_value}","INFO")
-                logger.info("Validating text to: "+element_value)
+                daksha_logger(test_executor.report_portal_service,test_executor.report_portal_test_id,f"Validating text to: {element_value}","INFO")
             
             screenshot=take_screenshot(test_executor.test_uuid, test_executor.test_yml["name"], test_executor.web_driver)
-            report_portal_logger(test_executor.report_portal_service,test_executor.report_portal_test_id,'screenshot',"INFO",screenshot)
+            daksha_logger(test_executor.report_portal_service,test_executor.report_portal_test_id,'screenshot',"INFO",screenshot)
             if mode == 'equals':
                 validation_result = (value == element_value)
             elif mode == 'contains':
@@ -276,13 +262,11 @@ def validate_ui_element(test_executor: TestExecutor, **kwargs):
             if validation_result is True:
                 break
             else:
-                report_portal_logger(test_executor.report_portal_service,test_executor.report_portal_test_id,f"Value found {element_value} did not match value given: {value},mode= {mode}","INFO")
-                logger.info("Value found " + element_value + " did not match value given: " + value + ", mode=" + mode)
-
+                daksha_logger(test_executor.report_portal_service,test_executor.report_portal_test_id,f"Value found {element_value} did not match value given: {value},mode= {mode}","INFO")
+                
         except Exception as e:
-            report_portal_logger(test_executor.report_portal_service,test_executor.report_portal_test_id,f"Attempt {str(i)}for validation failed ","ERROR")
-            logger.error("Attempt " + str(i) + " for validation failed \n", exc_info=True)
-
+            daksha_logger(test_executor.report_portal_service,test_executor.report_portal_test_id,f"Attempt {str(i)}for validation failed ","ERROR")
+            
     return validation_result, "Failed Validation"
 
 
@@ -302,13 +286,11 @@ def switch_iframe(test_executor: TestExecutor, **kwargs):
             EC.visibility_of_element_located((locator, locator_value))
         )
         test_executor.web_driver.switch_to.frame(element)
-        logger.info("switched successful to frame. " + locator + " = " + locator_value)
         screenshot=take_screenshot(test_executor.test_uuid, test_executor.test_yml["name"], test_executor.web_driver)
-        report_portal_logger(test_executor.report_portal_service,test_executor.report_portal_test_id,f"switched successful to frame {locator} =  {locator_value}","INFO",screenshot)
+        daksha_logger(test_executor.report_portal_service,test_executor.report_portal_test_id,f"switched successful to frame {locator} =  {locator_value}","INFO",screenshot)
         return True, None
     except Exception as e:
-        report_portal_logger(test_executor.report_portal_service,test_executor.report_portal_test_id,"switch to frame failed ","ERROR")
-        logger.error("switch to frame failed \n", exc_info=True)
+        daksha_logger(test_executor.report_portal_service,test_executor.report_portal_test_id,"switch to frame failed ","ERROR")
         return False, traceback.format_exc()
 
 
@@ -322,8 +304,7 @@ def switch_to_default_iframe(test_executor: TestExecutor):
     """
     test_executor.web_driver.switch_to.default_content()
     screenshot=take_screenshot(test_executor.test_uuid, test_executor.test_yml["name"], test_executor.web_driver)
-    logger.info("switched successful to default window")
-    report_portal_logger(test_executor.report_portal_service,test_executor.report_portal_test_id,'switched successful to default window',"INFO",screenshot)
+    daksha_logger(test_executor.report_portal_service,test_executor.report_portal_test_id,'switched successful to default window',"INFO",screenshot)
     return True, None
 
 
@@ -337,8 +318,7 @@ def refresh_page(test_executor: TestExecutor):
     """
     test_executor.web_driver.refresh()
     screenshot=take_screenshot(test_executor.test_uuid, test_executor.test_yml["name"], test_executor.web_driver)
-    logger.info("Page refreshed successfully")
-    report_portal_logger(test_executor.report_portal_service,test_executor.report_portal_test_id,"Page refreshed successfully","INFO",screenshot)
+    daksha_logger(test_executor.report_portal_service,test_executor.report_portal_test_id,"Page refreshed successfully","INFO",screenshot)
     return True, None
 
 
@@ -352,8 +332,7 @@ def navigate_back(test_executor: TestExecutor):
     """
     test_executor.web_driver.back()
     screenshot=take_screenshot(test_executor.test_uuid, test_executor.test_yml["name"], test_executor.web_driver)
-    logger.info("User navigated Back successfully")
-    report_portal_logger(test_executor.report_portal_service,test_executor.report_portal_test_id,'User navigated Back successfully',"INFO",screenshot)
+    daksha_logger(test_executor.report_portal_service,test_executor.report_portal_test_id,'User navigated Back successfully',"INFO",screenshot)
     return True, None
 
 
@@ -369,8 +348,7 @@ def open_new_tab(test_executor: TestExecutor):
     test_executor.web_driver.switch_to_window(
         test_executor.web_driver.window_handles[len(test_executor.web_driver.window_handles) - 1])
     screenshot=take_screenshot(test_executor.test_uuid, test_executor.test_yml["name"], test_executor.web_driver)
-    logger.info("Switched to new Tab successfully")
-    report_portal_logger(test_executor.report_portal_service,test_executor.report_portal_test_id,'Switched to new Tab successfully',"INFO", screenshot)
+    daksha_logger(test_executor.report_portal_service,test_executor.report_portal_test_id,'Switched to new Tab successfully',"INFO", screenshot)
     return True, None
 
 
@@ -391,26 +369,23 @@ def switch_to_tab(test_executor: TestExecutor, **kwargs):
             test_executor.web_driver.switch_to_window(handle)
             if value in test_executor.web_driver.title:
                 is_tab_switched = True
-                report_portal_logger(test_executor.report_portal_service,test_executor.report_portal_test_id,f"Switched to tab with title as {value}","INFO")
-                logger.info("Switched to tab with {} as {} : ".format("title", value))
+                daksha_logger(test_executor.report_portal_service,test_executor.report_portal_test_id,f"Switched to tab with title as {value}","INFO")
                 break
     elif "index" in kwargs.keys():
         try:
             value = int(kwargs["index"])
             test_executor.web_driver.switch_to_window(test_executor.web_driver.window_handles[value])
-            report_portal_logger(test_executor.report_portal_service,test_executor.report_portal_test_id,f"Switched to tab indexed as : {str(value)}","INFO")
-            logger.info("Switched to tab indexed as : " + str(value))
+            daksha_logger(test_executor.report_portal_service,test_executor.report_portal_test_id,f"Switched to tab indexed as : {str(value)}","INFO")
             is_tab_switched = True
-            report_portal_logger(test_executor.report_portal_service,test_executor.report_portal_test_id,f"Switched to tab with index as : {str(value)}","INFO")
-            logger.info("Switched to tab with {} as {} : ".format("index", str(value)))
+            daksha_logger(test_executor.report_portal_service,test_executor.report_portal_test_id,f"Switched to tab with index as : {str(value)}","INFO")
         except Exception as e:
             error_stack = traceback.format_exc()
             return False, error_stack
     else:
-        report_portal_logger(test_executor.report_portal_service,test_executor.report_portal_test_id,"Ill formatted arguments, either 'title' or 'index' must be present in the list of args","ERROR")            
+        daksha_logger(test_executor.report_portal_service,test_executor.report_portal_test_id,"Ill formatted arguments, either 'title' or 'index' must be present in the list of args","ERROR")            
         return False, "Ill formatted arguments, either 'title' or 'index' must be present in the list of args"
     screenshot=take_screenshot(test_executor.test_uuid, test_executor.test_yml["name"], test_executor.web_driver)
-    report_portal_logger(test_executor.report_portal_service,test_executor.report_portal_test_id,"screenshot","INFO",screenshot)        
+    daksha_logger(test_executor.report_portal_service,test_executor.report_portal_test_id,"screenshot","INFO",screenshot)        
     return is_tab_switched, None
 
 
@@ -426,13 +401,12 @@ def wait_for(test_executor: TestExecutor, **kwargs):
     try:
         mode = kwargs['mode']
     except KeyError:
-        report_portal_logger(test_executor.report_portal_service,test_executor.report_portal_test_id,"Ill formatted arguments, 'mode' must be present in the list of args","ERROR")    
+        daksha_logger(test_executor.report_portal_service,test_executor.report_portal_test_id,"Ill formatted arguments, 'mode' must be present in the list of args","ERROR")    
         return False, "Ill formatted arguments, 'mode' must be present in the list of args"
     wait_result = False
     if mode in ["visibility", "invisibility"]:
         locator, locator_value = get_locator_info(**kwargs)
-        logger.info("I'll wait for an UI element!")
-        report_portal_logger(test_executor.report_portal_service,test_executor.report_portal_test_id,'Ill wait for an UI element!',"INFO")    
+        daksha_logger(test_executor.report_portal_service,test_executor.report_portal_test_id,'Ill wait for an UI element!',"INFO")    
         error = None
         wait = WebDriverWait(test_executor.web_driver, 10, poll_frequency=1,
                              ignored_exceptions=[ElementNotVisibleException, ElementNotSelectableException])
@@ -450,9 +424,7 @@ def wait_for(test_executor: TestExecutor, **kwargs):
                     wait_result = True
                 break
             except Exception as e:
-                report_portal_logger(test_executor.report_portal_service,test_executor.report_portal_test_id,f"Attempt {str(i)} for waiting for {mode} of {locator} failed","ERROR")
-                logger.error("Attempt " + str(i) + " for waiting for " + mode + " of " + locator + " failed \n",
-                             exc_info=True)
+                daksha_logger(test_executor.report_portal_service,test_executor.report_portal_test_id,f"Attempt {str(i)} for waiting for {mode} of {locator} failed","ERROR")
         if not wait_result:
             error = "Waiting for " + mode + " of " + locator + + " " + locator_value + " failed"
         return wait_result, error
@@ -461,13 +433,11 @@ def wait_for(test_executor: TestExecutor, **kwargs):
             value = kwargs['value']
         except KeyError:
             return False, "Ill formatted arguments, 'value' must be present in the list of args for mode : hardwait"
-        logger.info("I'll wait " + str(value) + " seconds")
-        report_portal_logger(test_executor.report_portal_service,test_executor.report_portal_test_id,f"Ill wait  + {str(value)} +  seconds","INFO")    
+        daksha_logger(test_executor.report_portal_service,test_executor.report_portal_test_id,f"Ill wait  + {str(value)} +  seconds","INFO")    
         time.sleep(value)
         return True, None
     else:
-        logger.error("Mode not supported.Please enter in [hardwait, visibility, invisibiltiy]")
-        report_portal_logger(test_executor.report_portal_service,test_executor.report_portal_test_id,'Mode not supported.Please enter in [hardwait, visibility, invisibiltiy]',"ERROR")    
+        daksha_logger(test_executor.report_portal_service,test_executor.report_portal_test_id,'Mode not supported.Please enter in [hardwait, visibility, invisibiltiy]',"ERROR")    
         error = "Ill formatted argument, supported modes : [hardwait, visibility, invisibiltiy]"
         return False, error
 
@@ -490,19 +460,18 @@ def capture_ui_element(test_executor: TestExecutor, **kwargs):
         EC.element_to_be_clickable((locator, locator_value))
     )
     screenshot=take_screenshot(test_executor.test_uuid, test_executor.test_yml["name"], test_executor.web_driver)
-    report_portal_logger(test_executor.report_portal_service,test_executor.report_portal_test_id,"screenshot","INFO",screenshot)        
+    daksha_logger(test_executor.report_portal_service,test_executor.report_portal_test_id,"screenshot","INFO",screenshot)        
     elementTag = element.tag_name
     if elementTag == "input":
         element_value = element.get_attribute("value")
         logger.info("Capturing input texbox text " + element_value)
-        report_portal_logger(test_executor.report_portal_service,test_executor.report_portal_test_id,'Capturing input texbox text ',"INFO")
+        daksha_logger(test_executor.report_portal_service,test_executor.report_portal_test_id,'Capturing input texbox text ',"INFO")
     else:
         element_value = element.text
         logger.info("Capturing text " + element_value)
-        report_portal_logger(test_executor.report_portal_service,test_executor.report_portal_test_id,'Capturing text ',"INFO")
+        daksha_logger(test_executor.report_portal_service,test_executor.report_portal_test_id,'Capturing text ',"INFO")
     test_executor.variable_dictionary[save_in] = element_value
-    logger.info("saved text from UI element. variable: {}, value: {}".format(save_in, element_value))
-    report_portal_logger(test_executor.report_portal_service,test_executor.report_portal_test_id,'saved text from UI element',"INFO")
+    daksha_logger(test_executor.report_portal_service,test_executor.report_portal_test_id,'saved text from UI element',"INFO")
     return True, None
 
 
@@ -544,8 +513,7 @@ def scroll_to(test_executor: TestExecutor, **kwargs):
      :rtype: tuple
     """
     locator, locator_value = get_locator_info(**kwargs)
-    logger.info("I'll scroll to element")
-    report_portal_logger(test_executor.report_portal_service,test_executor.report_portal_test_id,"I'll scroll to element","INFO")      
+    daksha_logger(test_executor.report_portal_service,test_executor.report_portal_test_id,"I'll scroll to element","INFO")      
     error_stack = None
     for i in range(5):
         try:
@@ -553,13 +521,11 @@ def scroll_to(test_executor: TestExecutor, **kwargs):
                 EC.visibility_of_element_located((locator, locator_value))
             )
             test_executor.web_driver.execute_script("arguments[0].scrollIntoView();", element)
-            logger.info("Scrolled to element successfully")
             screenshot=take_screenshot(test_executor.test_uuid, test_executor.test_yml["name"], test_executor.web_driver)
-            report_portal_logger(test_executor.report_portal_service,test_executor.report_portal_test_id,"Scrolled to element successfully","INFO",screenshot)
+            daksha_logger(test_executor.report_portal_service,test_executor.report_portal_test_id,"Scrolled to element successfully","INFO",screenshot)
             return True, None
         except Exception as e:
             error_stack = traceback.format_exc()
-            logger.error("Attempt " + str(i) + " to scroll to element failed")
-            report_portal_logger(test_executor.report_portal_service,test_executor.report_portal_test_id,f"Attempt {str(i)} to scroll to element failed","ERROR")
+            daksha_logger(test_executor.report_portal_service,test_executor.report_portal_test_id,f"Attempt {str(i)} to scroll to element failed","ERROR")
     return False, error_stack
 

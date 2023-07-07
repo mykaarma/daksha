@@ -35,11 +35,21 @@ consoleHandler = logging.StreamHandler()
 consoleHandler.setFormatter(logFormatter)
 logger.addHandler(consoleHandler)
 
-def report_portal_logger(report_portal_service,report_portal_test_id,message,level,screenshot=None):
+LOG_LEVELS = {
+    'CRITICAL': logging.CRITICAL,
+    'ERROR': logging.ERROR,
+    'WARNING': logging.WARNING,
+    'INFO': logging.INFO,
+    'DEBUG': logging.DEBUG,
+    'NOTSET': logging.NOTSET
+}
+
+def daksha_logger(report_portal_service,report_portal_test_id,message,level,screenshot=None):
+    logger.log(LOG_LEVELS.get(level, logging.INFO), message)
     if(REPORT_PORTAL_ENABLED != None and REPORT_PORTAL_ENABLED.lower() == "true"):
         if(screenshot == None):
-            report_portal_service.log(level=level, message=message,time=timestamp(),item_id=report_portal_test_id)
-            logger.info("Logs sents to Report Portal")       
+            report_portal_service.log(level=level, message=message,time=timestamp(),item_id=report_portal_test_id)  
+            logger.info("logs sent to Report Portal")
         else:
             with open(screenshot, "rb") as file:
                 screenshot_data = file.read()

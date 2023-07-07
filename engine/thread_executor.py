@@ -38,7 +38,7 @@ def thread_executor(test_ymls, initial_variable_dictionary, test_uuid, email):
         test_result_object = test_result_utils.initialize_test_result(test_uuid, test_yml)
         if(REPORT_PORTAL_ENABLED != None and REPORT_PORTAL_ENABLED.lower() == "true"):
             report_portal_test_id = report_portal_service.start_test_item(name = test_yml["name"], item_type = 'TEST', start_time = timestamp()) 
-            if 'labels' in test_yml:
+            if 'labels' in test_yml and bool(test_yml['labels']):
                 attributes = [{'key': key, 'value': value} for key, value in test_yml['labels'].items()]
                 report_portal_service.update_test_item(item_uuid = report_portal_test_id, attributes = attributes)
             else:
