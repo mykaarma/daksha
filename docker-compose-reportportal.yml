@@ -23,7 +23,7 @@ services:
       TEST_RESULT_DB: "postgres"
       PG_DB : "postgres"
       PG_USER : "rpuser"
-      PG_HOST: "postgres"
+      PG_HOST: localhost
       PG_PASSWORD: "rppass"
       PG_PORT: "5432"
       CRON_ENABLED : "True"
