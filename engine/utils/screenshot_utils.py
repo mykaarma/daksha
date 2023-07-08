@@ -25,4 +25,6 @@ def take_screenshot(test_uuid, test_name,  web_driver):
         os.makedirs(screenshot_dir)
     screenshot_file = f"{screenshot_dir}/{current_time}.png"
     web_driver.save_screenshot(screenshot_file)
-    return screenshot_file
+    with open(screenshot_file, "rb") as file:
+            screenshot_data = file.read()
+    return screenshot_data
