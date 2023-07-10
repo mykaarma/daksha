@@ -22,7 +22,7 @@ services:
       STORAGE_PATH: "/daksha/test-data"
       APACHE_URL: "http://127.0.0.1:8485/"
 
-      #Set these environment variables if you want Database functionality
+      #Set these environment variables if you want to store Test Results in the Database
       # TEST_RESULT_DB: "postgres"
       # PG_DB : "postgres"
       # PG_USER : "postgres"
@@ -35,7 +35,7 @@ services:
       # CRON_FILE_SOURCE : none
       # CRON_FILE_PATH : none
 
-      #Set these environment variables if you want Report Portal functionality
+      #Set these environment variables if you want Test reports to be shown in Report Portal
       # REPORT_PORTAL_ENABLED : "True"
       # REPORT_PORTAL_ENDPOINT: ${REPORT_PORTAL_ENDPOINT}
       # REPORT_PORTAL_PROJECT_NAME: ${REPORT_PORTAL_PROJECT_NAME}
