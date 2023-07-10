@@ -1,6 +1,15 @@
 version: '3'
 
 services:
+  engine-apache:
+    image: httpd:2.4-alpine
+    container_name: engine-apache
+    restart: always
+    volumes:
+      - /daksha/test-data:/usr/local/apache2/htdocs/
+    ports:
+      - "8485:80"
+
   web:
     build: .
     container_name: daksha
@@ -13,15 +22,38 @@ services:
       STORAGE_PATH: "/daksha/test-data"
       APACHE_URL: "http://127.0.0.1:8485/"
 
-  engine-apache:
-    image: httpd:2.4-alpine
-    container_name: engine-apache
-    restart: always
-    volumes:
-      - /daksha/test-data:/usr/local/apache2/htdocs/
-    ports:
-      - "8485:80"
+      #Set these environment variables if you want Database functionality
+      # TEST_RESULT_DB: "postgres"
+      # PG_DB : "postgres"
+      # PG_USER : "postgres"
+      # PG_HOST: "postgresdb"
+      # PG_PASSWORD: "postgres"
+      # PG_PORT: "5432"
 
+      #Set these environment variables if you want Cron functionality
+      # CRON_ENABLED : "false"
+      # CRON_FILE_SOURCE : none
+      # CRON_FILE_PATH : none
 
+      #Set these environment variables if you want Report Portal functionality
+      # REPORT_PORTAL_ENABLED : "True"
+      # REPORT_PORTAL_ENDPOINT: ${REPORT_PORTAL_ENDPOINT}
+      # REPORT_PORTAL_PROJECT_NAME: ${REPORT_PORTAL_PROJECT_NAME}
+      # REPORT_PORTAL_TOKEN: ${REPORT_PORTAL_TOKEN}
 
+  # If you want Docker enabled database, then uncomment the below lines
+  #   depends_on:
+  #     - postgresdb
  
+  # postgresdb:
+  #   container_name: postgresdb
+  #   image: postgres:12
+  #   environment:
+  #     - POSTGRES_USER=postgres
+  #     - POSTGRES_PASSWORD=postgres
+  #     - POSTGRES_DB=postgres
+  #   ports:
+  #     - "5432:5432"
+  #   volumes:
+  #     - /daksha/test-data:/var/lib/postgresql/data
+
