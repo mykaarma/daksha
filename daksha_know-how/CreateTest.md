@@ -15,7 +15,7 @@ config:
   driverAddress: http://192.168.21.185:4444/wd/hub
 name:TestQA
 labels:
-    team: Team123
+    team: Scheduler
     status: In_Production
 alert_type : gchat
 task:
