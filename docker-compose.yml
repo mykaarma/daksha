@@ -22,13 +22,13 @@ services:
       STORAGE_PATH: "/daksha/test-data"
       APACHE_URL: "http://127.0.0.1:8485/"
 
-      #Set these environment variables if you want to store Test Results in the Database
-      # TEST_RESULT_DB: "postgres"
-      # PG_DB : "postgres"
-      # PG_USER : "postgres"
-      # PG_HOST: "postgresdb"
-      # PG_PASSWORD: "postgres"
-      # PG_PORT: "5432"
+      #These variables are only needed if you want to store the test results in the database
+      TEST_RESULT_DB: "postgres"
+      PG_DB : "postgres"
+      PG_USER : "postgres"
+      PG_HOST: "postgresdb"
+      PG_PASSWORD: "postgres"
+      PG_PORT: "5432"
 
       #Set these environment variables if you want Cron functionality
       # CRON_ENABLED : "false"
@@ -41,19 +41,19 @@ services:
       # REPORT_PORTAL_PROJECT_NAME: ${REPORT_PORTAL_PROJECT_NAME}
       # REPORT_PORTAL_TOKEN: ${REPORT_PORTAL_TOKEN}
 
-  # If you want Docker enabled database, then uncomment the below lines
-  #   depends_on:
-  #     - postgresdb
+  # If you want don't want database enabled, then comment out the below lines
+    depends_on:
+      - postgresdb
  
-  # postgresdb:
-  #   container_name: postgresdb
-  #   image: postgres:12
-  #   environment:
-  #     - POSTGRES_USER=postgres
-  #     - POSTGRES_PASSWORD=postgres
-  #     - POSTGRES_DB=postgres
-  #   ports:
-  #     - "5432:5432"
-  #   volumes:
-  #     - /daksha/test-data:/var/lib/postgresql/data
+  postgresdb:
+    container_name: postgresdb
+    image: postgres:12
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - /daksha/test-data:/var/lib/postgresql/data
 
