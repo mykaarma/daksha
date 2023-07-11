@@ -1,6 +1,9 @@
 # `DAKSHA` Change Log
 
-*version*: `2.10.0`
+*version*: `2.10.1`
+
+## v 2.10.1
+1. Fixed bug related to labels displayed in Report Portal.
 
 ## v 2.10.0
 1. Added Report Portal functionality to display Daksha Test Reports.
