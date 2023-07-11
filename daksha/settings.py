@@ -28,7 +28,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 
 import os
 import yaml
-
+from reportportal_client import RPClient
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -179,6 +179,22 @@ BRANCH_NAME = os.environ.get('BRANCH_NAME', 'main')
 REPO_ORG = os.environ.get('REPO_ORG', '')
 REPO_USER = os.environ.get('REPO_USER', '')
 
+REPORT_PORTAL_ENABLED = os.environ.get('REPORT_PORTAL_ENABLED',None)
+REPORT_PORTAL_ENDPOINT= os.environ.get('REPORT_PORTAL_ENDPOINT','')
+REPORT_PORTAL_PROJECT_NAME= os.environ.get('REPORT_PORTAL_PROJECT_NAME','')
+REPORT_PORTAL_TOKEN= os.environ.get('REPORT_PORTAL_TOKEN','')
+
+report_portal_service=None
+
+if(REPORT_PORTAL_ENABLED!=None and REPORT_PORTAL_ENABLED.lower()== "true"):
+    try:
+        report_portal_service = RPClient(endpoint=REPORT_PORTAL_ENDPOINT,
+                                        project=REPORT_PORTAL_PROJECT_NAME,
+                                        token=REPORT_PORTAL_TOKEN)
+        
+    except Exception as e:
+        raise Exception("Invalid Credentials")
+        
 CRON_ENABLED=os.environ.get('CRON_ENABLED','false')
 CRON_FILE_SOURCE=os.environ.get('CRON_FILE_SOURCE','')
 CRON_FILE_PATH=os.environ.get('CRON_FILE_PATH','')

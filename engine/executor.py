@@ -61,11 +61,23 @@ def execute_test(test_executor: TestExecutor, email):
             logger.info("User has not opted for alerts")
         web_driver = browser_config(config)
         test_executor.web_driver = web_driver
+        
+        if(REPORT_PORTAL_ENABLED != None and REPORT_PORTAL_ENABLED.lower() == "true"):
+            report_portal_service=test_executor.report_portal_service
+            report_portal_test_id=test_executor.report_portal_test_id
+
         for step in task:
             execution_result, error_stack = execute_step(test_executor, step)
             if execution_result is False:
                 break
         logger.info("Test " + name + " finished, generating  result ")
+        
+        if(REPORT_PORTAL_ENABLED != None and REPORT_PORTAL_ENABLED.lower() == "true"):
+            if execution_result:
+                report_portal_service.finish_test_item(status="PASSED",item_id=report_portal_test_id, end_time=timestamp())
+            else:    
+                report_portal_service.finish_test_item(status="FAILED",item_id=report_portal_test_id,end_time=timestamp())
+        
         generate_result(test_executor.test_uuid, execution_result, name, step, error_stack )
         
         if settings.TEST_RESULT_DB != None and settings.TEST_RESULT_DB.lower() == "postgres":
@@ -93,6 +105,9 @@ def execute_step(test_executor: TestExecutor, step):
      :rtype: tuple
     """
     try:
+        if(REPORT_PORTAL_ENABLED != None and REPORT_PORTAL_ENABLED.lower() == "true"):
+            report_portal_logging_handler.set_item_id(test_executor.report_portal_test_id)
+            
         logger.info("Executing:\t" + str(type(step)) + '\t' + str(step))
         # https://stackoverflow.com/a/40219576
         # https://note.nkmk.me/en/python-argument-expand/
@@ -115,13 +130,19 @@ def execute_step(test_executor: TestExecutor, step):
                 execution_success, error_stack = method_map[k](test_executor=test_executor, **v)
                 break
             logger.info("fin")
+        if(REPORT_PORTAL_ENABLED != None and REPORT_PORTAL_ENABLED.lower() == "true"):    
+            report_portal_logging_handler.clear_item_id()
         if execution_success is False:
             return False, error_stack
         else:
             return True, error_stack
     except UndefinedError as e:
         logger.error("Error in rendering variable: ", exc_info=True)
+        if(REPORT_PORTAL_ENABLED != None and REPORT_PORTAL_ENABLED.lower() == "true"):    
+            report_portal_logging_handler.clear_item_id()
         return False, "Error in rendering variable: " + str(e)
     except Exception:
         logger.error("Error encountered: ", exc_info=True)
+        if(REPORT_PORTAL_ENABLED != None and REPORT_PORTAL_ENABLED.lower() == "true"):    
+            report_portal_logging_handler.clear_item_id()
         return False, traceback.format_exc()

@@ -16,9 +16,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 import os
 from datetime import datetime
-
 from daksha.settings import STORAGE_PATH
-
 
 def take_screenshot(test_uuid, test_name,  web_driver):
     current_time = datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%S.%f')[:-3]
@@ -27,3 +25,6 @@ def take_screenshot(test_uuid, test_name,  web_driver):
         os.makedirs(screenshot_dir)
     screenshot_file = f"{screenshot_dir}/{current_time}.png"
     web_driver.save_screenshot(screenshot_file)
+    with open(screenshot_file, "rb") as file:
+            screenshot_data = file.read()
+    return screenshot_data

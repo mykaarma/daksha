@@ -14,6 +14,8 @@ config:
   #driverAddress: /Users/IdeaProjects/qa-automation/ui_automation_engine/drivers/chromedriver
   driverAddress: http://192.168.21.185:4444/wd/hub
 name:TestQA
+labels:
+    team: your_team
 alert_type : gchat
 task:
   - launch_browser
@@ -54,6 +56,7 @@ task:
    * **browser**-Currently we are supporting chrome only, so the value should be chrome.
    * **driverAddress**-You can either give location of your local chrome browser or the url at which your remote chrome browser is hosted.
  * **name**- Give a name to your testcase.This will be dispayed in your test report.
+ * **labels**- This is an optional field. The user can provide labels regarding the test. These will be used in setting up attributes in Report Portal which will help in setting up dashboard.
  * **alert_type**- Include this in your yaml if you want to send the test failure alerts to any communication channel like gchat/slack,if not included it will not send any alerts.Currently it supports values - gchat,slack.You will have to set *ALERT_URL* env variable in case you have set *alert_type* in your yaml.
  * **task**- This will contain the steps of your test.For writing this section please take a look at the list of functionalities that we are providing in the below list.You can perform simple to complex test cases with a combination of the below functionalities.
    * ***launch_browser***: This will launch the browser in the environment and location provided in the config field.You should always include this step in the start of your test case steps.
