@@ -40,10 +40,10 @@ def thread_executor(test_ymls, initial_variable_dictionary, test_uuid, email):
             if 'labels' in test_yml and bool(test_yml['labels']):
                 name = test_yml["name"]
                 attributes = [{'key': key, 'value': value} for key, value in test_yml['labels'].items()]
-                report_portal_test_id = report_portal_service.start_test_item(name = name, item_type = 'TEST', attributes=attributes, start_time = timestamp()) 
-                logger.info(f"attributes with {report_portal_test_id} and {name} is {attributes}")
+                report_portal_test_id = report_portal_service.start_test_item(name = name, item_type = 'step', attributes=attributes, start_time = timestamp()) 
+                logger.info(f"attributes with {report_portal_test_id} and {name} are {attributes}")
             else:
-                report_portal_test_id = report_portal_service.start_test_item(name = test_yml["name"], item_type = 'TEST', start_time = timestamp()) 
+                report_portal_test_id = report_portal_service.start_test_item(name = test_yml["name"], item_type = 'step', start_time = timestamp()) 
                 logger.info("Labels are not set in the test")
             test_executor = TestExecutor(1, test_uuid, initial_variable_dictionary, test_yml, None ,test_result_object,report_portal_service,report_portal_test_id)
         else:

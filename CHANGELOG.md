@@ -1,6 +1,9 @@
 # `DAKSHA` Change Log
 
-*version*: `2.10.1`
+*version*: `2.10.2`
+
+## v 2.10.2
+1. Fixed bug related to item_type of Tests uploaded to Report Portal.
 
 ## v 2.10.1
 1. Fixed bug related to labels displayed in Report Portal.
