@@ -1,0 +1,8 @@
+config:
+  env: {local/remote}
+  browser: chrome
+  driverAddress: {address of the chrome webdriver}
+name: HelloWorld
+task:
+  - open_url:
+      url: https://qa.mykaarma.com/login.html?page=service.html

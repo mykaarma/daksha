@@ -1,6 +1,9 @@
 # `DAKSHA` Change Log
 
-*version*: `2.10.2`
+*version*: `2.10.3`
+
+## v 2.10.3
+1. Created Quickstart procedure to ensure smooth execution of first test by users.
 
 ## v 2.10.2
 1. Fixed bug related to item_type of Tests uploaded to Report Portal.

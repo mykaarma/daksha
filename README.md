@@ -7,6 +7,9 @@ Daksha is a django framework based dynamic test case execution API.You can write
 * [Writing Test Case](daksha_know-how/CreateTest.md)
 
 You can also auto-generate test yamls through Daksha Recorder [chrome extension](ChromeExtension/Readme.md).
+
+To run your first test case with Daksha, follow the steps in [QuickStart](daksha_know-how/QuickStart.md).
+
 ## Building and Running
 
 ### Using docker
@@ -41,18 +44,17 @@ Setup selenium grid using https://www.selenium.dev/downloads/. Or if you want to
  - To enable this, please provide the following environment variables:-
  `TEST_RESULT_DB`, `PG_DB`, `PG_USER`, `PG_PASSWORD`, `PG_HOST`, `PG_PORT`
 
- - We only support Postgresql database at this point. To enable this one has to set the environment        variable TEST_RESULT_DB to `postgres`.
+ - We only support Postgresql database at this point. To enable this one has to set the environment        variable `TEST_RESULT_DB` to `postgres`.
  - This functionality is optional and Daksha workflow does not depend on it.
 
 ### Deploying Daksha with Database enabled by Docker
- - We have provided a docker-compose file [docker-compose-db.yml](docker-compose-db.yml) to up the application with the database.
- - Follow the instrunctions given in docker-compose file and Run the command `docker compose up -d` to initiate the build and deploy the project.
+ - Run the command `docker-compose up -d` to initiate the build and deploy the project.
 
 ### Deploying Daksha with external Postgressql Database
- - Remove the database service in [docker-compose-db.yml](docker-compose-db.yml).
  - This assumes that you have an external Postgresql database up and provide the correct environment variables :-
  `TEST_RESULT_DB`, `PG_DB`, `PG_USER`, `PG_PASSWORD`, `PG_HOST`, `PG_PORT`
-- Run the command `docker compose up -d` to initiate the build and deploy the project.
+ - Comment out the database service in [docker-compose file](./docker-compose.yml).
+ - Run the command `docker-compose up -d` to initiate the build and deploy the project.
 
 ## Cron Jobs
  - The user can opt for this functionality if he/she wants to run tests at regulated intervals without hitting the api endpoints.
@@ -90,10 +92,11 @@ Setup selenium grid using https://www.selenium.dev/downloads/. Or if you want to
 - To enable this integration, users need to provide specific environment variables: 
 `REPORT_PORTAL_ENABLED`, `REPORT_PORTAL_PROJECT_NAME`, `REPORT_PORTAL_ENDPOINT`, `REPORT_PORTAL_TOKEN`.
 - To enable this functionality, set the value of `REPORT_PORTAL_ENABLED` to `True`.
-- User must have deployed Report Portal through building the [Report Portal Docker Compose file](https://github.com/reportportal/reportportal/blob/master/docker-compose.yml). Please edit this file and expose the ports of the Postgres Database before initiating the build.
+- User must have deployed Report Portal through building the [Report Portal Docker Compose file](https://github.com/reportportal/reportportal/blob/master/docker-compose.yml). 
+- The user can also use the same Postgres server for Report Portal and Daksha.To enable this, Please edit the [Report Portal Docker Compose file](https://github.com/reportportal/reportportal/blob/master/docker-compose.yml) and expose the ports of the Postgres Database before initiating the build.
 - This can be done by uncommenting the ports section for postgres service defined in the yml file.
 - Users must ensure that the Report Portal service is deployed and that the environment variable values align with the deployed service.
-- Run the command `docker compose up -d` to initiate the build and deploy the project.
+- Run the command `docker-compose up -d` to initiate the build and deploy the project.
 
 ## #Environment Variables
 You can configure the application in a lot of ways by setting the following environment variables:
