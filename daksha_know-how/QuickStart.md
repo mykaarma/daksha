@@ -1,97 +1,63 @@
 # Quick Start
 
-## Building and Running
+Welcome to Daksha! This quick start guide will walk you through the process of running your first testcase using Daksha. Follow these three main steps to get started:
 
-### Using docker
+1. Run the Daksha Server.
+2. Create a `test.yml` using the Daksha Recorder.
+3. Send an API request to Daksha.
 
-  - Install Docker and the Compose plugin. Refer [Docker Documentation](https://docs.docker.com/compose/install/)
-  - Start the Docker engine. This can be done by running the command ```docker``` in the terminal.
-  - Setup a local or remote chromedriver for your tests
-  - Clone the [Daksha Repository](https://github.com/mykaarma/daksha)
-  - Take a look at [docker-compose.yml](../docker-compose.yml) file and create all the necessary [environment variables](../README.md#environment-variables).
-  - Navigate inside the directory where you cloned Daksha and open a terminal here.
-  - Run the command `docker-compose up -d` to initiate the build and deploy the project.
+## Using Docker (Recommended for Users)
 
-### Local Deployment (without Docker)
+### Run Daksha Server
 
-  - Clone the [Daksha Repository](https://github.com/mykaarma/daksha)
-  - Navigate to the directory where you cloned Daksha and open a terminal here.
-  - Download [python 3.8+](https://www.python.org/downloads/) and setup a [virtual environment](https://docs.python.org/3/tutorial/venv.html)
-  - Install all requirements using `pip install -r requirements.txt`
-  - Create all the necessary [environment variables](../README.md#environment-variables).
-  - Download [Chromedriver](https://chromedriver.chromium.org/downloads)
-  - Run `.\startup_command.bat` to start the project in case of Windows.
-  - Run `sh startup_command.sh` to start the project in case of Linux.
-  - Run `bash startup_command_mac.sh` to start the project in case of MacOS.
+   - Open your terminal or command prompt based on your operating system.
+   - Clone the [Daksha Repository](https://github.com/mykaarma/daksha):
+      ```git clone https://github.com/mykaarma/daksha.git```
+   - Navigate to the directory where you cloned Daksha and open a terminal here.
+   ```cd daksha```
+   - Install Docker Desktop. Refer [Docker Documentation](https://docs.docker.com/compose/install/)
+   - Start the Docker engine.
+   - Create a test-data directory.
+   ```mkdir test-data```
+   - Inside the test-data directory create a db-data directory. The database files will reside in this directory.
+   ```mkdir test-data/db-data```
+   - Run the command `docker-compose up -d` to initiate the build and deploy the project.
+      For macOS the command will be `docker compose up -d`.
+   - You now have the daksha server running.
 
-## Run your first test
-   - Refer [CreateTest](./CreateTest.md) and provide the necessary values in [HelloWorld.yml](./HelloWorld.yml).
+### Create a test YAML file using the Daksha Recorder
 
-### Test YAML loaded from local storage and Daksha deployed locally (without Docker)
-   - To run your first test, copy the absolute path of [HelloWorld.yml](./HelloWorld.yml) and supply this value in API request as mentioned below.
-   - Hit the API request by importing the following curl command in Postman: 
-   ```		
-      curl --location --request POST 'http://127.0.0.1:8000/daksha/runner' \
-      --header 'Content-Type: text/plain' \
-      --data-raw '{
+   - Open chrome web store and add [Daksha Recorder Extension](https://chrome.google.com/webstore/detail/daksha-recorder/gmpmpceenkghjdlelhgepnknlijllfom?utm_source=ext_sidebar&hl=en-GB) to your chrome.
+   - Please refer to this [video recording](https://youtu.be/4FRdS2iJZoQ?t=986) for creating a test.yml using Daksha Recorder.
+   - Download the test YAML (HelloWorld.yml) from Daksha Recorder.
+   - The following configs are user specific , so the recorder keeps them empty.You will need to edit the downloaded YAML file to add the following values.
+   ```
+   config:
+     env: local
+     browser: chrome
+     driverAddress: http://selenium-hub:4444/wd/hub
+   name: HelloWorld
+   ```
+   Here is an exapmle test YAML file-  HelloWorld.yml
+   - Move this file to the `test-data` directory created in previous step.
+
+### Hit API Request
+
+   - Copy the following curl request. Replace the email field and path field in the curl. Path should be /test-data/{your file name}. This is the path of the test.yml that you had copied in the test-data directory and mounted in docker.
+   ```curl --location --request POST 'http://127.0.0.1:8083/daksha/runner' \
+--header 'Content-Type: text/plain' \
+--data-raw '{
          "email": "your.email@mykaarma.com",
          "test": {
          "source": "local",
          "type": "file",
-         "path": "{absolute path of YAML test file}",
+         "path": "/test-data/HelloWorld.yml",
          "variables": ""
          }
-      }'
-   ```
-### Test YAML loaded from GitHub and Daksha deployed locally (without Docker)
-   - Upload/Create [HelloWorld.yml](./HelloWorld.yml) in your GitHub repository and provide the necessary environment varaibles
-   - Provide the path of [HelloWorld.yml](./HelloWorld.yml) relative to GitHub repository structure in the API request
-   - Hit the API request by importing the following curl command in Postman: 
-   ```		
-      curl --location --request POST 'http://127.0.0.1:8000/daksha/runner' \
-      --header 'Content-Type: text/plain' \
-      --data-raw '{
-         "email": "your.email@mykaarma.com",
-         "test": {
-         "source": "git",
-         "type": "file",
-         "path": "{path of YAML test file relative to GitHub repository structure}",
-         "variables": ""
-         }
-      }'
-   ```
-### Test YAML loaded from local storage relative to Docker Container and Daksha deployed through Docker
-   - Mount [HelloWorld.yml](./HelloWorld.yml) into the container so that it could be accessed from inside of container.
-   - To run your first test, copy the path of [HelloWorld.yml](./HelloWorld.yml) in your Docker Container and supply this value in API request as mentioned below.
-   - Hit the API request by importing the following curl command in Postman: 
-   ```		
-      curl --location --request POST 'http://127.0.0.1:8083/daksha/runner' \
-      --header 'Content-Type: text/plain' \
-      --data-raw '{
-         "email": "your.email@mykaarma.com",
-         "test": {
-         "source": "local",
-         "type": "file",
-         "path": "{path of YAML test file in your Docker Container}",
-         "variables": ""
-         }
-      }'
-   ```
+      }'```
 
-### Test YAML loaded from GitHub and Daksha deployed through Docker
-   - Upload/Create [HelloWorld.yml](./HelloWorld.yml) in your GitHub repository and provide the necessary environment varaibles
-   - Provide the path of [HelloWorld.yml](./HelloWorld.yml) relative to GitHub repository structure in the API request
-   - Hit the API request by importing the following curl command in Postman:
-   ```		
-      curl --location --request POST 'http://127.0.0.1:8083/daksha/runner' \
-      --header 'Content-Type: text/plain' \
-      --data-raw '{
-         "email": "your.email@mykaarma.com",
-         "test": {
-         "source": "git",
-         "type": "file",
-         "path": "{path of YAML test file relative to GitHub repository structure}",
-         "variables": ""
-         }
-      }'
-   ```
+### See what is happening inside the test
+
+   - Open this url http://localhost:4444/ui#/sessions 
+   - In sessions you will see active session being generated on hitting the API request.
+   - Click on the video icon and enter password `secret`. You will be able to see what the steps being executed in chrome.

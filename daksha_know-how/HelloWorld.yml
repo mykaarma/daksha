@@ -1,8 +1,12 @@
 config:
-  env: {local/remote}
+  env: remote
   browser: chrome
-  driverAddress: {address of the chrome webdriver}
+  driverAddress: http://selenium-hub:4444/wd/hub
 name: HelloWorld
 task:
   - open_url:
-      url: https://qa.mykaarma.com/login.html?page=service.html
+      url: https://www.google.com/
+  - wait_for:
+      mode: hardwait
+      value: 100
+     

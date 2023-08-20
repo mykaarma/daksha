@@ -6,7 +6,7 @@ services:
     container_name: engine-apache
     restart: always
     volumes:
-      - /daksha/test-data:/usr/local/apache2/htdocs/
+      - ./test-data:/usr/local/apache2/htdocs/
     ports:
       - "8485:80"
 
@@ -15,11 +15,11 @@ services:
     container_name: daksha
     restart: always
     volumes:
-      - /daksha/test-data:/daksha/test-data
+      - ./test-data:/test-data
     ports:
       - "8083:8000"
     environment:
-      STORAGE_PATH: "/daksha/test-data"
+      STORAGE_PATH: "test-data"
       APACHE_URL: "http://127.0.0.1:8485/"
 
       #These variables are only needed if you want to store the test results in the database
@@ -44,7 +44,28 @@ services:
   # If you want don't want database enabled, then comment out the below lines
     depends_on:
       - postgresdb
- 
+
+  selenium-hub:
+      image: selenium/hub
+      ports:
+        - "4444:4444"
+
+  selenium-node:
+    image: selenium/node-chrome
+    environment:
+      - HUB_PORT=4444
+      - SE_EVENT_BUS_HOST=selenium-hub
+      - TZ=PST
+      - SE_EVENT_BUS_PUBLISH_PORT=4442
+      - SE_EVENT_BUS_SUBSCRIBE_PORT=4443
+      - SE_NODE_MAX_INSTANCES=4
+      - SE_NODE_MAX_SESSIONS=5
+      - NODE_MAX_INSTANCES=5
+      - NODE_MAX_SESSION=5
+      - SE_NODE_GRID_URL=http://selenium-hub:4444/wd/hub
+    depends_on:
+      - selenium-hub
+
   postgresdb:
     container_name: postgresdb
     image: postgres:12
@@ -55,5 +76,6 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - /daksha/test-data:/var/lib/postgresql/data
+      - ./test-data/db-data:/var/lib/postgresql/data
+
 
