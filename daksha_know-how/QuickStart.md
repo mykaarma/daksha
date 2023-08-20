@@ -20,7 +20,7 @@ Welcome to Daksha! This quick start guide will walk you through the process of r
    - Create a test-data directory.
    <br>```mkdir test-data```
    - Inside the test-data directory create a db-data directory. The database files will reside in this directory.
-   ```mkdir test-data/db-data```
+   <br> ```mkdir test-data/db-data```
    - Run the command `docker-compose up -d` to initiate the build and deploy the project.
      For macOS the command will be `docker compose up -d`.
    - You now have the daksha server running.
