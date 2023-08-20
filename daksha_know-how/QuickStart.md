@@ -12,7 +12,7 @@ Welcome to Daksha! This quick start guide will walk you through the process of r
 
    - Open your terminal or command prompt based on your operating system.
    - Clone the [Daksha Repository](https://github.com/mykaarma/daksha):
-     ```git clone https://github.com/mykaarma/daksha.git```
+    <br> ```git clone https://github.com/mykaarma/daksha.git```
    - Navigate to the directory where you cloned Daksha and open a terminal here.
      ```cd daksha```
    - Install Docker Desktop. Refer [Docker Documentation](https://docs.docker.com/compose/install/)
