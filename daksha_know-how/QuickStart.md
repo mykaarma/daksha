@@ -14,15 +14,15 @@ Welcome to Daksha! This quick start guide will walk you through the process of r
    - Clone the [Daksha Repository](https://github.com/mykaarma/daksha):
     <br> ```git clone https://github.com/mykaarma/daksha.git```
    - Navigate to the directory where you cloned Daksha and open a terminal here.
-     ```cd daksha```
+     <br>```cd daksha```
    - Install Docker Desktop. Refer [Docker Documentation](https://docs.docker.com/compose/install/)
    - Start the Docker engine.
    - Create a test-data directory.
-   ```mkdir test-data```
+   <br>```mkdir test-data```
    - Inside the test-data directory create a db-data directory. The database files will reside in this directory.
    ```mkdir test-data/db-data```
    - Run the command `docker-compose up -d` to initiate the build and deploy the project.
-      For macOS the command will be `docker compose up -d`.
+     For macOS the command will be `docker compose up -d`.
    - You now have the daksha server running.
 
 ### Create a test YAML file using the Daksha Recorder
@@ -44,7 +44,7 @@ Welcome to Daksha! This quick start guide will walk you through the process of r
 ### Hit API Request
 
    - Copy the following curl request. Replace the email field and path field in the curl. Path should be /test-data/{your file name}. This is the path of the test.yml that you had copied in the test-data directory and mounted in docker.
-   ```curl --location --request POST 'http://127.0.0.1:8083/daksha/runner' \
+```curl --location --request POST 'http://127.0.0.1:8083/daksha/runner' \
 --header 'Content-Type: text/plain' \
 --data-raw '{
          "email": "your.email@mykaarma.com",
@@ -54,7 +54,8 @@ Welcome to Daksha! This quick start guide will walk you through the process of r
          "path": "/test-data/HelloWorld.yml",
          "variables": ""
          }
-      }'```
+      }'
+```
 
 ### See what is happening inside the test
 
