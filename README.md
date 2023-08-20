@@ -6,7 +6,9 @@ Daksha is a django framework based dynamic test case execution API.You can write
 * [Sending API Request](daksha_know-how/ApiRequest.md)
 * [Writing Test Case](daksha_know-how/CreateTest.md)
 
-You can also auto-generate test yamls through Daksha Recorder [chrome extension](ChromeExtension/Readme.md).
+You can also auto-generate test yamls through Daksha Recorder [chrome extension](recorder/extensions/chrome/ReadMe.md).
+
+## Quickstart
 
 To run your first test case with Daksha, follow the steps in [QuickStart](daksha_know-how/QuickStart.md).
 
