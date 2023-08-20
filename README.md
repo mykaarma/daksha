@@ -30,7 +30,7 @@ To run your first test case with Daksha, follow the steps in [QuickStart](daksha
   - Download Chromedriver (https://chromedriver.chromium.org/downloads)
   - Run `.\startup_command.bat` to start the project in case of Windows.
   - Run `sh startup_command.sh` to start the project in case of Linux.
-  - Run `bash startup_command_mac.sh` to start the project in case of MacOS.
+  - Run `sh startup_command_mac.sh` to start the project in case of MacOS.
 
 ## Setting up webdriver
 We only support chromedriver at this point.
