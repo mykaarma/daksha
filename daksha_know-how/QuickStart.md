@@ -44,7 +44,8 @@ Welcome to Daksha! This quick start guide will walk you through the process of r
 ### Hit API Request
 
    - Copy the following curl request. Replace the email field and path field in the curl.<br> Path should be `/test-data/{your file name}`. This is the path of the test.yml that you had copied in the test-data directory and mounted in docker.
-```curl --location --request POST 'http://127.0.0.1:8083/daksha/runner' \
+```
+curl --location --request POST 'http://127.0.0.1:8083/daksha/runner' \
 --header 'Content-Type: text/plain' \
 --data-raw '{
          "email": "your.email@mykaarma.com",
@@ -55,6 +56,7 @@ Welcome to Daksha! This quick start guide will walk you through the process of r
          "variables": ""
          }
       }'
+
 ```
 
 ### See what is happening inside the test
