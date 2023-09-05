@@ -52,7 +52,7 @@ curl --location --request POST 'http://127.0.0.1:8083/daksha/runner' \
          "test": {
          "source": "local",
          "type": "file",
-         "path": "/test-data/HelloWorld.yml",
+         "path": "/daksha/test-data/HelloWorld.yml",
          "variables": ""
          }
       }'
