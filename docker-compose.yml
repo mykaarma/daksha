@@ -15,7 +15,7 @@ services:
     container_name: daksha
     restart: always
     volumes:
-      - ./test-data:/test-data
+      - ./test-data:/daksha/test-data
     ports:
       - "8083:8000"
     environment:
