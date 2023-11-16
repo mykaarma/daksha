@@ -1,0 +1,12 @@
+config:
+  env: remote
+  browser: chrome
+  driverAddress: http://selenium-hub:4444/wd/hub
+name: HelloWorld
+task:
+  - open_url:
+      url: https://www.google.com/
+  - wait_for:
+      mode: hardwait
+      value: 100
+     
