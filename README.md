@@ -1,6 +1,7 @@
 Daksha
 ===============================================
-
+## ⚠️ Warning
+This is not compatible with ARM architecture.
 ## Introduction
 Daksha is a django framework based dynamic test case execution API.You can write any variation of UI-based test cases in a yml file and execute them right away with this new tool in town. <br /> For example: Sign in to any of your social media account and sign out or sign in then perform a task and then sign out. <br /> The API request should comprise of the location of the yml file.To summarize in simple terms the working can be divided into two steps -
 * [Sending API Request](daksha_know-how/ApiRequest.md)
