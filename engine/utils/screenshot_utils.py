@@ -19,7 +19,7 @@ from datetime import datetime
 from daksha.settings import STORAGE_PATH
 
 def take_screenshot(test_uuid, test_name,  web_driver):
-    current_time = datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%S.%f')[:-3]
+    current_time = datetime.utcnow().strftime('%Y-%m-%dT%H_%M_%S.%f')[:-3]
     screenshot_dir = f"{STORAGE_PATH}/{test_uuid}/Screenshots/{test_name}"
     if not os.path.isdir(screenshot_dir):
         os.makedirs(screenshot_dir)
