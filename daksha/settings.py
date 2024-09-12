@@ -175,7 +175,7 @@ If you want to use public repo of individual then provide REPO_USER
 GIT_USER = os.environ.get('GIT_USER', '')
 GIT_PASS = os.environ.get('GIT_PASS', '')
 REPO_NAME = os.environ.get('REPO_NAME', '')
-BRANCH_NAME = os.environ.get('BRANCH_NAME', 'MYK-42377')
+BRANCH_NAME = "MYK-42377"
 REPO_ORG = os.environ.get('REPO_ORG', '')
 REPO_USER = os.environ.get('REPO_USER', '')
 
