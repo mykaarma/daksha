@@ -43,4 +43,5 @@ method_map = {
     "wait_for": wait_for,
     "capture_ui_element": capture_ui_element,
     "scroll_to": scroll_to,
+    "execute_js": execute_js,
 }
