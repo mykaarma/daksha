@@ -18,8 +18,6 @@ ADD . /daksha/
 #gives required premissions
 RUN chmod og+x -R /daksha
 
-RUN ls
-RUN pwd
 # Install any needed packages specified in requirements.txt
 RUN pip install -r ./requirements.txt
 
