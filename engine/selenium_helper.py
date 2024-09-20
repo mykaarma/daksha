@@ -521,3 +521,23 @@ def scroll_to(test_executor: TestExecutor, **kwargs):
             error_stack = traceback.format_exc()
             logger.error("Attempt " + str(i) + " to scroll to element failed")
     return False, error_stack
+
+
+def execute_js(test_executor: TestExecutor, **kwargs):
+    """
+    Executes JavaScript using the provided test executor's web driver and takes a screenshot.
+
+    :param test_executor: Object that contains web_driver, test_uuid, and test_yml.
+    :param js_script: JavaScript code to execute.
+    :param args: Optional arguments passed to the JavaScript code.
+    :return: None
+    """
+    try:
+        test_executor.web_driver.execute_script(kwargs['script'])
+        screenshot = take_screenshot(test_executor.test_uuid, test_executor.test_yml["name"], test_executor.web_driver)
+        logger.info("Sucessfully executed javascript",extra={'screenshot':screenshot})
+        return True, None
+    except Exception as e:
+        error_stack = traceback.format_exc()
+        logger.error(f"Error while executing JavaScript: {e}")
+        return False, error_stack
