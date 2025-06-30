@@ -18,7 +18,8 @@ from concurrent.futures.thread import ThreadPoolExecutor
 from engine.executor import execute_test
 from .email_generator import send_report_email
 from .logs import *
-from daksha.settings import APACHE_URL,TEST_RESULT_DB, REPORT_PORTAL_ENABLED,report_portal_service
+from daksha.settings import APACHE_URL,TEST_RESULT_DB, REPORT_PORTAL_ENABLED,REPORT_PORTAL_ENDPOINT, REPORT_PORTAL_PROJECT_NAME, REPORT_PORTAL_TOKEN
+from reportportal_client import RPClient
 from .models import TestExecutor
 from .testreport_generator import generate_report
 from engine import test_result_utils
@@ -27,8 +28,15 @@ from reportportal_client.helpers import timestamp
 def thread_executor(test_ymls, initial_variable_dictionary, test_uuid, email):
     # Test Executor object initialization and store in a list
     testExecutorObjects=[]
+    report_portal_service = None
+    launch_id = None
     
     if(REPORT_PORTAL_ENABLED != None and REPORT_PORTAL_ENABLED.lower() == "true"):
+        report_portal_service = RPClient(
+            endpoint=REPORT_PORTAL_ENDPOINT,
+            project=REPORT_PORTAL_PROJECT_NAME,
+            token=REPORT_PORTAL_TOKEN
+        )
         report_portal_service.start()
         logger.info("User has opted for Test Reports to be displayed on Report Portal")
         launch_id = report_portal_service.start_launch(name = f"Daksha_test_{test_uuid}", mode = 'DEFAULT', start_time = timestamp())
