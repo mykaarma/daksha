@@ -201,7 +201,7 @@ CRON_ENABLED=os.environ.get('CRON_ENABLED','false')
 CRON_FILE_SOURCE=os.environ.get('CRON_FILE_SOURCE','')
 CRON_FILE_PATH=os.environ.get('CRON_FILE_PATH','')
 from engine.utils.utils import read_yaml
-from engine.logs import *
+from engine.logs import logger
 
 if ( CRON_ENABLED != None and CRON_ENABLED.lower()=="true"):
 
