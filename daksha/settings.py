@@ -29,7 +29,6 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 import os
 import yaml
 from reportportal_client import RPClient
-from engine.logs import logger
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -189,7 +188,6 @@ report_portal_service=None
 
 if(REPORT_PORTAL_ENABLED!=None and REPORT_PORTAL_ENABLED.lower()== "true"):
     try:
-        logger.info(f"Report Portal Enabled with endpoint {REPORT_PORTAL_ENDPOINT}, project {REPORT_PORTAL_PROJECT_NAME}, token {REPORT_PORTAL_TOKEN}")
         report_portal_service = RPClient(endpoint=REPORT_PORTAL_ENDPOINT,
                                         project=REPORT_PORTAL_PROJECT_NAME,
                                         token=REPORT_PORTAL_TOKEN)
@@ -201,7 +199,7 @@ CRON_ENABLED=os.environ.get('CRON_ENABLED','false')
 CRON_FILE_SOURCE=os.environ.get('CRON_FILE_SOURCE','')
 CRON_FILE_PATH=os.environ.get('CRON_FILE_PATH','')
 from engine.utils.utils import read_yaml
-from engine.logs import logger
+from engine.logs import *
 
 if ( CRON_ENABLED != None and CRON_ENABLED.lower()=="true"):
 
