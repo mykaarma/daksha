@@ -188,6 +188,7 @@ report_portal_service=None
 
 if(REPORT_PORTAL_ENABLED!=None and REPORT_PORTAL_ENABLED.lower()== "true"):
     try:
+        logger.info(f"Report Portal Enabled with endpoint {REPORT_PORTAL_ENDPOINT}, project {REPORT_PORTAL_PROJECT_NAME}, token {REPORT_PORTAL_TOKEN}")
         report_portal_service = RPClient(endpoint=REPORT_PORTAL_ENDPOINT,
                                         project=REPORT_PORTAL_PROJECT_NAME,
                                         token=REPORT_PORTAL_TOKEN)
