@@ -57,10 +57,12 @@ def thread_executor(test_ymls, initial_variable_dictionary, test_uuid, email):
             # Create a dedicated logger per test with safety net
             try:
                 test_executor_logger = get_logger(report_portal_service, report_portal_test_id)
+                logger.info(f"Logger created for {report_portal_test_id} with logger1")
+                test_executor_logger.info(f"Logger created for {report_portal_test_id}")
+                logger.info(f"Logger created for {report_portal_test_id} with logger2")
             except Exception as e:
                 logger.error("Failed to create dedicated logger: %s", e, exc_info=True)
-                test_executor_logger = logger  # fallback to root logger
-
+                test_executor_logger = logger  # fallback to root logger    
             test_executor = TestExecutor(1,test_uuid,initial_variable_dictionary,test_yml,None,test_result_object,report_portal_service,report_portal_test_id,test_executor_logger)
         else:
             test_executor= TestExecutor(1, test_uuid, initial_variable_dictionary, test_yml, None ,test_result_object)
@@ -73,9 +75,9 @@ def thread_executor(test_ymls, initial_variable_dictionary, test_uuid, email):
                 if(TEST_RESULT_DB!= None and TEST_RESULT_DB.lower() == "postgres"):
                     test_executor.test_result.Status="In_Progress"
                     test_executor.test_result.save()
-                logger.info("Task submitted")
+                test_executor.test_executor_logger.info("Task submitted")
             except Exception as e:
-                logger.error("Exception occurred", e)
+                test_executor.test_executor_logger.error("Exception occurred", e)
         pass
 
     if REPORT_PORTAL_ENABLED != None and REPORT_PORTAL_ENABLED.lower() == "true":

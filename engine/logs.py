@@ -88,6 +88,7 @@ class ReportPortalLoggingHandler(logging.Handler):
 
 def get_logger(service, item_id) -> logging.Logger:
     try:
+        logger.info(f"Getting logger for {item_id}")
         child_logger = logging.getLogger(item_id)
         logFormatter = logging.Formatter('%(asctime)s [%(levelname)-7.7s]  %(message)s')
         child_logger.setLevel(logging.INFO)
