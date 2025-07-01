@@ -1,21 +1,69 @@
-from reportportal_client import RPClient as _RPClient
+from reportportal_client import RPClient as _RPClient  # type: ignore
+
 
 class RPClient(_RPClient):
-    """
-    Extension of the official Report-Portal client that lets you pass
-    launch_uuid explicitly when finishing a launch.
+    """Extended Report-Portal client.
+
+    Adds an optional *launch_uuid* parameter to ``finish_launch`` so you can
+    explicitly specify which launch to close **without** mutating the
+    ``launch_id`` attribute on the client (which is read-only in recent
+    library versions).
     """
 
-    def finish_launch(self,
-                      end_time,
-                      status=None,
-                      attributes=None,
-                      launch_uuid=None,
-                      **kwargs):
-        if launch_uuid:                          # accept optional UUID
-            self.launch_id = launch_uuid         # sync both holders
-            self._log_manager.launch_id = launch_uuid
-        return super().finish_launch(end_time=end_time,
-                                     status=status,
-                                     attributes=attributes,
-                                     **kwargs)
+    def finish_launch(
+        self,
+        *,
+        end_time,
+        status=None,
+        attributes=None,
+        launch_uuid=None,
+        **kwargs,
+    ):  # pylint: disable=arguments-differ
+        # If caller supplies an explicit launch UUID, use it; otherwise fall
+        # back to the one stored in the client instance.
+        target_launch = launch_uuid or self.launch_id
+
+        # Safety check
+        if not target_launch:
+            from reportportal_client.static.defines import NOT_FOUND  # type: ignore
+            if self.launch_id is NOT_FOUND or not self.launch_id:
+                # Mirror the original behaviour
+                import logging
+
+                logging.getLogger(__name__).warning(
+                    "Attempt to finish non-existent launch"
+                )
+                return
+
+        # Construct the same request as the base class but using **target_launch**
+        from reportportal_client.helpers import uri_join  # type: ignore
+        from reportportal_client.core.rp_requests import LaunchFinishRequest  # type: ignore
+        from reportportal_client.core.rp_requests import HttpRequest  # type: ignore
+
+        url = uri_join(self.base_url_v2, "launch", target_launch, "finish")
+        request_payload = LaunchFinishRequest(
+            end_time,
+            status=status,
+            attributes=attributes,
+            description=kwargs.get("description"),
+        ).payload
+
+        response = HttpRequest(
+            self.session.put,
+            url=url,
+            json=request_payload,
+            verify_ssl=self.verify_ssl,
+            name="Finish Launch",
+        ).make()
+
+        if not response:
+            return
+
+        # Log and return response like original implementation
+        import logging
+
+        logger = logging.getLogger(__name__)
+        logger.debug("finish_launch - ID: %s", target_launch)
+        logger.debug("response message: %s", response.message)
+        return response.message
+        
