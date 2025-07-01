@@ -68,9 +68,10 @@ def thread_executor(test_ymls, initial_variable_dictionary, test_uuid, email):
         else:
             test_executor= TestExecutor(1, test_uuid, initial_variable_dictionary, test_yml, None ,test_result_object)
         testExecutorObjects.append(test_executor)
-    
+    logger.info("Test executor objects created")
     with ThreadPoolExecutor(max_workers=3) as pool_executor:
         for test_executor in testExecutorObjects:
+            logger.info("Test executor object: " + str(test_executor))
             try:
                 logger.info("Submitting task to pool executor")
                 pool_executor.submit(execute_test, test_executor, email)
