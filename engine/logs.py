@@ -90,16 +90,8 @@ def get_logger(service, item_id) -> logging.Logger:
     try:
         logger.info(f"Getting logger for {item_id}")
         child_logger = logging.getLogger(item_id)
-        logFormatter = logging.Formatter('%(asctime)s [%(levelname)-7.7s]  %(message)s')
         child_logger.setLevel(logging.INFO)
         
-        fileHandler = logging.FileHandler(LOG_FILE)
-        fileHandler.setFormatter(logFormatter)
-        child_logger.addHandler(fileHandler)
-
-        consoleHandler = logging.StreamHandler()
-        consoleHandler.setFormatter(logFormatter)
-        child_logger.addHandler(consoleHandler)
         logger.info(f"Logger created for {item_id}")
         if (
             REPORT_PORTAL_ENABLED is not None

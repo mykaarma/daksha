@@ -58,7 +58,8 @@ def thread_executor(test_ymls, initial_variable_dictionary, test_uuid, email):
             try:
                 test_executor_logger = get_logger(report_portal_service, report_portal_test_id)
                 logger.info(f"Logger created for {report_portal_test_id} with logger1")
-                test_executor_logger.info(f"Logger created for {report_portal_test_id}")
+                test_executor_logger.info(f"Logger created for {report_portal_test_id} in thread executor")
+                test_executor_logger.info([type(h) for h in test_executor_logger.handlers])
                 logger.info(f"Logger created for {report_portal_test_id} with logger2")
             except Exception as e:
                 logger.error("Failed to create dedicated logger: %s", e, exc_info=True)
