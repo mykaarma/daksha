@@ -66,7 +66,7 @@ def thread_executor(test_ymls, initial_variable_dictionary, test_uuid, email):
         try:
             # start_launch has already set the client's internal launch_id,
             # so we can finish the launch directly.
-            report_portal_service.finish_launch(end_time=timestamp())
+            report_portal_service.finish_launch(end_time=timestamp(), launch_uuid=launch_id)
             logger.info(
                 f"Tests finished. Ending launch Daksha_test_{test_uuid} in Report Portal with id {launch_id}"
             )
