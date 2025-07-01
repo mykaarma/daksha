@@ -22,11 +22,15 @@ from .models import TestExecutor
 from .selenium_helper import *
 from .testreport_generator import *
 from .email_generator import *
+from .logs import logger, report_portal_logging_handler
 from daksha import settings
+from daksha.settings import REPORT_PORTAL_ENABLED
 from engine import test_result_utils
+from reportportal_client.helpers import timestamp
 
 import jinja2
 import ast
+import traceback
 
 
 def __cleanup(web_driver: WebDriver):
@@ -88,8 +92,16 @@ def execute_test(test_executor: TestExecutor, email):
         else:
             logger.info("Test " + name + " failed for test ID: " + test_executor.test_uuid)
             send_alert(test_executor.test_uuid, name, str(step), error_stack, alert_type)
+        
+        # Clean up Report Portal service context for this thread
+        if(REPORT_PORTAL_ENABLED != None and REPORT_PORTAL_ENABLED.lower() == "true"):
+            report_portal_logging_handler.clear_service()
+            
         __cleanup(web_driver)
     except Exception:
+        # Clean up Report Portal service context in case of exception
+        if(REPORT_PORTAL_ENABLED != None and REPORT_PORTAL_ENABLED.lower() == "true"):
+            report_portal_logging_handler.clear_service()
         logger.error("Error encountered in executor: ", exc_info=True)
 
 
