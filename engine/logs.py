@@ -56,6 +56,7 @@ class ReportPortalLoggingHandler(logging.Handler):
                 del self.thread_local.item_id
 
         def emit(self, record):
+           try: 
             report_portal_service = getattr(self.thread_local, 'service', None)
             
             item_id = getattr(self.thread_local, 'item_id', None)
@@ -83,7 +84,10 @@ class ReportPortalLoggingHandler(logging.Handler):
                         level=level,
                         item_id=item_id
                     )
-
+           except Exception as e:
+                logger.error("Exception occurred while emitting", e)
+           finally:
+                logger.info("Emitting completed")
 
 
 def get_logger(service, item_id) -> logging.Logger:

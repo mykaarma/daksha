@@ -59,6 +59,8 @@ def execute_test(test_executor: TestExecutor, email):
         alert_type = None
         if "alert_type" in test_yml:
             alert_type = test_yml['alert_type']
+            logger.info("Users has opted for alerts via logger " + alert_type)
+            logger.info([type(h) for h in test_executor.test_executor_logger.handlers])
             test_executor.test_executor_logger.info("Users has opted for alerts via " + alert_type)
         else:
             test_executor.test_executor_logger.info("User has not opted for alerts")
