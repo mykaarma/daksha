@@ -72,13 +72,14 @@ def thread_executor(test_ymls, initial_variable_dictionary, test_uuid, email):
     with ThreadPoolExecutor(max_workers=3) as pool_executor:
         for test_executor in testExecutorObjects:
             try:
+                logger.info("Submitting task to pool executor")
                 pool_executor.submit(execute_test, test_executor, email)
                 if(TEST_RESULT_DB!= None and TEST_RESULT_DB.lower() == "postgres"):
                     test_executor.test_result.Status="In_Progress"
                     test_executor.test_result.save()
-                test_executor.test_executor_logger.info("Task submitted")
+                logger.info("Task submitted")
             except Exception as e:
-                test_executor.test_executor_logger.error("Exception occurred", e)
+                logger.error("Exception occurred", e)
         pass
 
     if REPORT_PORTAL_ENABLED != None and REPORT_PORTAL_ENABLED.lower() == "true":

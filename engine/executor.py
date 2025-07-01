@@ -57,10 +57,11 @@ def execute_test(test_executor: TestExecutor, email):
         task = test_yml["task"]
         name = test_yml["name"]  # TODO: Alert user if no/null config/task/name is provided
         alert_type = None
+        logger.info("Users has opted for alerts via logger ")
+        logger.info([type(h) for h in test_executor.test_executor_logger.handlers])
+
         if "alert_type" in test_yml:
             alert_type = test_yml['alert_type']
-            logger.info("Users has opted for alerts via logger " + alert_type)
-            logger.info([type(h) for h in test_executor.test_executor_logger.handlers])
             test_executor.test_executor_logger.info("Users has opted for alerts via " + alert_type)
         else:
             test_executor.test_executor_logger.info("User has not opted for alerts")
@@ -103,7 +104,7 @@ def execute_test(test_executor: TestExecutor, email):
         # Clean up Report Portal service context in case of exception
         # if(REPORT_PORTAL_ENABLED != None and REPORT_PORTAL_ENABLED.lower() == "true"):
         #     report_portal_logging_handler.clear_service()
-        test_executor.test_executor_logger.error("Error encountered in executor: ", exc_info=True)
+        logger.error("Error encountered in executor: ", exc_info=True)
 
 
 def execute_step(test_executor: TestExecutor, step):
