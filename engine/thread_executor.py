@@ -63,13 +63,16 @@ def thread_executor(test_ymls, initial_variable_dictionary, test_uuid, email):
         pass
 
     if REPORT_PORTAL_ENABLED != None and REPORT_PORTAL_ENABLED.lower() == "true":
-       try: 
-            report_portal_service.launch_id = launch_id
-            report_portal_service.finish_launch(end_time = timestamp())
-            logger.info(f"Tests finished. Ending launch Daksha_test_{test_uuid} in Report Portal with id {launch_id}")
+        try:
+            # start_launch has already set the client's internal launch_id,
+            # so we can finish the launch directly.
+            report_portal_service.finish_launch(end_time=timestamp())
+            logger.info(
+                f"Tests finished. Ending launch Daksha_test_{test_uuid} in Report Portal with id {launch_id}"
+            )
             report_portal_service.terminate()
-       except Exception as e:
-            logger.error("Exception occurred while finishing launch", e)
+        except Exception as e:
+            logger.error("Exception occurred while finishing launch: %s", e, exc_info=True)
     logger.info("All threads complete, generating test report")
     generate_report(test_uuid)
     report_url = APACHE_URL + test_executor.test_uuid + '/report.html'
