@@ -53,8 +53,15 @@ def thread_executor(test_ymls, initial_variable_dictionary, test_uuid, email):
             else:
                 report_portal_test_id = report_portal_service.start_test_item(name = test_yml["name"], item_type = 'step', start_time = timestamp()) 
                 logger.info("Labels are not set in the test")
-            test_executor_logger = get_logger(report_portal_service, report_portal_test_id)
-            test_executor = TestExecutor(1, test_uuid, initial_variable_dictionary, test_yml, None ,test_result_object,report_portal_service,report_portal_test_id,test_executor_logger)
+                
+            # Create a dedicated logger per test with safety net
+            try:
+                test_executor_logger = get_logger(report_portal_service, report_portal_test_id)
+            except Exception as e:
+                logger.error("Failed to create dedicated logger: %s", e, exc_info=True)
+                test_executor_logger = logger  # fallback to root logger
+
+            test_executor = TestExecutor(1,test_uuid,initial_variable_dictionary,test_yml,None,test_result_object,report_portal_service,report_portal_test_id,test_executor_logger)
         else:
             test_executor= TestExecutor(1, test_uuid, initial_variable_dictionary, test_yml, None ,test_result_object)
         testExecutorObjects.append(test_executor)

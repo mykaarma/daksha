@@ -87,34 +87,39 @@ class ReportPortalLoggingHandler(logging.Handler):
 
 
 def get_logger(service, item_id) -> logging.Logger:
+    try:
+        child_logger = logging.getLogger()
+        logFormatter = logging.Formatter('%(asctime)s [%(levelname)-7.7s]  %(message)s')
+        child_logger.setLevel(logging.INFO)
+        
+        fileHandler = logging.FileHandler(LOG_FILE)
+        fileHandler.setFormatter(logFormatter)
+        child_logger.addHandler(fileHandler)
 
-    child_logger = logging.getLogger()
-    logFormatter = logging.Formatter('%(asctime)s [%(levelname)-7.7s]  %(message)s')
-    child_logger.setLevel(logging.INFO)
-    
-    fileHandler = logging.FileHandler(LOG_FILE)
-    fileHandler.setFormatter(logFormatter)
-    child_logger.addHandler(fileHandler)
-
-    consoleHandler = logging.StreamHandler()
-    consoleHandler.setFormatter(logFormatter)
-    child_logger.addHandler(consoleHandler)
-    
-    if (
-        REPORT_PORTAL_ENABLED is not None
-        and REPORT_PORTAL_ENABLED.lower() == "true"
-    ):
-        report_portal_logging_handler = make_report_portal_handler(service, item_id)
-        child_logger.addHandler(report_portal_logging_handler)
-
+        consoleHandler = logging.StreamHandler()
+        consoleHandler.setFormatter(logFormatter)
+        child_logger.addHandler(consoleHandler)
+        
+        if (
+            REPORT_PORTAL_ENABLED is not None
+            and REPORT_PORTAL_ENABLED.lower() == "true"
+        ):
+            report_portal_logging_handler = make_report_portal_handler(service, item_id)
+            child_logger.addHandler(report_portal_logging_handler)
+    except Exception as e:
+            logger.error("Exception occurred while getting logger", e)
+            return logger
     return child_logger
 
 
 def make_report_portal_handler(service, item_id=None):
-   
+   try:
     handler = ReportPortalLoggingHandler()
     handler.set_service(service)
     if item_id is not None:
         handler.set_item_id(item_id)
-    return handler
+        return handler
+   except Exception as e:
+        logger.error("Exception occurred while making report portal handler", e)
+   return handler
 
