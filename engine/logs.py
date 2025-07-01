@@ -18,7 +18,7 @@ import logging
 import os
 import threading
 
-from reportportal_client.helpers import timestamp
+from reportportal_client.helpers import timestamp  # type: ignore
 from daksha.settings import LOG_FILE,REPORT_PORTAL_ENABLED
 
 os.makedirs(os.path.dirname(LOG_FILE), exist_ok=True)
@@ -36,8 +36,7 @@ consoleHandler = logging.StreamHandler()
 consoleHandler.setFormatter(logFormatter)
 logger.addHandler(consoleHandler)
 
-if(REPORT_PORTAL_ENABLED != None and REPORT_PORTAL_ENABLED.lower() == "true"):
-    class ReportPortalLoggingHandler(logging.Handler):
+class ReportPortalLoggingHandler(logging.Handler):
         def __init__(self):
             super().__init__()
             self.thread_local = threading.local()
@@ -58,6 +57,7 @@ if(REPORT_PORTAL_ENABLED != None and REPORT_PORTAL_ENABLED.lower() == "true"):
 
         def emit(self, record):
             report_portal_service = getattr(self.thread_local, 'service', None)
+            
             item_id = getattr(self.thread_local, 'item_id', None)
             
             if report_portal_service is not None and item_id is not None:
@@ -84,6 +84,37 @@ if(REPORT_PORTAL_ENABLED != None and REPORT_PORTAL_ENABLED.lower() == "true"):
                         item_id=item_id
                     )
 
-    report_portal_logging_handler = ReportPortalLoggingHandler()
-    logger.addHandler(report_portal_logging_handler)
+
+
+def get_logger(service, item_id) -> logging.Logger:
+
+    child_logger = logging.getLogger()
+    logFormatter = logging.Formatter('%(asctime)s [%(levelname)-7.7s]  %(message)s')
+    child_logger.setLevel(logging.INFO)
+    
+    fileHandler = logging.FileHandler(LOG_FILE)
+    fileHandler.setFormatter(logFormatter)
+    child_logger.addHandler(fileHandler)
+
+    consoleHandler = logging.StreamHandler()
+    consoleHandler.setFormatter(logFormatter)
+    child_logger.addHandler(consoleHandler)
+    
+    if (
+        REPORT_PORTAL_ENABLED is not None
+        and REPORT_PORTAL_ENABLED.lower() == "true"
+    ):
+        report_portal_logging_handler = make_report_portal_handler(service, item_id)
+        child_logger.addHandler(report_portal_logging_handler)
+
+    return child_logger
+
+
+def make_report_portal_handler(service, item_id=None):
+   
+    handler = ReportPortalLoggingHandler()
+    handler.set_service(service)
+    if item_id is not None:
+        handler.set_item_id(item_id)
+    return handler
 

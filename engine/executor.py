@@ -22,7 +22,6 @@ from .models import TestExecutor
 from .selenium_helper import *
 from .testreport_generator import *
 from .email_generator import *
-from .logs import logger, report_portal_logging_handler
 from daksha import settings
 from daksha.settings import REPORT_PORTAL_ENABLED
 from engine import test_result_utils
@@ -58,6 +57,7 @@ def execute_test(test_executor: TestExecutor, email):
         task = test_yml["task"]
         name = test_yml["name"]  # TODO: Alert user if no/null config/task/name is provided
         alert_type = None
+        logger = test_executor.test_executor_logger
         if "alert_type" in test_yml:
             alert_type = test_yml['alert_type']
             logger.info("Users has opted for alerts via " + alert_type)
@@ -117,10 +117,11 @@ def execute_step(test_executor: TestExecutor, step):
      :rtype: tuple
     """
     try:
-        if(REPORT_PORTAL_ENABLED != None and REPORT_PORTAL_ENABLED.lower() == "true"):
-            report_portal_logging_handler.set_service(test_executor.report_portal_service)
-            report_portal_logging_handler.set_item_id(test_executor.report_portal_test_id)
+        # if(REPORT_PORTAL_ENABLED != None and REPORT_PORTAL_ENABLED.lower() == "true"):
+        #     report_portal_logging_handler.set_service(test_executor.report_portal_service)
+        #     report_portal_logging_handler.set_item_id(test_executor.report_portal_test_id)
             
+        logger = test_executor.test_executor_logger
         logger.info("Executing:\t" + str(type(step)) + '\t' + str(step))
         # https://stackoverflow.com/a/40219576
         # https://note.nkmk.me/en/python-argument-expand/
@@ -143,19 +144,19 @@ def execute_step(test_executor: TestExecutor, step):
                 execution_success, error_stack = method_map[k](test_executor=test_executor, **v)
                 break
             logger.info("fin")
-        if(REPORT_PORTAL_ENABLED != None and REPORT_PORTAL_ENABLED.lower() == "true"):    
-            report_portal_logging_handler.clear_item_id()
+        # if(REPORT_PORTAL_ENABLED != None and REPORT_PORTAL_ENABLED.lower() == "true"):    
+        #     report_portal_logging_handler.clear_item_id()
         if execution_success is False:
             return False, error_stack
         else:
             return True, error_stack
     except UndefinedError as e:
         logger.error("Error in rendering variable: ", exc_info=True)
-        if(REPORT_PORTAL_ENABLED != None and REPORT_PORTAL_ENABLED.lower() == "true"):    
-            report_portal_logging_handler.clear_item_id()
+        # if(REPORT_PORTAL_ENABLED != None and REPORT_PORTAL_ENABLED.lower() == "true"):    
+        #     report_portal_logging_handler.clear_item_id()
         return False, "Error in rendering variable: " + str(e)
     except Exception:
         logger.error("Error encountered: ", exc_info=True)
-        if(REPORT_PORTAL_ENABLED != None and REPORT_PORTAL_ENABLED.lower() == "true"):    
-            report_portal_logging_handler.clear_item_id()
+        # if(REPORT_PORTAL_ENABLED != None and REPORT_PORTAL_ENABLED.lower() == "true"):    
+        #     report_portal_logging_handler.clear_item_id()
         return False, traceback.format_exc()

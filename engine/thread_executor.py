@@ -17,13 +17,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 from concurrent.futures.thread import ThreadPoolExecutor
 from engine.executor import execute_test
 from .email_generator import send_report_email
-from .logs import *
+from .logs import logger, get_logger
 from daksha.settings import APACHE_URL,TEST_RESULT_DB, REPORT_PORTAL_ENABLED,REPORT_PORTAL_ENDPOINT, REPORT_PORTAL_PROJECT_NAME, REPORT_PORTAL_TOKEN
-from reportportal_client import RPClient
+from reportportal_client import RPClient  # type: ignore
 from .models import TestExecutor
 from .testreport_generator import generate_report
 from engine import test_result_utils
-from reportportal_client.helpers import timestamp
+from reportportal_client.helpers import timestamp  # type: ignore
 
 def thread_executor(test_ymls, initial_variable_dictionary, test_uuid, email):
     # Test Executor object initialization and store in a list
@@ -53,7 +53,8 @@ def thread_executor(test_ymls, initial_variable_dictionary, test_uuid, email):
             else:
                 report_portal_test_id = report_portal_service.start_test_item(name = test_yml["name"], item_type = 'step', start_time = timestamp()) 
                 logger.info("Labels are not set in the test")
-            test_executor = TestExecutor(1, test_uuid, initial_variable_dictionary, test_yml, None ,test_result_object,report_portal_service,report_portal_test_id)
+            test_executor_logger = get_logger(report_portal_service, report_portal_test_id)
+            test_executor = TestExecutor(1, test_uuid, initial_variable_dictionary, test_yml, None ,test_result_object,report_portal_service,report_portal_test_id,test_executor_logger)
         else:
             test_executor= TestExecutor(1, test_uuid, initial_variable_dictionary, test_yml, None ,test_result_object)
         testExecutorObjects.append(test_executor)
@@ -71,7 +72,7 @@ def thread_executor(test_ymls, initial_variable_dictionary, test_uuid, email):
         pass
 
     if REPORT_PORTAL_ENABLED != None and REPORT_PORTAL_ENABLED.lower() == "true":
-        report_portal_service.finish_launch(item_id = launch_id, end_time = timestamp())
+        report_portal_service.finish_launch(end_time = timestamp())
         logger.info(f"Tests finished. Ending launch Daksha_test_{test_uuid} in Report Portal ")
         report_portal_service.terminate()
         
