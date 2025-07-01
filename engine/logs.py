@@ -88,7 +88,7 @@ class ReportPortalLoggingHandler(logging.Handler):
 
 def get_logger(service, item_id) -> logging.Logger:
     try:
-        child_logger = logging.getLogger()
+        child_logger = logging.getLogger(item_id)
         logFormatter = logging.Formatter('%(asctime)s [%(levelname)-7.7s]  %(message)s')
         child_logger.setLevel(logging.INFO)
         
@@ -99,13 +99,14 @@ def get_logger(service, item_id) -> logging.Logger:
         consoleHandler = logging.StreamHandler()
         consoleHandler.setFormatter(logFormatter)
         child_logger.addHandler(consoleHandler)
-        
+        logger.info(f"Logger created for {item_id}")
         if (
             REPORT_PORTAL_ENABLED is not None
             and REPORT_PORTAL_ENABLED.lower() == "true"
         ):
             report_portal_logging_handler = make_report_portal_handler(service, item_id)
             child_logger.addHandler(report_portal_logging_handler)
+            logger.info(f"Report portal logging handler added for {item_id}")
     except Exception as e:
             logger.error("Exception occurred while getting logger", e)
             return logger
