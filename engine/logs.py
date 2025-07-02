@@ -67,5 +67,6 @@ if(REPORT_PORTAL_ENABLED != None and REPORT_PORTAL_ENABLED.lower() == "true"):
                     report_portal_service.log(time=timestamp(),message=msg, level=level, item_id=item_id)
 
     report_portal_logging_handler = ReportPortalLoggingHandler()
+    logger.info("Report Portal Logging Handler Added");
     logger.addHandler(report_portal_logging_handler)
 
