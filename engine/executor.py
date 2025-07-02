@@ -27,6 +27,9 @@ from engine import test_result_utils
 
 import jinja2
 import ast
+import threading
+
+lock = threading.Lock()
 
 
 def __cleanup(web_driver: WebDriver):
@@ -104,47 +107,48 @@ def execute_step(test_executor: TestExecutor, step):
      :returns: Status of Execution and error stack
      :rtype: tuple
     """
-    try:
-        if(REPORT_PORTAL_ENABLED != None and REPORT_PORTAL_ENABLED.lower() == "true"):
-            report_portal_logging_handler.set_item_id(test_executor.report_portal_test_id)
-            logger.info(f"Setting Item ID: {test_executor.report_portal_test_id}");
-            
-        logger.info("Executing:\t" + str(type(step)) + '\t' + str(step))
-        # https://stackoverflow.com/a/40219576
-        # https://note.nkmk.me/en/python-argument-expand/
-        execution_success = False
-        error_stack = None
-        if isinstance(step, str):
-            logger.info("Gonna process the method directly")
-            execution_success, error_stack = method_map[step](test_executor=test_executor)
-        elif isinstance(step, dict):
-            logger.info("Gonna render the variables")
-            # raise error if a variable present in yml file but not present in variable dictionary
-            template = jinja2.Template(str(step), undefined=jinja2.StrictUndefined)
-            # rendered the variables from the variable dictionary
-            step_render = template.render(test_executor.variable_dictionary)
-            # converting the final string with rendered variables to dictionary 'step'
-            step = ast.literal_eval(step_render)
-            logger.info("Gonna call this method with args")
-            for k, v in step.items():
-                logger.info(str(type(v)) + "\t. " + str(v))
-                execution_success, error_stack = method_map[k](test_executor=test_executor, **v)
-                break
-            logger.info("fin")
-        if(REPORT_PORTAL_ENABLED != None and REPORT_PORTAL_ENABLED.lower() == "true"):    
-            report_portal_logging_handler.clear_item_id()
-            logger.info(f"Clearing Item ID: {test_executor.report_portal_test_id}");
-        if execution_success is False:
-            return False, error_stack
-        else:
-            return True, error_stack
-    except UndefinedError as e:
-        logger.error("Error in rendering variable: ", exc_info=True)
-        if(REPORT_PORTAL_ENABLED != None and REPORT_PORTAL_ENABLED.lower() == "true"):    
-            report_portal_logging_handler.clear_item_id()
-        return False, "Error in rendering variable: " + str(e)
-    except Exception:
-        logger.error("Error encountered: ", exc_info=True)
-        if(REPORT_PORTAL_ENABLED != None and REPORT_PORTAL_ENABLED.lower() == "true"):    
-            report_portal_logging_handler.clear_item_id()
-        return False, traceback.format_exc()
+    with lock:
+        try:
+            if(REPORT_PORTAL_ENABLED != None and REPORT_PORTAL_ENABLED.lower() == "true"):
+                report_portal_logging_handler.set_item_id(test_executor.report_portal_test_id)
+                logger.info(f"Setting Item ID: {test_executor.report_portal_test_id}");
+                
+            logger.info("Executing:\t" + str(type(step)) + '\t' + str(step))
+            # https://stackoverflow.com/a/40219576
+            # https://note.nkmk.me/en/python-argument-expand/
+            execution_success = False
+            error_stack = None
+            if isinstance(step, str):
+                logger.info("Gonna process the method directly")
+                execution_success, error_stack = method_map[step](test_executor=test_executor)
+            elif isinstance(step, dict):
+                logger.info("Gonna render the variables")
+                # raise error if a variable present in yml file but not present in variable dictionary
+                template = jinja2.Template(str(step), undefined=jinja2.StrictUndefined)
+                # rendered the variables from the variable dictionary
+                step_render = template.render(test_executor.variable_dictionary)
+                # converting the final string with rendered variables to dictionary 'step'
+                step = ast.literal_eval(step_render)
+                logger.info("Gonna call this method with args")
+                for k, v in step.items():
+                    logger.info(str(type(v)) + "\t. " + str(v))
+                    execution_success, error_stack = method_map[k](test_executor=test_executor, **v)
+                    break
+                logger.info("fin")
+            if(REPORT_PORTAL_ENABLED != None and REPORT_PORTAL_ENABLED.lower() == "true"):    
+                report_portal_logging_handler.clear_item_id()
+                logger.info(f"Clearing Item ID: {test_executor.report_portal_test_id}");
+            if execution_success is False:
+                return False, error_stack
+            else:
+                return True, error_stack
+        except UndefinedError as e:
+            logger.error("Error in rendering variable: ", exc_info=True)
+            if(REPORT_PORTAL_ENABLED != None and REPORT_PORTAL_ENABLED.lower() == "true"):    
+                report_portal_logging_handler.clear_item_id()
+            return False, "Error in rendering variable: " + str(e)
+        except Exception:
+            logger.error("Error encountered: ", exc_info=True)
+            if(REPORT_PORTAL_ENABLED != None and REPORT_PORTAL_ENABLED.lower() == "true"):    
+                report_portal_logging_handler.clear_item_id()
+            return False, traceback.format_exc()
