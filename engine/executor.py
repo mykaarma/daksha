@@ -133,6 +133,7 @@ def execute_step(test_executor: TestExecutor, step):
             logger.info("fin")
         if(REPORT_PORTAL_ENABLED != None and REPORT_PORTAL_ENABLED.lower() == "true"):    
             report_portal_logging_handler.clear_item_id()
+            logger.info(f"Clearing Item ID: {test_executor.report_portal_test_id}");
         if execution_success is False:
             return False, error_stack
         else:

@@ -1,5 +1,5 @@
 from reportportal_client import RPClient as _RPClient  # type: ignore
-
+from engine.logs import logger
 
 class RPClient(_RPClient):
     """Extended Report-Portal client.
@@ -28,9 +28,8 @@ class RPClient(_RPClient):
             from reportportal_client.static.defines import NOT_FOUND  # type: ignore
             if self.launch_id is NOT_FOUND or not self.launch_id:
                 # Mirror the original behaviour
-                import logging
 
-                logging.getLogger(__name__).warning(
+                logger.warning(
                     "Attempt to finish non-existent launch"
                 )
                 return
@@ -62,8 +61,6 @@ class RPClient(_RPClient):
         # Log and return response like original implementation
         import logging
 
-        logger = logging.getLogger(__name__)
-        logger.debug("finish_launch - ID: %s", target_launch)
-        logger.debug("response message: %s", response.message)
+        logger.debug(f"response message: {response}")
         return response.message
         
