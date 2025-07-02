@@ -107,7 +107,7 @@ def execute_step(test_executor: TestExecutor, step):
     try:
         if(REPORT_PORTAL_ENABLED != None and REPORT_PORTAL_ENABLED.lower() == "true"):
             report_portal_logging_handler.set_item_id(test_executor.report_portal_test_id)
-            logger.info("Setting Item ID: {}" , test_executor.report_portal_test_id);
+            logger.info(f"Setting Item ID: {test_executor.report_portal_test_id}");
             
         logger.info("Executing:\t" + str(type(step)) + '\t' + str(step))
         # https://stackoverflow.com/a/40219576
