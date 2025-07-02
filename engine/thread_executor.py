@@ -44,31 +44,37 @@ def thread_executor(test_ymls, initial_variable_dictionary, test_uuid, email):
         
     for test_yml in test_ymls:
         test_result_object = test_result_utils.initialize_test_result(test_uuid, test_yml)
-        if(REPORT_PORTAL_ENABLED != None and REPORT_PORTAL_ENABLED.lower() == "true"):
-            if 'labels' in test_yml and bool(test_yml['labels']):
-                name = test_yml["name"]
-                attributes = [{'key': key, 'value': value} for key, value in test_yml['labels'].items()]
-                report_portal_test_id = report_portal_service.start_test_item(name = name, item_type = 'step', attributes=attributes, start_time = timestamp()) 
-                logger.info(f"attributes with {report_portal_test_id} and {name} are {attributes}")
+        try: 
+            logger.info("Trying to create test executor object")
+            if(REPORT_PORTAL_ENABLED != None and REPORT_PORTAL_ENABLED.lower() == "true"):
+                if 'labels' in test_yml and bool(test_yml['labels']):
+                    name = test_yml["name"]
+                    attributes = [{'key': key, 'value': value} for key, value in test_yml['labels'].items()]
+                    report_portal_test_id = report_portal_service.start_test_item(name = name, item_type = 'step', attributes=attributes, start_time = timestamp()) 
+                    logger.info(f"attributes with {report_portal_test_id} and {name} are {attributes}")
+                else:
+                    report_portal_test_id = report_portal_service.start_test_item(name = test_yml["name"], item_type = 'step', start_time = timestamp()) 
+                    logger.info("Labels are not set in the test")
+                    
+                # Create a dedicated logger per test with safety net
+                try:
+                    test_executor_logger = get_logger(report_portal_service, report_portal_test_id)
+                    logger.info(f"Logger created for {report_portal_test_id} with logger1")
+                    test_executor_logger.info(f"Logger created for {report_portal_test_id} in thread executor")
+                    test_executor_logger.info([type(h) for h in test_executor_logger.handlers])
+                    logger.info(f"Logger created for {report_portal_test_id} with logger2")
+                except Exception as e:
+                    logger.error("Failed to create dedicated logger: %s", e, exc_info=True)
+                    test_executor_logger = logger  # fallback to root logger    
+                test_executor = TestExecutor(1,test_uuid,initial_variable_dictionary,test_yml,None,test_result_object,report_portal_service,report_portal_test_id,test_executor_logger)
             else:
-                report_portal_test_id = report_portal_service.start_test_item(name = test_yml["name"], item_type = 'step', start_time = timestamp()) 
-                logger.info("Labels are not set in the test")
-                
-            # Create a dedicated logger per test with safety net
-            try:
-                test_executor_logger = get_logger(report_portal_service, report_portal_test_id)
-                logger.info(f"Logger created for {report_portal_test_id} with logger1")
-                test_executor_logger.info(f"Logger created for {report_portal_test_id} in thread executor")
-                test_executor_logger.info([type(h) for h in test_executor_logger.handlers])
-                logger.info(f"Logger created for {report_portal_test_id} with logger2")
-            except Exception as e:
-                logger.error("Failed to create dedicated logger: %s", e, exc_info=True)
-                test_executor_logger = logger  # fallback to root logger    
-            test_executor = TestExecutor(1,test_uuid,initial_variable_dictionary,test_yml,None,test_result_object,report_portal_service,report_portal_test_id,test_executor_logger)
-        else:
-            test_executor= TestExecutor(1, test_uuid, initial_variable_dictionary, test_yml, None ,test_result_object)
+                test_executor= TestExecutor(1, test_uuid, initial_variable_dictionary, test_yml, None ,test_result_object)
+        except Exception as e:
+            logger.error("Exception occurred while creating test executor object: %s", e, exc_info=True)
         testExecutorObjects.append(test_executor)
+
     logger.info("Test executor objects created")
+    
     with ThreadPoolExecutor(max_workers=3) as pool_executor:
         for test_executor in testExecutorObjects:
             logger.info("Test executor object: " + str(test_executor))
