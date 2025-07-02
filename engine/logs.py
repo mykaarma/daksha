@@ -59,7 +59,8 @@ if(REPORT_PORTAL_ENABLED != None and REPORT_PORTAL_ENABLED.lower() == "true"):
             attachment={"data": screenshot, "mime": "image/png"}
             # Get the current thread's item ID from thread-local storage
             item_id = getattr(self.thread_local, 'item_id', None)
-
+            
+            logger.info(f"Item ID: {item_id}")
             # Send the log message to Report Portal using the current item ID
             if(item_id != None):
                 if(screenshot != None):
