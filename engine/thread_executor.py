@@ -64,13 +64,13 @@ def thread_executor(test_ymls, initial_variable_dictionary, test_uuid, email):
                     test_executor_logger.info([type(h) for h in test_executor_logger.handlers])
                     logger.info(f"Logger created for {report_portal_test_id} with logger2")
                 except Exception as e:
-                    logger.error("Failed to create dedicated logger: %s", e, exc_info=True)
+                    logger.error(f"Failed to create dedicated logger: {e}", exc_info=True)
                     test_executor_logger = logger  # fallback to root logger    
                 test_executor = TestExecutor(1,test_uuid,initial_variable_dictionary,test_yml,None,test_result_object,report_portal_service,report_portal_test_id,test_executor_logger)
             else:
                 test_executor= TestExecutor(1, test_uuid, initial_variable_dictionary, test_yml, None ,test_result_object)
         except Exception as e:
-            logger.error("Exception occurred while creating test executor object: %s", e, exc_info=True)
+            logger.error(f"Exception occurred while creating test executor object: {e}", exc_info=True)
         testExecutorObjects.append(test_executor)
 
     logger.info("Test executor objects created")

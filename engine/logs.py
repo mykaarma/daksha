@@ -85,7 +85,7 @@ class ReportPortalLoggingHandler(logging.Handler):
                         item_id=item_id
                     )
            except Exception as e:
-                logger.error("Exception occurred while emitting", e)
+                logger.error(f"Exception occurred while emitting {e}", exc_info=True)
            finally:
                 logger.info("Emitting completed")
 
@@ -105,7 +105,7 @@ def get_logger(service, item_id) -> logging.Logger:
             child_logger.addHandler(report_portal_logging_handler)
             logger.info(f"Report portal logging handler added for {item_id}")
     except Exception as e:
-            logger.error("Exception occurred while getting logger", e)
+            logger.error(f"Exception occurred while getting logger {e}", exc_info=True)
             return logger
     return child_logger
 
@@ -118,6 +118,6 @@ def make_report_portal_handler(service, item_id=None):
         handler.set_item_id(item_id)
         return handler
    except Exception as e:
-        logger.error("Exception occurred while making report portal handler", e)
+        logger.error(f"Exception occurred while making report portal handler {e}", exc_info=True)
    return handler
 
