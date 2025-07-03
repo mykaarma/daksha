@@ -21,7 +21,7 @@ from django.db import models
 
 # Create your models here.
 class TestExecutor:
-    def __init__(self, index, test_uuid, variable_dict, test_yml, web_driver , test_result, report_portal_service=None, report_portal_test_id=None):
+    def __init__(self, index, test_uuid, variable_dict, test_yml, web_driver , test_result, report_portal_service=None, report_portal_test_id=None, test_executor_logger=None):
         self.index = index
         self.test_uuid = test_uuid
         self.variable_dictionary = copy.deepcopy(variable_dict)
@@ -30,6 +30,7 @@ class TestExecutor:
         self.test_result=test_result
         self.report_portal_service=report_portal_service
         self.report_portal_test_id=report_portal_test_id
+        self.test_logger= test_executor_logger
 
 class TestResult:
     def __init__(self, name, test_status, step, failure_reason):

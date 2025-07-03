@@ -23,10 +23,13 @@ from .selenium_helper import *
 from .testreport_generator import *
 from .email_generator import *
 from daksha import settings
+from daksha.settings import REPORT_PORTAL_ENABLED
 from engine import test_result_utils
+from reportportal_client.helpers import timestamp
 
 import jinja2
 import ast
+import traceback
 
 
 def __cleanup(web_driver: WebDriver):
@@ -54,11 +57,14 @@ def execute_test(test_executor: TestExecutor, email):
         task = test_yml["task"]
         name = test_yml["name"]  # TODO: Alert user if no/null config/task/name is provided
         alert_type = None
+        logger.info("Users has opted for alerts via logger ")
+        logger.info([type(h) for h in test_executor.test_logger.handlers])
+
         if "alert_type" in test_yml:
             alert_type = test_yml['alert_type']
-            logger.info("Users has opted for alerts via " + alert_type)
+            test_executor.test_logger.info("Users has opted for alerts via " + alert_type)
         else:
-            logger.info("User has not opted for alerts")
+            test_executor.test_logger.info("User has not opted for alerts")
         web_driver = browser_config(config)
         test_executor.web_driver = web_driver
         
@@ -70,7 +76,7 @@ def execute_test(test_executor: TestExecutor, email):
             execution_result, error_stack = execute_step(test_executor, step)
             if execution_result is False:
                 break
-        logger.info("Test " + name + " finished, generating  result ")
+        test_executor.test_logger.info("Test " + name + " finished, generating  result ")
         
         if(REPORT_PORTAL_ENABLED != None and REPORT_PORTAL_ENABLED.lower() == "true"):
             if execution_result:
@@ -84,12 +90,20 @@ def execute_test(test_executor: TestExecutor, email):
             test_result_utils.save_result_in_db(test_executor,execution_result,step,error_stack)
             
         if execution_result:
-            logger.info("Test " + name + " successful")
+            test_executor.test_logger.info("Test " + name + " successful")
         else:
-            logger.info("Test " + name + " failed for test ID: " + test_executor.test_uuid)
+            test_executor.test_logger.info("Test " + name + " failed for test ID: " + test_executor.test_uuid)
             send_alert(test_executor.test_uuid, name, str(step), error_stack, alert_type)
+        
+        # Clean up Report Portal service context for this thread
+        # if(REPORT_PORTAL_ENABLED != None and REPORT_PORTAL_ENABLED.lower() == "true"):
+        #     report_portal_logging_handler.clear_service()
+            
         __cleanup(web_driver)
     except Exception:
+        # Clean up Report Portal service context in case of exception
+        # if(REPORT_PORTAL_ENABLED != None and REPORT_PORTAL_ENABLED.lower() == "true"):
+        #     report_portal_logging_handler.clear_service()
         logger.error("Error encountered in executor: ", exc_info=True)
 
 
@@ -105,44 +119,43 @@ def execute_step(test_executor: TestExecutor, step):
      :rtype: tuple
     """
     try:
-        if(REPORT_PORTAL_ENABLED != None and REPORT_PORTAL_ENABLED.lower() == "true"):
-            report_portal_logging_handler.set_item_id(test_executor.report_portal_test_id)
+        # if(REPORT_PORTAL_ENABLED != None and REPORT_PORTAL_ENABLED.lower() == "true"):
+        #     report_portal_logging_handler.set_service(test_executor.report_portal_service)
+        #     report_portal_logging_handler.set_item_id(test_executor.report_portal_test_id)
             
-        logger.info("Executing:\t" + str(type(step)) + '\t' + str(step))
+        test_executor.test_logger.info("Executing:\t" + str(type(step)) + '\t' + str(step))
         # https://stackoverflow.com/a/40219576
         # https://note.nkmk.me/en/python-argument-expand/
         execution_success = False
         error_stack = None
         if isinstance(step, str):
-            logger.info("Gonna process the method directly")
+            test_executor.test_logger.info("Gonna process the method directly")
             execution_success, error_stack = method_map[step](test_executor=test_executor)
         elif isinstance(step, dict):
-            logger.info("Gonna render the variables")
+            test_executor.test_logger.info("Gonna render the variables")
             # raise error if a variable present in yml file but not present in variable dictionary
             template = jinja2.Template(str(step), undefined=jinja2.StrictUndefined)
             # rendered the variables from the variable dictionary
             step_render = template.render(test_executor.variable_dictionary)
             # converting the final string with rendered variables to dictionary 'step'
             step = ast.literal_eval(step_render)
-            logger.info("Gonna call this method with args")
+            test_executor.test_logger.info("Gonna call this method with args")
             for k, v in step.items():
-                logger.info(str(type(v)) + "\t. " + str(v))
+                test_executor.test_logger.info(str(type(v)) + "\t. " + str(v))
                 execution_success, error_stack = method_map[k](test_executor=test_executor, **v)
-                break
-            logger.info("fin")
-        if(REPORT_PORTAL_ENABLED != None and REPORT_PORTAL_ENABLED.lower() == "true"):    
-            report_portal_logging_handler.clear_item_id()
+        # if(REPORT_PORTAL_ENABLED != None and REPORT_PORTAL_ENABLED.lower() == "true"):    
+        #     report_portal_logging_handler.clear_item_id()
         if execution_success is False:
             return False, error_stack
         else:
             return True, error_stack
     except UndefinedError as e:
-        logger.error("Error in rendering variable: ", exc_info=True)
-        if(REPORT_PORTAL_ENABLED != None and REPORT_PORTAL_ENABLED.lower() == "true"):    
-            report_portal_logging_handler.clear_item_id()
+        test_executor.test_logger.error("Error in rendering variable: ", exc_info=True)
+        # if(REPORT_PORTAL_ENABLED != None and REPORT_PORTAL_ENABLED.lower() == "true"):    
+        #     report_portal_logging_handler.clear_item_id()
         return False, "Error in rendering variable: " + str(e)
     except Exception:
-        logger.error("Error encountered: ", exc_info=True)
-        if(REPORT_PORTAL_ENABLED != None and REPORT_PORTAL_ENABLED.lower() == "true"):    
-            report_portal_logging_handler.clear_item_id()
+        test_executor.test_logger.error("Error encountered: ", exc_info=True)
+        # if(REPORT_PORTAL_ENABLED != None and REPORT_PORTAL_ENABLED.lower() == "true"):    
+        #     report_portal_logging_handler.clear_item_id()
         return False, traceback.format_exc()

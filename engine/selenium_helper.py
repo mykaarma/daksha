@@ -79,6 +79,7 @@ def launch_browser(test_executor: TestExecutor):
      :returns: Status of execution
      :rtype: tuple
     """
+    logger = test_executor.test_executor_logger
     logger.info("I'll launch the browser")
     # Got nothing to do. Shouldn't exist :p
     return True, None
@@ -92,6 +93,7 @@ def quit_browser(test_executor: TestExecutor):
      :returns: Status of execution
      :rtype: tuple
     """
+    logger = test_executor.test_executor_logger
     logger.info("I'll quit the browser")
     test_executor.web_driver.quit()
     return True, None
@@ -107,6 +109,7 @@ def open_url(test_executor: TestExecutor, **kwargs):
       :returns: Status of execution and error stack
       :rtype: tuple
     """
+    logger = test_executor.test_executor_logger
     try:
         url = kwargs['url']
     except KeyError:
@@ -129,6 +132,7 @@ def fill_data(test_executor: TestExecutor, **kwargs):
       :returns: Status of execution and error stack if exception is encountered
       :rtype: tuple
      """
+    logger = test_executor.test_executor_logger
     try:
         value = kwargs['value']
     except KeyError:
@@ -162,6 +166,7 @@ def select_in_dropdown(test_executor: TestExecutor, **kwargs):
      :returns: Status of execution and error stack
      :rtype: tuple
     """
+    logger = test_executor.test_executor_logger
     try:
         value = kwargs['value']
     except KeyError:
@@ -196,6 +201,8 @@ def click_button(test_executor: TestExecutor, **kwargs):
      :rtype: object
 
     """
+    logger = test_executor.test_executor_logger
+
     locator, locator_value = get_locator_info(**kwargs)
     logger.info("I'll click a button!")
     error_stack = None
@@ -224,6 +231,8 @@ def validate_ui_element(test_executor: TestExecutor, **kwargs):
      :returns: Status of execution and Failure String
      :rtype: tuple
     """
+    logger = test_executor.test_logger
+
     try:
         mode = kwargs['mode']
         value = kwargs['value']
@@ -276,6 +285,7 @@ def switch_iframe(test_executor: TestExecutor, **kwargs):
      :returns: Status of execution and error stack
      :rtype: tuple
     """
+    logger = test_executor.test_logger
     locator, locator_value = get_locator_info(**kwargs)
     try:
         element = WebDriverWait(test_executor.web_driver, 10).until(
@@ -298,6 +308,7 @@ def switch_to_default_iframe(test_executor: TestExecutor):
      :returns: Status of execution
      :rtype: tuple
     """
+    logger = test_executor.test_logger
     test_executor.web_driver.switch_to.default_content()
     screenshot=take_screenshot(test_executor.test_uuid, test_executor.test_yml["name"], test_executor.web_driver)
     logger.info("switched successful to default window",extra={'screenshot':screenshot})
@@ -312,6 +323,7 @@ def refresh_page(test_executor: TestExecutor):
      :returns: Status of execution
      :rtype: tuple
     """
+    logger = test_executor.test_logger
     test_executor.web_driver.refresh()
     screenshot=take_screenshot(test_executor.test_uuid, test_executor.test_yml["name"], test_executor.web_driver)
     logger.info("Page refreshed successfully",extra={'screenshot':screenshot})
@@ -326,6 +338,7 @@ def navigate_back(test_executor: TestExecutor):
      :returns: Status of execution
      :rtype: tuple
     """
+    logger = test_executor.test_logger
     test_executor.web_driver.back()
     screenshot=take_screenshot(test_executor.test_uuid, test_executor.test_yml["name"], test_executor.web_driver)
     logger.info("User navigated Back successfully",extra={'screenshot':screenshot})
@@ -340,6 +353,7 @@ def open_new_tab(test_executor: TestExecutor):
       :returns: Status of execution and error stack
       :rtype: object
      """
+    logger = test_executor.test_logger
     test_executor.web_driver.execute_script("window.open()")
     test_executor.web_driver.switch_to_window(
         test_executor.web_driver.window_handles[len(test_executor.web_driver.window_handles) - 1])
@@ -358,6 +372,7 @@ def switch_to_tab(test_executor: TestExecutor, **kwargs):
      :returns; Status of Execution and error stack
 
     """
+    logger = test_executor.test_logger
     is_tab_switched = False
     if "title" in kwargs.keys():
         value = kwargs["title"]
@@ -393,6 +408,7 @@ def wait_for(test_executor: TestExecutor, **kwargs):
      :returns: Status of execution and Failure String
      :rtype: tuple
     """
+    logger = test_executor.test_logger
     try:
         mode = kwargs['mode']
     except KeyError:
@@ -446,6 +462,7 @@ def capture_ui_element(test_executor: TestExecutor, **kwargs):
     :returns: Status of execution and Failure String
     :rtype: tuple
     """
+    logger = test_executor.test_logger
     locator, locator_value = get_locator_info(**kwargs)
     try:
         save_in = kwargs['save_in']
@@ -505,6 +522,7 @@ def scroll_to(test_executor: TestExecutor, **kwargs):
      :returns: Status of execution and error stack
      :rtype: tuple
     """
+    logger = test_executor.test_logger
     locator, locator_value = get_locator_info(**kwargs)
     logger.info("I'll scroll to element")
     error_stack = None
@@ -532,6 +550,7 @@ def execute_js(test_executor: TestExecutor, **kwargs):
     :param args: Optional arguments passed to the JavaScript code.
     :return: None
     """
+    logger = test_executor.test_logger
     try:
         test_executor.web_driver.execute_script(kwargs['script'])
         screenshot = take_screenshot(test_executor.test_uuid, test_executor.test_yml["name"], test_executor.web_driver)

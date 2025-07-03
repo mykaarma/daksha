@@ -18,8 +18,8 @@ import logging
 import os
 import threading
 
-from reportportal_client.helpers import timestamp
-from daksha.settings import LOG_FILE,REPORT_PORTAL_ENABLED,report_portal_service
+from reportportal_client.helpers import timestamp  # type: ignore
+from daksha.settings import LOG_FILE,REPORT_PORTAL_ENABLED
 
 os.makedirs(os.path.dirname(LOG_FILE), exist_ok=True)
 
@@ -36,12 +36,17 @@ consoleHandler = logging.StreamHandler()
 consoleHandler.setFormatter(logFormatter)
 logger.addHandler(consoleHandler)
 
-if(REPORT_PORTAL_ENABLED != None and REPORT_PORTAL_ENABLED.lower() == "true"):
-    class ReportPortalLoggingHandler(logging.Handler):
+class ReportPortalLoggingHandler(logging.Handler):
         def __init__(self):
             super().__init__()
             self.thread_local = threading.local()
-            #threading.local() is used to create a unique thread-local object
+
+        def set_service(self, service):
+            self.thread_local.service = service
+
+        def clear_service(self):
+            if hasattr(self.thread_local, 'service'):
+                del self.thread_local.service
         
         def set_item_id(self, item_id):
             self.thread_local.item_id = item_id
@@ -51,22 +56,68 @@ if(REPORT_PORTAL_ENABLED != None and REPORT_PORTAL_ENABLED.lower() == "true"):
                 del self.thread_local.item_id
 
         def emit(self, record):
-            # Get the log message and level
-            msg = self.format(record)
-            level = record.levelname
-
-            screenshot = record.__dict__.get('screenshot')
-            attachment={"data": screenshot, "mime": "image/png"}
-            # Get the current thread's item ID from thread-local storage
+           try: 
+            report_portal_service = getattr(self.thread_local, 'service', None)
+            
             item_id = getattr(self.thread_local, 'item_id', None)
+            
+            if report_portal_service is not None and item_id is not None:
+                msg = self.format(record)
+                level = record.levelname
+                if level == "WARNING":
+                    level = "WARN"
 
-            # Send the log message to Report Portal using the current item ID
-            if(item_id != None):
-                if(screenshot != None):
-                    report_portal_service.log(time=timestamp(), attachment=attachment, message=msg, level=level, item_id=item_id)
+                screenshot = record.__dict__.get('screenshot')
+                if screenshot:
+                    attachment = {"data": screenshot, "mime": "image/png"}
+                    report_portal_service.log(
+                        time=timestamp(),
+                        message=msg,
+                        level=level,
+                        item_id=item_id,
+                        attachment=attachment
+                    )
                 else:
-                    report_portal_service.log(time=timestamp(),message=msg, level=level, item_id=item_id)
+                    report_portal_service.log(
+                        time=timestamp(),
+                        message=msg,
+                        level=level,
+                        item_id=item_id
+                    )
+           except Exception as e:
+                logger.error(f"Exception occurred while emitting {e}", exc_info=True)
+           finally:
+                logger.info("Emitting completed")
 
-    report_portal_logging_handler = ReportPortalLoggingHandler()
-    logger.addHandler(report_portal_logging_handler)
+
+def get_logger(service, item_id) -> logging.Logger:
+    try:
+        logger.info(f"Getting logger for {item_id}")
+        child_logger = logging.getLogger(item_id)
+        child_logger.setLevel(logging.INFO)
+        
+        logger.info(f"Logger created for {item_id}")
+        if (
+            REPORT_PORTAL_ENABLED is not None
+            and REPORT_PORTAL_ENABLED.lower() == "true"
+        ):
+            report_portal_logging_handler = make_report_portal_handler(service, item_id)
+            child_logger.addHandler(report_portal_logging_handler)
+            logger.info(f"Report portal logging handler added for {item_id}")
+    except Exception as e:
+            logger.error(f"Exception occurred while getting logger {e}", exc_info=True)
+            return logger
+    return child_logger
+
+
+def make_report_portal_handler(service, item_id=None):
+   try:
+    handler = ReportPortalLoggingHandler()
+    handler.set_service(service)
+    if item_id is not None:
+        handler.set_item_id(item_id)
+        return handler
+   except Exception as e:
+        logger.error(f"Exception occurred while making report portal handler {e}", exc_info=True)
+   return handler
 
