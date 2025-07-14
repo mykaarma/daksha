@@ -49,6 +49,14 @@ if(REPORT_PORTAL_ENABLED != None and REPORT_PORTAL_ENABLED.lower() == "true"):
         def clear_item_id(self):
             if hasattr(self.thread_local, 'item_id'):
                 del self.thread_local.item_id
+        
+        def set_service(self, service):
+            self.thread_local.service = service
+
+        def clear_service(self):
+            if hasattr(self.thread_local, 'service'):
+                del self.thread_local.service
+
 
         def emit(self, record):
             # Get the log message and level

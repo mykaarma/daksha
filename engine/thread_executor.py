@@ -63,7 +63,7 @@ def thread_executor(test_ymls, initial_variable_dictionary, test_uuid, email):
         pass
 
     if REPORT_PORTAL_ENABLED != None and REPORT_PORTAL_ENABLED.lower() == "true":
-        report_portal_service.finish_launch(item_id = launch_id, end_time = timestamp())
+        report_portal_service.finish_launch(end_time=timestamp(), launch_uuid=launch_id)
         logger.info(f"Tests finished. Ending launch Daksha_test_{test_uuid} in Report Portal ")
         report_portal_service.terminate()
         
