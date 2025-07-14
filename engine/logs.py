@@ -59,9 +59,8 @@ if(REPORT_PORTAL_ENABLED != None and REPORT_PORTAL_ENABLED.lower() == "true"):
 
 
         def emit(self, record):
-           try: 
+ 
             report_portal_service = getattr(self.thread_local, 'service', None)
-            
             item_id = getattr(self.thread_local, 'item_id', None)
             
             if report_portal_service is not None and item_id is not None:
@@ -87,10 +86,6 @@ if(REPORT_PORTAL_ENABLED != None and REPORT_PORTAL_ENABLED.lower() == "true"):
                         level=level,
                         item_id=item_id
                     )
-           except Exception as e:
-                logger.error(f"Exception occurred while emitting {e}", exc_info=True)
-           finally:
-                logger.info("Emitting completed")
 
     report_portal_logging_handler = ReportPortalLoggingHandler()
     logger.addHandler(report_portal_logging_handler)
