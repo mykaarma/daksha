@@ -4,7 +4,7 @@
 
 ## v 2.11.1
 1. Bug Fix: Tests were not getting marked as finished in Report Portal.
-2. 
+
 ## v 2.10.3
 1. Created Quickstart procedure to ensure smooth execution of first test by users.
 
