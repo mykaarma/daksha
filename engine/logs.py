@@ -49,23 +49,43 @@ if(REPORT_PORTAL_ENABLED != None and REPORT_PORTAL_ENABLED.lower() == "true"):
         def clear_item_id(self):
             if hasattr(self.thread_local, 'item_id'):
                 del self.thread_local.item_id
+        
+        def set_service(self, service):
+            self.thread_local.service = service
+
+        def clear_service(self):
+            if hasattr(self.thread_local, 'service'):
+                del self.thread_local.service
+
 
         def emit(self, record):
-            # Get the log message and level
-            msg = self.format(record)
-            level = record.levelname
-
-            screenshot = record.__dict__.get('screenshot')
-            attachment={"data": screenshot, "mime": "image/png"}
-            # Get the current thread's item ID from thread-local storage
+ 
+            report_portal_service = getattr(self.thread_local, 'service', None)
             item_id = getattr(self.thread_local, 'item_id', None)
+            
+            if report_portal_service is not None and item_id is not None:
+                msg = self.format(record)
+                level = record.levelname
+                if level == "WARNING":
+                    level = "WARN"
 
-            # Send the log message to Report Portal using the current item ID
-            if(item_id != None):
-                if(screenshot != None):
-                    report_portal_service.log(time=timestamp(), attachment=attachment, message=msg, level=level, item_id=item_id)
+                screenshot = record.__dict__.get('screenshot')
+                if screenshot:
+                    attachment = {"data": screenshot, "mime": "image/png"}
+                    report_portal_service.log(
+                        time=timestamp(),
+                        message=msg,
+                        level=level,
+                        item_id=item_id,
+                        attachment=attachment
+                    )
                 else:
-                    report_portal_service.log(time=timestamp(),message=msg, level=level, item_id=item_id)
+                    report_portal_service.log(
+                        time=timestamp(),
+                        message=msg,
+                        level=level,
+                        item_id=item_id
+                    )
 
     report_portal_logging_handler = ReportPortalLoggingHandler()
     logger.addHandler(report_portal_logging_handler)
